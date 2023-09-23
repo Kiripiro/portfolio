@@ -1,0 +1,37 @@
+:root {
+  font-family: Golos, Arial, Helvetica, sans-serif;
+  color-scheme: dark;
+  background-color: #182339;
+  line-height: 1.5;
+  tab-size: 4;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.layout {
+  box-sizing: content-box;
+  color: rgb(108 121 147 1);
+  min-height: 100%;
+  min-width: 23vw;
+  overflow: hidden;
+}
+
+.layoutContent {
+  padding-inline: 18vw;
+}
+
+@media (1000px < device-height) {
+  .layoutContent {
+    padding-inline: 20vw;
+  }
+}
+
+@media (500px <=device-height <=1000px) {
+  .layoutContent {
+    padding-inline: 18vw;
+  }
+}

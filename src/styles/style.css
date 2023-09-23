@@ -1,0 +1,33 @@
+@font-face {
+    src: url('./fonts/PPMori-Regular.otf') format('truetype');
+    font-family: 'PP Mori';
+}
+
+* {
+    cursor: none;
+}
+
+html {
+    font-family: 'PP Mori', sans-serif;
+    line-height: 1.15;
+    scroll-behavior: smooth;
+}
+
+body {
+    position: relative;
+    overflow-x: hidden;
+    background-color: #efefef;
+}
+
+main {
+    height: fit-content;
+}
+
+a {
+    color: #111414;
+    text-decoration: none;
+}
+
+.App {
+    padding-inline: 1.5rem;
+}
