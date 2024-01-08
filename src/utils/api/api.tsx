@@ -7,7 +7,7 @@ export async function fetchGithub() {
         description: string;
         html_url: string;
         created_at: string;
-        languages: Record<string, number>; // New property for languages
+        languages: Record<string, number>;
     }
 
     const apiKey = import.meta.env.VITE_GITHUB_API_KEY;

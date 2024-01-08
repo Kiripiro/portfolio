@@ -9,6 +9,7 @@ interface MagneticButtonProps {
     scale?: number;
     debug?: boolean;
     borderRadius?: number | string;
+    style?: React.CSSProperties;
 }
 
 
@@ -20,6 +21,7 @@ const MagneticButton: React.FC<MagneticButtonProps> = ({
     scale = 1.,
     debug = false,
     borderRadius = 0,
+    style,
     ...props
 }) => {
     const $root = useRef<HTMLButtonElement | null>(null);
@@ -103,6 +105,7 @@ const MagneticButton: React.FC<MagneticButtonProps> = ({
             onTouchStart={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             onTouchEnd={handleMouseLeave}
+            style={style}
             {...props}
         >
             <span ref={$item} className="magnetic-button--item">

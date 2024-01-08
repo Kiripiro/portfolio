@@ -28,6 +28,7 @@ function App() {
   const size = useWindowSize();
   const containerRef = useRef<HTMLDivElement>(null);
   const [showMenu, setShowMenu] = useState(false);
+  const [isMenuToggled, setIsMenuToggled] = useState(false);
   const [showNavbar, setShowNavbar] = useState(true);
 
   const data = {
@@ -81,6 +82,12 @@ function App() {
   }, [isLoading]);
 
   useEffect(() => {
+    if (isMenuToggled && window.scrollY < 100) {
+      setIsMenuToggled(false);
+      setShowMenu(false);
+      setShowNavbar(true);
+    }
+
     const handleScroll = () => {
       const scrollThreshold = 100;
 
@@ -98,7 +105,7 @@ function App() {
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, []);
+  }, [isMenuToggled, showMenu]);
 
   return (
     <div className="App">
@@ -106,7 +113,7 @@ function App() {
         <div className="navbar-placeholder" style={{ visibility: showNavbar ? 'visible' : 'hidden' }}>
           <Navbar />
         </div>
-        <MenuBurger isVisible={showMenu} />
+        <MenuBurger isVisible={showMenu} isMenuToggled={isMenuToggled} setIsMenuToggled={setIsMenuToggled} />
       </header>
       <main>
         {isLoading ? (

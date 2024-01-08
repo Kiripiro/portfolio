@@ -21,6 +21,7 @@ function Hero() {
         <>
             <motion.section
                 className="hero_section"
+                id="home"
                 variants={containerVariants}
                 initial="hidden"
                 animate="visible"

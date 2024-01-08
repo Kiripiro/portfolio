@@ -4,7 +4,7 @@ import SunSVG from '../../utils/svgs/sun';
 const links = [
     { path: '#about', label: 'About' },
     { path: '#projects', label: 'Projects' },
-    { path: '/contact', label: 'Contact' },
+    { path: '#contact', label: 'Contact' },
 ];
 
 function Navbar() {
