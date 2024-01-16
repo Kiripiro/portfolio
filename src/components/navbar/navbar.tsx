@@ -18,14 +18,8 @@ function Navbar() {
                     <a key={index} href={link.path} className="nav_link">{link.label}</a>
                 ))}
             </div>
-            <label className="nav_theme input">
-                <div className="nav_theme_icon">
-                    <SunSVG />
-                </div>
-                <input id="toggleTheme" type="checkbox" name="theme" />
-                <div className="nav_theme_text">
-                    <p>Light</p>
-                </div>
+            <label className="nav_status">
+                Status: AVAILABLE
             </label>
         </nav>
     );

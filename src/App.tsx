@@ -8,8 +8,11 @@ import { useWindowSize } from './utils/hooks/useWindowSize';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { gsap } from 'gsap';
 import Projects from './components/projects/projects';
+import Contact from './components/footer/footer';
 import { fetchGithub } from './utils/api/api';
 import MenuBurger from './components/navbar/menuBurger/menuBurger';
+import { SnackbarProvider } from 'notistack';
+import Preloader from './utils/preloader/preloader';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -30,6 +33,7 @@ function App() {
   const [showMenu, setShowMenu] = useState(false);
   const [isMenuToggled, setIsMenuToggled] = useState(false);
   const [showNavbar, setShowNavbar] = useState(true);
+  const [animationComplete, setAnimationComplete] = useState(false);
 
   const data = {
     ease: 0.06,
@@ -64,11 +68,6 @@ function App() {
 
   useEffect(() => {
     if (!isLoading) {
-      const setBodyHeight = () => {
-        document.body.style.height = `100vh`;
-        // document.body.style.height = `${containerRef.current!.getBoundingClientRect().height}px`;
-      };
-      setBodyHeight();
 
       const smoothScrollInit = () => {
         data.curr = window.scrollY;
@@ -107,17 +106,24 @@ function App() {
     };
   }, [isMenuToggled, showMenu]);
 
+  const handleAnimationComplete = () => {
+    setAnimationComplete(true);
+  };
+
   return (
     <div className="App">
       <header>
-        <div className="navbar-placeholder" style={{ visibility: showNavbar ? 'visible' : 'hidden' }}>
-          <Navbar />
-        </div>
-        <MenuBurger isVisible={showMenu} isMenuToggled={isMenuToggled} setIsMenuToggled={setIsMenuToggled} />
+        {!animationComplete ? (<></>) : (<>
+          <div className="navbar-placeholder" style={{ visibility: showNavbar ? 'visible' : 'hidden' }}>
+            <Navbar />
+          </div>
+          <MenuBurger isVisible={showMenu} isMenuToggled={isMenuToggled} setIsMenuToggled={setIsMenuToggled} />
+        </>)}
       </header>
       <main>
-        {isLoading ? (
-          <div>Loading...</div>
+        <SnackbarProvider />
+        {!animationComplete ? (
+          <Preloader onAnimationComplete={handleAnimationComplete} />
         ) : (
           <>
             <Cursor />
@@ -126,6 +132,7 @@ function App() {
                 <Hero />
                 <About />
                 <Projects repos={repos} />
+                <Contact />
               </div>
             </div>
           </>

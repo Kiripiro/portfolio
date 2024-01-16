@@ -53,9 +53,7 @@
 
 .button-1 {
     cursor: none;
-
-    // background: #303030;
-    color: white;
+    color: #efefef;
     border-radius: 50%;
     border: none;
     width: 70px;
@@ -151,8 +149,8 @@
     top: 0;
     height: 100vh;
     width: 35vw;
-    background: #303030;
-    z-index: 1;
+    background: #efefef;
+    z-index: 2;
     transition: right 0.8s cubic-bezier(0.7, 0, 0.2, 1);
     will-change: right;
 
@@ -172,7 +170,7 @@
         .menu-title {
             margin-top: 6vh;
             margin-left: 6vw;
-            color: #efefef;
+            color: #303030;
             font-size: 3rem;
         }
     }
@@ -187,7 +185,7 @@
     .menu-item {
         margin-left: 5vw;
         padding: 20px;
-        color: #efefef;
+        color: #303030;
         font-size: 3rem;
     }
 

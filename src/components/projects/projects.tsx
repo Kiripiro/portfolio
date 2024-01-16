@@ -21,7 +21,6 @@ interface Repo {
  * @returns {JSX.Element} The rendered component.
  */
 function Projects({ repos }: { repos: Repo[] }) {
-    console.log(repos);
     if (repos.length === 0) return (<>Error fetching Github repositories</>);
     return (
         <section id="projects" className="projects">

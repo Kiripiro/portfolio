@@ -8,7 +8,7 @@
     font-weight: 300;
     margin-bottom: 1.5rem;
     max-width: 80%;
-    color: #303030;
+    color: #efefef;
 }
 
 .about_content_text {
@@ -19,27 +19,27 @@
     font-size: 1.5rem;
     line-height: 1.5;
     margin-bottom: 1.5rem;
-    color: #303030;
+    color: #efefef;
 }
 
 .about_content_button {
     display: inline-flex;
     align-items: center;
     border: 2px solid;
-    border-color: #303030;
+    border-color: #efefef;
     border-radius: 50px;
 }
 
 .about_content_button_link {
     text-decoration: none;
-    color: #303030;
+    color: #efefef;
     display: flex;
     align-items: center;
     padding-inline: 1rem;
 }
 
 .about_content_button_link_text_container {
-    color: #303030;
+    color: #efefef;
     margin-right: 1vw;
     margin-top: 0.2vh;
 }
@@ -55,7 +55,7 @@
     bottom: -2px;
     width: 0;
     height: 2px;
-    background-color: #303030;
+    background-color: #efefef;
     visibility: hidden;
     transition: all 0.3s ease-in-out 0s;
 }
@@ -100,7 +100,7 @@
     font-family: "Plaster", sans-serif;
     display: block;
     margin-right: 1vw;
-    color: #303030;
+    color: #efefef;
 }
 
 .about_content_skills_list {
@@ -108,7 +108,7 @@
     grid-template-columns: 1fr 1fr 1fr 1fr;
     grid-column-gap: 1.5rem;
     margin-top: 10vh;
-    color: #303030;
+    color: #efefef;
 }
 
 .about_content_skills_list_item {

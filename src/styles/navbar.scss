@@ -19,7 +19,7 @@
 .nav_link {
     position: relative;
     font-weight: 500;
-    color: #303030;
+    color: #efefef;
 }
 
 .nav_link::before {
@@ -29,7 +29,7 @@
     left: 0;
     width: 0%;
     height: 2px;
-    background-color: #303030;
+    background-color: #efefef;
     transition: all 0.2s ease-in-out;
 }
 
@@ -37,23 +37,8 @@
     width: 100%;
 }
 
-.nav_theme {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-}
-
-.nav_theme_icon {
-    width: 1.5rem;
-    height: 1.5rem;
-}
-
-#toggleTheme {
-    display: none;
-}
-
-.nav_theme_text {
+.nav_status {
     margin-left: 0.5rem;
     font-weight: 500;
-    color: #303030;
+    color: #efefef;
 }

@@ -3,7 +3,7 @@
     grid-template-columns: 15fr 4fr;
     grid-column-gap: 1.5rem;
     align-items: flex-end;
-    color: #303030;
+    color: #efefef;
 }
 
 .hero_text {
@@ -11,11 +11,11 @@
     font-weight: 300;
     margin-bottom: 1.5rem;
     opacity: 0.01;
-    color: #303030;
+    color: #efefef;
 }
 
 .hero_subtext {
     position: relative;
     top: -5rem;
-    color: #303030;
+    color: #efefef;
 }

@@ -15,11 +15,11 @@
         font-size: 3rem;
         font-weight: 800;
         margin-bottom: 0;
-        color: #303030;
+        color: #efefef;
     }
 
     p {
-        color: #303030;
+        color: #efefef;
     }
 
     .projects_container_list_item {
@@ -35,7 +35,7 @@
                 font-size: 1.7rem;
                 font-weight: 300;
                 transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
-                color: #303030;
+                color: #efefef;
             }
 
             .project_container_list_item_title {
@@ -52,7 +52,7 @@
                 opacity: 0;
                 margin-left: 3vw;
                 margin-bottom: 1vh;
-                color: #303030;
+                color: #efefef;
                 transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out;
             }
 
@@ -61,7 +61,6 @@
                 align-items: center;
                 margin-left: 3vw;
                 opacity: 0;
-                color: #303030;
                 transition: opacity 0.5s ease-in-out;
             }
 
@@ -71,7 +70,7 @@
                 padding: 0.1vh 1vw;
                 border-radius: 50px;
                 background-color: transparent;
-                border: 1px solid #1114143c;
+                border: 1px solid #F7CA18;
             }
         }
 

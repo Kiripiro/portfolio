@@ -9,7 +9,7 @@ function About() {
                 <div className="about_content_text">
                     <p className="about_content_text_paragraph">
                         Enchanté ! <br></br>
-                        I'm Alexandre, a french creative junior full stack developer with a passion for web development.<br></br>
+                        My name is Alexandre - you can call me Alex, a french creative junior full stack developer with a passion for web development.<br></br>
                         As a 42 school student, I've been learning to code for 3 years now. <br></br>
                         I'm currently looking for a job or an internship as a junior developer.<br></br>
                         You can also contact me if you want to talk about a freelance project !

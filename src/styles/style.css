@@ -16,7 +16,7 @@ html {
 body {
     position: relative;
     overflow-x: hidden;
-    background-color: #efefef;
+    background-color: #303030;
 }
 
 main {
@@ -24,7 +24,7 @@ main {
 }
 
 a {
-    color: #111414;
+    color: #F7CA18;
     text-decoration: none;
 }
 

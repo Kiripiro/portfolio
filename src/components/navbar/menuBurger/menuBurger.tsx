@@ -5,11 +5,11 @@ import MagneticButton from './magneticButton';
 
 function MenuBurger({ isVisible, isMenuToggled, setIsMenuToggled }: { isVisible: boolean, isMenuToggled: boolean, setIsMenuToggled: React.Dispatch<React.SetStateAction<boolean>> }) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const [buttonColor, setButtonColor] = useState('#303030');
+    const [buttonColor, setButtonColor] = useState('#efefef');
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
-        setButtonColor(isMenuOpen ? '#303030' : '#F7CA18');
+        setButtonColor(isMenuOpen ? '#efefef' : '#F7CA18');
         setIsMenuToggled(!isMenuToggled);
     };
 
@@ -19,7 +19,7 @@ function MenuBurger({ isVisible, isMenuToggled, setIsMenuToggled }: { isVisible:
 
     useEffect(() => {
         setIsMenuOpen(isMenuToggled);
-        setButtonColor(isMenuToggled ? '#F7CA18' : '#303030');
+        setButtonColor(isMenuToggled ? '#F7CA18' : '#F7CA18');
     }, [isMenuToggled]);
 
     return (
