@@ -9,6 +9,11 @@
     .preloader_title {
         font-size: 3rem;
         color: #efefef;
+        text-align: center;
+
+        @media screen and (max-width: 768px) {
+            font-size: 2rem;
+        }
     }
 
     .preloader_percentage {
@@ -17,5 +22,10 @@
         right: 30px;
         font-size: 1.5rem;
         color: #efefef;
+
+        @media screen and (max-width: 768px) {
+            margin-top: 1rem;
+            text-align: center;
+        }
     }
 }

@@ -6,6 +6,10 @@ function Cursor() {
     const [hoveringLink, setHoveringLink] = useState(false);
     const [hoveringProject, setHoveringProject] = useState(false);
 
+    function isWebsiteOnDesktop() {
+        return !window.navigator.userAgent.includes('Mobile');
+    }
+
     useEffect(() => {
         const handleMouseEnterLink = () => {
             setHoveringLink(true);
@@ -78,28 +82,31 @@ function Cursor() {
         transform: hoveringProject ? 'scale(1.2)' : 'scale(1)',
     };
 
-    return (
-        <div className="cursor-circle" style={cursorStyle}>
-            {hoveringProject && (
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="36"
-                    height="36"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="white"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="cursor-arrow"
-                    style={{ transformOrigin: 'center' }}
-                >
-                    <path d="M5 12h14"></path>
-                    <path d="M12 5l7 7-7 7"></path>
-                </svg>
-            )}
-        </div>
-    );
+    if (isWebsiteOnDesktop())
+        return (
+            <div className="cursor-circle" style={cursorStyle}>
+                {hoveringProject && (
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="36"
+                        height="36"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="white"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="cursor-arrow"
+                        style={{ transformOrigin: 'center' }}
+                    >
+                        <path d="M5 12h14"></path>
+                        <path d="M12 5l7 7-7 7"></path>
+                    </svg>
+                )}
+            </div>
+        );
+    // return the original cursor if the website is on mobile
+    else return null;
 }
 
 export default Cursor;

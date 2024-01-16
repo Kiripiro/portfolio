@@ -1,0 +1,37 @@
+.hero_content {
+    display: grid;
+    grid-template-columns: 14fr 4fr;
+    align-items: flex-end;
+    color: #efefef;
+
+    @media screen and (max-width: 768px) {
+        grid-template-columns: 1fr;
+        align-items: flex-start;
+        text-align: left;
+    }
+}
+
+.hero_text {
+    font-size: 11rem;
+    font-weight: 300;
+    margin-bottom: 1.5rem;
+    opacity: 0.01;
+    color: #efefef;
+
+    @media screen and (max-width: 768px) {
+        font-size: 4rem;
+        margin-bottom: 0;
+    }
+}
+
+.hero_subtext {
+    color: #efefef;
+    margin-bottom: 7vh;
+
+    @media screen and (max-width: 768px) {
+        margin-top: 1rem;
+        margin-bottom: 0;
+        left: 50vw;
+        max-width: 50vw;
+    }
+}

@@ -53,7 +53,7 @@ function Preloader({ onAnimationComplete }: { onAnimationComplete: () => void })
                     progress = Math.round(progress) + 10;
                 }
 
-                if (progress > 100) {
+                if (progress >= 100) {
                     gsap.to([loadingElement, titleElement], {
                         opacity: 0,
                         duration: 1,

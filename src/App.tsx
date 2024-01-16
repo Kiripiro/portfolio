@@ -3,7 +3,7 @@ import About from './components/about/about';
 import Hero from './components/hero/hero';
 import Navbar from './components/navbar/navbar';
 import Cursor from './utils/cursor/cursor';
-import './styles/style.css';
+import './styles/style.scss';
 import { useWindowSize } from './utils/hooks/useWindowSize';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { gsap } from 'gsap';

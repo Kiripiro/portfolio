@@ -37,7 +37,6 @@ export async function fetchGithub() {
                     }
                 }
             );
-            // check if there is a Hack property in the response, if so, delete it
             if (languagesResponse.data.hasOwnProperty('Hack')) {
                 delete languagesResponse.data.Hack;
             }

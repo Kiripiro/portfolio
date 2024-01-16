@@ -11,6 +11,7 @@ html {
     font-family: 'PP Mori', sans-serif;
     line-height: 1.15;
     scroll-behavior: smooth;
+    margin-inline: 1.5rem;
 }
 
 body {
@@ -26,8 +27,4 @@ main {
 a {
     color: #F7CA18;
     text-decoration: none;
-}
-
-.App {
-    padding-inline: 1.5rem;
 }

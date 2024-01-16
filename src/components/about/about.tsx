@@ -1,4 +1,4 @@
-import '../../styles/about.css'
+import '../../styles/about.scss'
 import MailSVG from "../../utils/svgs/mail";
 import Banner from './banner';
 
