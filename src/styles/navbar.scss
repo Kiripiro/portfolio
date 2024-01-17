@@ -44,7 +44,9 @@
     }
 
     .nav_status {
-        color: #efefef;
+        color: #303030;
+        background-color: #F7CA18;
+        padding: 0.5rem 1rem;
 
         @media screen and (max-width: 524px) {
             display: none;

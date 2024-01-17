@@ -7,7 +7,7 @@ function Cursor() {
     const [hoveringProject, setHoveringProject] = useState(false);
 
     function isWebsiteOnDesktop() {
-        return (navigator.userAgent.match(/(iPad|iPhone|iPod|Android|webOS|BlackBerry|Windows Phone)/g) === null) && (window.innerWidth > 1024);
+        return window.navigator.userAgent.indexOf('Mobile') === -1 && window.navigator.userAgent.indexOf('Tablet') === -1;
     }
 
     useEffect(() => {
@@ -105,8 +105,8 @@ function Cursor() {
                 )}
             </div>
         );
-    }
-    else return null;
+    } else
+        return null;
 }
 
 export default Cursor;

@@ -69,6 +69,11 @@ function Preloader({ onAnimationComplete }: { onAnimationComplete: () => void })
                 }
             }, intervalDuration);
         }
+        return () => {
+            if (interval) {
+                clearInterval(interval);
+            }
+        }
     }, [onAnimationComplete, setAnimationPlayed]);
 
     return (

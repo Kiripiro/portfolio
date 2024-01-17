@@ -6,13 +6,15 @@ import Linkedin from '../../../utils/svgs/linkedin';
 import Github from '../../../utils/svgs/github';
 import ReadCv from '../../../utils/svgs/read';
 import { Tooltip } from 'react-tooltip'
+import LocomotiveScroll from 'locomotive-scroll';
 
 function MenuBurger({ isVisible, isMenuToggled, setIsMenuToggled }: { isVisible: boolean, isMenuToggled: boolean, setIsMenuToggled: React.Dispatch<React.SetStateAction<boolean>> }) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [buttonColor, setButtonColor] = useState('#efefef');
+    const [hasScrolled, setHasScrolled] = useState(false);
 
     const isWebsiteOnDesktop = () => {
-        return window.innerWidth > 1024 && window.navigator.userAgent.indexOf('Mobile') === -1 && window.navigator.userAgent.indexOf('Tablet') === -1;
+        return window.navigator.userAgent.indexOf('Mobile') === -1 && window.navigator.userAgent.indexOf('Tablet') === -1;
     }
 
     function handleLinkedinClick() {
@@ -27,8 +29,15 @@ function MenuBurger({ isVisible, isMenuToggled, setIsMenuToggled }: { isVisible:
         window.open('https://read.cv/atourret', '_blank');
     }
 
+    const locomotiveScroll = new LocomotiveScroll();
+
+    function scrollTo(params: { target: string; options?: any }) {
+        const { target, options } = params;
+        locomotiveScroll.scrollTo(target, options);
+    }
+
     const redirect = (url: string) => {
-        window.location.href = url;
+        scrollTo({ target: url, options: { duration: 1.2 } });
         setIsMenuOpen(false);
         setIsMenuToggled(false);
     }
@@ -49,33 +58,48 @@ function MenuBurger({ isVisible, isMenuToggled, setIsMenuToggled }: { isVisible:
     }, [isMenuToggled]);
 
     useEffect(() => {
-        if (isMenuOpen && isWebsiteOnDesktop()) {
+        if (isMenuOpen && !isWebsiteOnDesktop()) {
             document.body.style.overflow = 'hidden';
         } else {
             document.body.style.overflow = 'auto';
         }
     }, [isMenuOpen]);
 
+    useEffect(() => {
+        const handleScroll = () => {
+            if (window.scrollY > 200)
+                setHasScrolled(true);
+        };
+
+        window.addEventListener('scroll', handleScroll);
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
+
     return (
         <>
-            <MagneticButton
-                className={`button-2 ${isVisible ? 'visible' : 'hidden'}`}
-                speed={0.3}
-                scale={1.2}
-                tolerance={0.9}
-            >
-                <div className={`burger-icon`} onClick={toggleMenu}>
-                    <MagneticButton
-                        className={`button-1`}
-                        speed={0.3}
-                        scale={1.2}
-                        tolerance={0.9}
-                        style={{ background: buttonColor }}
-                    >
-                        <Hamburger size={32} color="#fff" toggled={isMenuOpen} />
-                    </MagneticButton>
-                </div>
-            </MagneticButton>
+            {hasScrolled && (
+                <MagneticButton
+                    className={`button-2 ${isVisible ? 'visible' : 'hidden'}`}
+                    speed={0.3}
+                    scale={1.2}
+                    tolerance={0.9}
+                >
+                    <div className={`burger-icon`} onClick={toggleMenu}>
+                        <MagneticButton
+                            className={`button-1`}
+                            speed={0.3}
+                            scale={1.2}
+                            tolerance={0.9}
+                            style={{ background: buttonColor }}
+                        >
+                            <Hamburger size={32} color="#fff" toggled={isMenuOpen} />
+                        </MagneticButton>
+                    </div>
+                </MagneticButton>
+            )}
             <div className={`menu ${isMenuOpen ? 'visible' : 'hidden'}`}>
                 <div className="menu-content">
                     <span className="menu-title">Navigation</span>
@@ -98,6 +122,9 @@ function MenuBurger({ isVisible, isMenuToggled, setIsMenuToggled }: { isVisible:
                             <Tooltip id="github" />
                             <Tooltip id="read.cv" />
                         </div>
+                    </div>
+                    <div className="menu-footer">
+                        @ 2024 Alexandre Tourret
                     </div>
                 </div>
             </div>

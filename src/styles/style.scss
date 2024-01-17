@@ -10,8 +10,7 @@
 html {
     font-family: 'PP Mori', sans-serif;
     line-height: 1.15;
-    scroll-behavior: smooth;
-    // margin-inline: 1.5rem;
+    height: auto;
 }
 
 body {
@@ -19,11 +18,39 @@ body {
     overflow-x: hidden;
     overflow-y: scroll;
     background-color: #303030;
-    margin-inline: 1.5rem;
+    margin: 0;
 }
 
 main {
     height: 100%;
+}
+
+.App {
+    height: 100%;
+
+    .wrapper {
+        margin-inline: 1.5rem;
+    }
+
+    html.lenis {
+        height: auto;
+    }
+
+    .lenis.lenis-smooth {
+        scroll-behavior: auto !important;
+    }
+
+    .lenis.lenis-smooth [data-lenis-prevent] {
+        overscroll-behavior: contain;
+    }
+
+    .lenis.lenis-stopped {
+        overflow: hidden;
+    }
+
+    .lenis.lenis-scrolling iframe {
+        pointer-events: none;
+    }
 }
 
 a {
