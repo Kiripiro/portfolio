@@ -2,10 +2,36 @@ import { useEffect, useState } from 'react';
 import { Pivot as Hamburger } from 'hamburger-react';
 import '../../../styles/menuBurger.scss';
 import MagneticButton from './magneticButton';
+import Linkedin from '../../../utils/svgs/linkedin';
+import Github from '../../../utils/svgs/github';
+import ReadCv from '../../../utils/svgs/read';
+import { Tooltip } from 'react-tooltip'
 
 function MenuBurger({ isVisible, isMenuToggled, setIsMenuToggled }: { isVisible: boolean, isMenuToggled: boolean, setIsMenuToggled: React.Dispatch<React.SetStateAction<boolean>> }) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [buttonColor, setButtonColor] = useState('#efefef');
+
+    const isWebsiteOnDesktop = () => {
+        return window.innerWidth > 1024 && window.navigator.userAgent.indexOf('Mobile') === -1 && window.navigator.userAgent.indexOf('Tablet') === -1;
+    }
+
+    function handleLinkedinClick() {
+        window.open('https://www.linkedin.com/in/atourret/', '_blank');
+    }
+
+    function handleGithubClick() {
+        window.open('https://github.com/Kiripiro', '_blank');
+    }
+
+    function handleReadCvClick() {
+        window.open('https://read.cv/atourret', '_blank');
+    }
+
+    const redirect = (url: string) => {
+        window.location.href = url;
+        setIsMenuOpen(false);
+        setIsMenuToggled(false);
+    }
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
@@ -21,6 +47,14 @@ function MenuBurger({ isVisible, isMenuToggled, setIsMenuToggled }: { isVisible:
         setIsMenuOpen(isMenuToggled);
         setButtonColor(isMenuToggled ? '#F7CA18' : '#F7CA18');
     }, [isMenuToggled]);
+
+    useEffect(() => {
+        if (isMenuOpen && isWebsiteOnDesktop()) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'auto';
+        }
+    }, [isMenuOpen]);
 
     return (
         <>
@@ -46,12 +80,24 @@ function MenuBurger({ isVisible, isMenuToggled, setIsMenuToggled }: { isVisible:
                 <div className="menu-content">
                     <span className="menu-title">Navigation</span>
                     <div className="menu-items">
-                        <hr className="menu-hr"></hr>
-                        <div className={`menu-item`} onClick={() => window.location.href = "#home"}>Home</div>
-                        <div className={`menu-item`} onClick={() => window.location.href = "#about"}>About</div>
-                        <div className={`menu-item`} onClick={() => window.location.href = "#projects"}>Projects</div>
-                        <div className={`menu-item`} onClick={() => window.location.href = "#contact"}>Contact</div>
-                        <hr className="menu-hr"></hr>
+                        <div className={`menu-item`} onClick={() => redirect("#home")}>Home</div>
+                        <div className={`menu-item`} onClick={() => redirect("#about")}>About</div>
+                        <div className={`menu-item`} onClick={() => redirect("#projects")}>Projects</div>
+                        <div className={`menu-item`} onClick={() => redirect("#contact")}>Contact</div>
+                        <div className='menu-socials'>
+                            <div data-tooltip-id="linkedin" data-tooltip-content="Linkedin" className='icon' onClick={handleLinkedinClick}>
+                                <Linkedin />
+                            </div>
+                            <div data-tooltip-id="github" data-tooltip-content="Github" className='icon' onClick={handleGithubClick}>
+                                <Github />
+                            </div>
+                            <div data-tooltip-id="read.cv" data-tooltip-content="Read.cv" className='icon' onClick={handleReadCvClick}>
+                                <ReadCv />
+                            </div>
+                            <Tooltip id="linkedin" />
+                            <Tooltip id="github" />
+                            <Tooltip id="read.cv" />
+                        </div>
                     </div>
                 </div>
             </div>

@@ -30,14 +30,14 @@ function About() {
                             <div className="about_content_skills_list_item_container">
                                 <span>1/</span>
                                 <h3 className="about_content_skills_list_item_title">Languages</h3>
-                                <p className="about_content_skills_list_item_text">C, C++, HTML, CSS, Javascript, Typescript, PHP</p>
+                                <p className="about_content_skills_list_item_text">C, C++, HTML, CSS, Javascript, Typescript, NodeJs, PHP, Python</p>
                             </div>
                         </div>
                         <div className="about_content_skills_list_item">
                             <div className="about_content_skills_list_item_container">
                                 <span>2/</span>
                                 <h3 className="about_content_skills_list_item_title">Frameworks</h3>
-                                <p className="about_content_skills_list_item_text">Node.js, React, Angular, NestJS, Bootstrap, Bulma</p>
+                                <p className="about_content_skills_list_item_text">React, Angular, NestJS, Bootstrap, Bulma</p>
                             </div>
                         </div>
                         <div className="about_content_skills_list_item">
@@ -51,7 +51,7 @@ function About() {
                             <div className="about_content_skills_list_item_container">
                                 <span>4/</span>
                                 <h3 className="about_content_skills_list_item_title">Tools</h3>
-                                <p className="about_content_skills_list_item_text">Git, Docker, Nginx, Apache, Postman, Notion, Wordpress</p>
+                                <p className="about_content_skills_list_item_text">Git, Docker, Nginx, Apache, Wordpress, Postman, Notion, VSCode</p>
                             </div>
                         </div>
                     </div>

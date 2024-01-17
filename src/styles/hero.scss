@@ -18,15 +18,33 @@
     opacity: 0.01;
     color: #efefef;
 
-    @media screen and (max-width: 768px) {
+    @media screen and (max-width: 1200px) {
+        font-size: 8rem;
+    }
+
+    @media screen and (max-width: 992px) {
+        font-size: 7.5rem;
+    }
+
+    @media screen and (max-width: 767px) {
         font-size: 4rem;
         margin-bottom: 0;
     }
+
+    @media screen and (max-width: 767px) and (max-height: 800px) {
+        font-size: 6rem;
+        margin-bottom: 0;
+    }
+
 }
 
 .hero_subtext {
     color: #efefef;
     margin-bottom: 7vh;
+
+    @media screen and (max-width: 1200px) {
+        margin-bottom: 2.3rem;
+    }
 
     @media screen and (max-width: 768px) {
         margin-top: 1rem;

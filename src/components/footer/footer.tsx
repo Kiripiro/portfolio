@@ -1,9 +1,10 @@
-import '../../styles/contact.scss'
+import '../../styles/footer.scss'
 import ArrowDiagonalRight from '../../utils/svgs/arrowDiagonalRight';
 import Linkedin from '../../utils/svgs/linkedin';
 import Github from '../../utils/svgs/github';
 import ReadCv from '../../utils/svgs/read';
 import { enqueueSnackbar } from 'notistack';
+import { Tooltip } from 'react-tooltip';
 
 function Contact() {
     function copyToClipboard() {
@@ -35,22 +36,23 @@ function Contact() {
                     <div>
                         <p className="contact_text_link" onClick={copyToClipboard}>alexandre.tourretpro@gmail.com</p>
                         <div className="contact_content_socials">
-                            <div className='icon' onClick={handleLinkedinClick}>
+                            <div data-tooltip-id="linkedin" data-tooltip-content="Linkedin" className='icon' onClick={handleLinkedinClick}>
                                 <Linkedin />
                             </div>
-                            <div className='icon' onClick={handleGithubClick}>
+                            <div data-tooltip-id="github" data-tooltip-content="Github" className='icon' onClick={handleGithubClick}>
                                 <Github />
                             </div>
-                            <div className='icon' onClick={handleReadCvClick}>
+                            <div data-tooltip-id="read.cv" data-tooltip-content="Read.cv" className='icon' onClick={handleReadCvClick}>
                                 <ReadCv />
                             </div>
+                            <Tooltip id="linkedin" />
+                            <Tooltip id="github" />
+                            <Tooltip id="read.cv" />
                         </div>
                     </div>
                     <div className='contact-arrow'>
                         <ArrowDiagonalRight />
                     </div>
-
-                    {/* add the copyright */}
                     <div className="contact_bottom">
                         <p className='contact_bottom_text'>© 2024 Alexandre Tourret</p>
                     </div>

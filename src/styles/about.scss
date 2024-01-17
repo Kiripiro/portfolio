@@ -1,6 +1,11 @@
 .about_section {
     padding: 5rem 0 2rem;
 
+    @media screen and (max-width: 1200px) {
+        padding: 2rem 0 2rem;
+
+    }
+
     @media screen and (max-width: 768px) {
         padding: 2rem 0 2rem;
     }
@@ -109,6 +114,11 @@
         grid-column-gap: 1.5rem;
         margin-top: 10vh;
         color: #efefef;
+
+        @media screen and (max-width: 1200px) {
+            grid-template-columns: repeat(2, 1fr);
+            margin-top: 5vh;
+        }
 
         @media screen and (max-width: 768px) {
             grid-template-columns: repeat(2, 1fr);

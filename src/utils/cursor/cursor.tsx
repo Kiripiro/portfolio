@@ -7,7 +7,7 @@ function Cursor() {
     const [hoveringProject, setHoveringProject] = useState(false);
 
     function isWebsiteOnDesktop() {
-        return !window.navigator.userAgent.includes('Mobile');
+        return (navigator.userAgent.match(/(iPad|iPhone|iPod|Android|webOS|BlackBerry|Windows Phone)/g) === null) && (window.innerWidth > 1024);
     }
 
     useEffect(() => {
@@ -82,7 +82,7 @@ function Cursor() {
         transform: hoveringProject ? 'scale(1.2)' : 'scale(1)',
     };
 
-    if (isWebsiteOnDesktop())
+    if (isWebsiteOnDesktop()) {
         return (
             <div className="cursor-circle" style={cursorStyle}>
                 {hoveringProject && (
@@ -105,7 +105,7 @@ function Cursor() {
                 )}
             </div>
         );
-    // return the original cursor if the website is on mobile
+    }
     else return null;
 }
 

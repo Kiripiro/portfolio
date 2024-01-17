@@ -73,7 +73,7 @@ function App() {
         data.curr = window.scrollY;
         data.prev += (data.curr - data.prev) * data.ease;
         data.rounded = Math.round(data.prev * 100) / 100;
-        containerRef.current!.style.transform = `translateY(-${data.rounded}px)`;
+        // containerRef.current!.style.transform = `translateY(-${data.rounded}px)`;
         requestAnimationFrame(smoothScrollInit);
       };
       requestAnimationFrame(smoothScrollInit);
@@ -122,11 +122,12 @@ function App() {
       </header>
       <main>
         <SnackbarProvider />
+        <Cursor />
+
         {!animationComplete ? (
           <Preloader onAnimationComplete={handleAnimationComplete} />
         ) : (
           <>
-            <Cursor />
             <div className="wrapper" ref={containerRef}>
               <div className="container" style={{ maxHeight: `${size.height + (size.height / 2)}px` }}>
                 <Hero />

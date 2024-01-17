@@ -20,8 +20,6 @@
         justify-content: center;
         align-items: center;
         margin-left: auto;
-
-        @media screen and (max-width: 768px) {}
     }
 
     .nav_link {
@@ -48,7 +46,7 @@
     .nav_status {
         color: #efefef;
 
-        @media screen and (max-width: 768px) {
+        @media screen and (max-width: 524px) {
             display: none;
         }
     }

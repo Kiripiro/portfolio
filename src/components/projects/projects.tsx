@@ -22,7 +22,7 @@ interface Repo {
  */
 function Projects({ repos }: { repos: Repo[] }) {
     function isWebsiteOnDesktop() {
-        return !window.navigator.userAgent.includes('Mobile');
+        return window.innerWidth > 768 && window.innerHeight > 768 && window.navigator.userAgent.indexOf('Mobile') === -1 && window.navigator.userAgent.indexOf('Tablet') === -1;
     }
     const max = 6;
     let maxProjects = isWebsiteOnDesktop() ? repos.length : max;

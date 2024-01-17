@@ -11,17 +11,19 @@ html {
     font-family: 'PP Mori', sans-serif;
     line-height: 1.15;
     scroll-behavior: smooth;
-    margin-inline: 1.5rem;
+    // margin-inline: 1.5rem;
 }
 
 body {
     position: relative;
     overflow-x: hidden;
+    overflow-y: scroll;
     background-color: #303030;
+    margin-inline: 1.5rem;
 }
 
 main {
-    height: fit-content;
+    height: 100%;
 }
 
 a {
