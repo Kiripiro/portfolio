@@ -33,9 +33,6 @@ function App() {
   const [animationComplete, setAnimationComplete] = useState(false);
   const locomotiveScroll = new LocomotiveScroll({
     lenisOptions: {
-      wrapper: window,
-      content: document.documentElement,
-      lerp: 0.1,
       duration: 1.2,
       orientation: 'vertical',
       gestureOrientation: 'vertical',
@@ -43,7 +40,6 @@ function App() {
       smoothTouch: false,
       wheelMultiplier: 1,
       touchMultiplier: 2,
-      normalizeWheel: true,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
     },
   });
@@ -89,8 +85,7 @@ function App() {
   };
 
   return (
-    <div id="home" className="App">
-
+    <div id="home" data-scroll className="App">
       {!animationComplete ?
         (
           <>
@@ -106,7 +101,9 @@ function App() {
             <div className="navbar-placeholder" style={{ visibility: showNavbar ? 'visible' : 'hidden' }}>
               <Navbar />
             </div>
-            <MenuBurger isVisible={showMenu} isMenuToggled={isMenuToggled} setIsMenuToggled={setIsMenuToggled} />
+            <div>
+              <MenuBurger isVisible={showMenu} isMenuToggled={isMenuToggled} setIsMenuToggled={setIsMenuToggled} />
+            </div>
           </>)}
         </header>
         <main>
@@ -116,7 +113,7 @@ function App() {
             (
               <>
                 <Cursor />
-                <div className="wrapper" data-scroll ref={containerRef}>
+                <div className="wrapper" ref={containerRef}>
                   <div className="container">
                     <Hero />
                     <About />

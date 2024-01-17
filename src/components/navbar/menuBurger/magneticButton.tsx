@@ -192,23 +192,25 @@ const MagneticButton: React.FC<MagneticButtonProps> = ({
     };
 
     return (
-        <button
-            ref={$root}
-            className={`magnetic-button ${className}`}
-            onMouseEnter={handleMouseEnter}
-            onMouseMove={handleMouseMove}
-            onMouseLeave={handleMouseLeave}
-            onTouchMove={handleTouchMove}
-            onTouchStart={handleMouseEnter}
-            onTouchEnd={handleTouchEnd}
-            style={style}
-            {...props}
-        >
-            <span ref={$item} className="magnetic-button--item">
-                {children}
-            </span>
-            <span ref={$hover} className="magnetic-button--hover" />
-        </button>
+        <div className="magnetic-button--container">
+            <button
+                ref={$root}
+                className={`magnetic-button ${className}`}
+                onMouseEnter={handleMouseEnter}
+                onMouseMove={handleMouseMove}
+                onMouseLeave={handleMouseLeave}
+                onTouchMove={handleTouchMove}
+                onTouchStart={handleMouseEnter}
+                onTouchEnd={handleTouchEnd}
+                style={style}
+                {...props}
+            >
+                <span ref={$item} className="magnetic-button--item">
+                    {children}
+                </span>
+                <span ref={$hover} className="magnetic-button--hover" />
+            </button>
+        </div>
     );
 };
 
