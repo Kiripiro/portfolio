@@ -15,7 +15,6 @@
 
         .about_content_text_paragraph {
             font-size: 1.5rem;
-            line-height: 1.5;
             margin-bottom: 1.5rem;
             color: #efefef;
 
@@ -85,7 +84,6 @@
     .parallax {
         overflow: hidden;
         margin: 0;
-        line-height: 0.9;
         white-space: nowrap;
         display: flex;
         flex-wrap: nowrap;
@@ -156,7 +154,6 @@
 
                 p {
                     font-size: 1.2rem;
-                    line-height: 1.5;
                     margin-bottom: 1.5rem;
 
                     @media screen and (max-width: 768px) {

@@ -10,9 +10,6 @@ import { fetchGithub } from './utils/api/api';
 import MenuBurger from './components/navbar/menuBurger/menuBurger';
 import { SnackbarProvider } from 'notistack';
 import Preloader from './utils/preloader/preloader';
-// import Lenis from '@studio-freight/lenis';
-// import gsap from 'gsap';
-// import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import LocomotiveScroll from 'locomotive-scroll';
 
 function App() {
