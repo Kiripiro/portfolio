@@ -26,6 +26,7 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+      deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
