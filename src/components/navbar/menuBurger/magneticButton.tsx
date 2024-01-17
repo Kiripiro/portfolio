@@ -192,7 +192,7 @@ const MagneticButton: React.FC<MagneticButtonProps> = ({
     };
 
     return (
-        <div className="magnetic-button--container">
+        <div className="magnetic-button-container">
             <button
                 ref={$root}
                 className={`magnetic-button ${className}`}
