@@ -4,6 +4,11 @@
     align-items: flex-end;
     color: #efefef;
 
+    @media screen and (min-width: 1600px) {
+        grid-template-columns: 15fr 6fr;
+    }
+
+
     @media screen and (max-width: 1200px) {
         grid-template-columns: 12fr 6fr;
     }
@@ -21,6 +26,10 @@
     margin-bottom: 1.5rem;
     opacity: 0.01;
     color: #efefef;
+
+    @media screen and (min-width: 1600px) {
+        font-size: 13rem;
+    }
 
     @media screen and (max-width: 1200px) {
         font-size: 8rem;

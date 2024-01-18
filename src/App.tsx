@@ -11,6 +11,7 @@ import MenuBurger from './components/navbar/menuBurger/menuBurger';
 import { SnackbarProvider } from 'notistack';
 import Preloader from './utils/preloader/preloader';
 import LocomotiveScroll from 'locomotive-scroll';
+import { AnimatePresence } from 'framer-motion';
 
 function App() {
   interface Repo {
@@ -27,7 +28,8 @@ function App() {
   const [showMenu, setShowMenu] = useState(false);
   const [isMenuToggled, setIsMenuToggled] = useState(false);
   const [showNavbar, setShowNavbar] = useState(true);
-  const [animationComplete, setAnimationComplete] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
   const locomotiveScroll = new LocomotiveScroll({
     lenisOptions: {
       duration: 1.2,
@@ -40,6 +42,13 @@ function App() {
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
     },
   });
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 4000)
+  });
+
   useEffect(() => {
     async function fetchData() {
       try {
@@ -77,24 +86,14 @@ function App() {
     };
   }, [isMenuToggled, showMenu]);
 
-  const handleAnimationComplete = () => {
-    setAnimationComplete(true);
-  };
-
   return (
     <div id="home" data-scroll className="App">
-      {!animationComplete ?
-        (
-          <>
-            <Preloader onAnimationComplete={handleAnimationComplete} />
-            <Cursor />
-          </>
-        ) : (
-          <></>
-        )}
+      <AnimatePresence mode='wait'>
+        {isLoading && repos.length > 0 && <Preloader />}
+      </AnimatePresence>
       <div className="wrapper">
         <header>
-          {!animationComplete ? (<></>) : (<>
+          {isLoading ? (<></>) : (<>
             <div className="navbar-placeholder" style={{ visibility: showNavbar ? 'visible' : 'hidden' }}>
               <Navbar />
             </div>
@@ -104,9 +103,8 @@ function App() {
           </>)}
         </header>
         <main>
-
           <SnackbarProvider />
-          {!animationComplete ? (<></>) :
+          {isLoading ? (<></>) :
             (
               <>
                 <Cursor />

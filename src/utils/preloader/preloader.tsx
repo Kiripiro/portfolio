@@ -1,87 +1,70 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { gsap } from 'gsap';
 import './preloader.scss';
+import { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
 
-function Preloader({ onAnimationComplete }: { onAnimationComplete: () => void }) {
-    const loadingRef = useRef<HTMLDivElement>(null);
-    const titleRef = useRef<HTMLHeadingElement>(null);
-    const [animationPlayed, setAnimationPlayed] = useState(false);
+export const opacity = {
+    initial: {
+        opacity: 0
+    },
+    enter: {
+        opacity: 0.75,
+        transition: { duration: 1, delay: 0.2 }
+    },
+}
+
+export const slideUp = {
+    initial: {
+        top: 0
+    },
+    exit: {
+        top: "-100vh",
+        transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1], delay: 0.2 }
+    }
+}
+
+const words = ["Alexandre Tourret", "Web developer", "Angular", "React", "Node.js", "TypeScript", "Young", "Passionate", "Welcome to my portfolio"]
+
+function Preloader() {
+    const [index, setIndex] = useState(0);
+    const [dimension, setDimension] = useState({ width: 0, height: 0 });
 
     useEffect(() => {
-        const loadingElement = loadingRef.current;
-        const titleElement = titleRef.current;
-        let interval: NodeJS.Timeout | null = null;
+        setDimension({ width: window.innerWidth, height: window.innerHeight })
+    }, [])
 
-        if (loadingElement && titleElement && !animationPlayed) {
-            if (interval) {
-                clearInterval(interval);
-            }
+    useEffect(() => {
+        if (index == words.length - 1) return;
+        setTimeout(() => {
+            setIndex(index + 1)
+        }, index == 0 ? 1000 : 180)
+    }, [index])
 
-            let progress = 0;
-            let intervalDuration = 50;
-            interval = setInterval(() => {
-                progress = Math.round(progress) + 1;
+    const initialPath = `M0 0 L${dimension.width} 0 L${dimension.width} ${dimension.height} Q${dimension.width / 2} ${dimension.height + 300} 0 ${dimension.height}  L0 0`
+    const targetPath = `M0 0 L${dimension.width} 0 L${dimension.width} ${dimension.height} Q${dimension.width / 2} ${dimension.height} 0 ${dimension.height}  L0 0`
 
-                if (progress === 15) {
-                    gsap.to(titleElement, {
-                        opacity: 0,
-                        duration: 0.5,
-                        onComplete: () => {
-                            titleElement.textContent = 'Full stack developer';
-                            gsap.to(titleElement, {
-                                opacity: 1,
-                                duration: 0.5,
-                            });
-                        },
-                    });
-                }
-                if (progress === 35) {
-                    gsap.to(titleElement, {
-                        opacity: 0,
-                        duration: 0.5,
-                        onComplete: () => {
-                            titleElement.textContent = 'Young and passionate';
-                            gsap.to(titleElement, {
-                                opacity: 1,
-                                duration: 0.5,
-                            });
-                        },
-                    });
-                }
-
-                if (progress > 55) {
-                    progress = Math.round(progress) + 10;
-                }
-
-                if (progress >= 100) {
-                    gsap.to([loadingElement, titleElement], {
-                        opacity: 0,
-                        duration: 1,
-                        onComplete: () => {
-                            clearInterval(interval!);
-                            loadingElement.remove();
-                            setAnimationPlayed(true);
-                            onAnimationComplete();
-                        },
-                    });
-                } else {
-                    loadingElement.textContent = `Loading ${Math.round(progress)}%...`;
-                }
-            }, intervalDuration);
+    const curve = {
+        initial: {
+            d: initialPath,
+            transition: { duration: 0.7, ease: [0.76, 0, 0.24, 1] }
+        },
+        exit: {
+            d: targetPath,
+            transition: { duration: 0.7, ease: [0.76, 0, 0.24, 1], delay: 0.3 }
         }
-        return () => {
-            if (interval) {
-                clearInterval(interval);
-            }
-        }
-    }, [onAnimationComplete, setAnimationPlayed]);
+    }
 
     return (
-        <div className="preloader">
-            <h1 ref={titleRef} className='preloader_title'>Alexandre Tourret</h1>
-            <h1 ref={loadingRef} className='preloader_percentage'>Loading 0%...</h1>
-        </div>
-    );
+        <motion.div variants={slideUp} initial="initial" exit="exit" className="introduction">
+            {dimension.width > 0 &&
+                <>
+                    <motion.p variants={opacity} initial="initial" animate="enter">{words[index]}</motion.p>
+                    <svg>
+                        <motion.path variants={curve} initial="initial" exit="exit"></motion.path>
+                    </svg>
+                </>
+            }
+        </motion.div>
+    )
 }
 
 export default Preloader;

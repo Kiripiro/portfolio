@@ -9,7 +9,7 @@ import { Tooltip } from 'react-tooltip';
 function Contact() {
     function copyToClipboard() {
         navigator.clipboard.writeText('alexandre.tourretpro@gmail.com');
-        enqueueSnackbar('Email copied to clipboard !', { preventDuplicate: true, autoHideDuration: 2000 });
+        enqueueSnackbar('Email copied to clipboard !', { variant: 'success', preventDuplicate: true, autoHideDuration: 2000 });
     }
 
 
