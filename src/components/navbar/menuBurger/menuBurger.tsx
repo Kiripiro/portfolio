@@ -104,10 +104,10 @@ function MenuBurger({ isVisible, isMenuToggled, setIsMenuToggled }: { isVisible:
                 <div className="menu-content">
                     <span className="menu-title">Navigation</span>
                     <div className="menu-items">
-                        <div className={`menu-item`} onClick={() => redirect("#home")}>Home</div>
-                        <div className={`menu-item`} onClick={() => redirect("#about")}>About</div>
-                        <div className={`menu-item`} onClick={() => redirect("#projects")}>Projects</div>
-                        <div className={`menu-item`} onClick={() => redirect("#contact")}>Contact</div>
+                        <div className={`menu-item`} onClick={() => redirect("#home")}><span>Home</span></div>
+                        <div className={`menu-item`} onClick={() => redirect("#about")}><span>About</span></div>
+                        <div className={`menu-item`} onClick={() => redirect("#projects")}><span>Projects</span></div>
+                        <div className={`menu-item`} onClick={() => redirect("#contact")}><span>Contact</span></div>
                         <div className='menu-socials'>
                             <div data-tooltip-id="linkedin" data-tooltip-content="Linkedin" className='icon' onClick={handleLinkedinClick}>
                                 <Linkedin />

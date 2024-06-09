@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import About from './components/about/about';
 import Hero from './components/hero/hero';
 import Navbar from './components/navbar/navbar';
@@ -10,7 +10,6 @@ import { fetchGithub } from './utils/api/api';
 import MenuBurger from './components/navbar/menuBurger/menuBurger';
 import { SnackbarProvider } from 'notistack';
 import Preloader from './utils/preloader/preloader';
-import LocomotiveScroll from 'locomotive-scroll';
 import { AnimatePresence } from 'framer-motion';
 
 function App() {
@@ -30,24 +29,8 @@ function App() {
   const [showNavbar, setShowNavbar] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
 
-  const locomotiveScroll = new LocomotiveScroll({
-    lenisOptions: {
-      duration: 1.2,
-      orientation: 'vertical',
-      gestureOrientation: 'vertical',
-      smoothWheel: true,
-      smoothTouch: false,
-      wheelMultiplier: 1,
-      touchMultiplier: 2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-    },
-  });
-
-  useEffect(() => {
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 4000)
-  });
+  const today = new Date().toISOString().slice(0, 10);
+  const lastLoadDate = localStorage.getItem('lastLoadDate');
 
   useEffect(() => {
     async function fetchData() {
@@ -58,7 +41,6 @@ function App() {
         console.error('Error fetching GitHub data:', error);
       }
     }
-
     fetchData();
   }, []);
 
@@ -86,10 +68,15 @@ function App() {
     };
   }, [isMenuToggled, showMenu]);
 
+  useEffect(() => {
+    if (lastLoadDate === today)
+      setIsLoading(false);
+  })
+
   return (
     <div id="home" data-scroll className="App">
       <AnimatePresence mode='wait'>
-        {isLoading && repos.length > 0 && <Preloader />}
+        {isLoading && repos.length > 0 && <Preloader setIsLoading={setIsLoading} />}
       </AnimatePresence>
       <div className="wrapper">
         <header>

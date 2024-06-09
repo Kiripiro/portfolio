@@ -1,6 +1,7 @@
 import './preloader.scss';
-import { useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
+
 
 export const opacity = {
     initial: {
@@ -24,20 +25,36 @@ export const slideUp = {
 
 const words = ["Alexandre Tourret", "Web developer", "Angular", "React", "Node.js", "TypeScript", "Young", "Passionate", "Welcome to my portfolio"]
 
-function Preloader() {
+function Preloader({ setIsLoading }: { setIsLoading: Dispatch<SetStateAction<boolean>> }) {
     const [index, setIndex] = useState(0);
     const [dimension, setDimension] = useState({ width: 0, height: 0 });
+    let timeout: NodeJS.Timeout;
 
     useEffect(() => {
         setDimension({ width: window.innerWidth, height: window.innerHeight })
     }, [])
 
     useEffect(() => {
-        if (index == words.length - 1) return;
-        setTimeout(() => {
-            setIndex(index + 1)
-        }, index == 0 ? 1000 : 180)
-    }, [index])
+        const today = new Date().toISOString().slice(0, 10);
+
+        const delay = index === 0 ? 1000 : 180;
+
+        if (index < words.length) {
+            timeout = setTimeout(() => {
+                setIndex(prevIndex => prevIndex + 1)
+            }, delay);
+        }
+
+        if (index === words.length - 1) {
+            setTimeout(() => setIsLoading(false), 500);
+            localStorage.setItem('lastLoadDate', today);
+        }
+
+        return () => {
+            if (timeout)
+                clearTimeout(timeout);
+        }
+    }, [index, setIsLoading])
 
     const initialPath = `M0 0 L${dimension.width} 0 L${dimension.width} ${dimension.height} Q${dimension.width / 2} ${dimension.height + 300} 0 ${dimension.height}  L0 0`
     const targetPath = `M0 0 L${dimension.width} 0 L${dimension.width} ${dimension.height} Q${dimension.width / 2} ${dimension.height} 0 ${dimension.height}  L0 0`

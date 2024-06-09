@@ -10,8 +10,9 @@ function About() {
                     <p className="about_content_text_paragraph">
                         Enchanté ! <br></br>
                         My name is Alexandre - you can call me Alex, a french creative junior full stack developer with a passion for web development.<br></br>
-                        As a 42 school student, I've been learning to code for 3 years now. <br></br>
-                        I'm currently looking for a job or an internship as a junior developer.<br></br>
+                        As a 42 school student, I've been learning to code for 4 years now. <br></br>
+                        I'm currently doing an internship as a full stack developer at Onepoint, Lyon.<br></br>
+                        I am seeking an apprenticeship as part of my studies to prepare for a Level 7 RNCP certification.<br></br>
                         You can also contact me if you want to talk about a freelance project !
                     </p>
                 </div>

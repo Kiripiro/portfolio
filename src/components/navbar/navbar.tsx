@@ -26,7 +26,7 @@ function Navbar() {
                     <a key={index} href={link.path} onClick={() => scrollTo({ target: link.path, options: { duration: 1.2 } })} className="nav_link">{link.label}</a>
                 ))}
             </div>
-            <label className="nav_status"><span ></span> Available </label>
+            <label className="nav_status"><span ></span> Unvailable</label>
         </nav>
     );
 };
