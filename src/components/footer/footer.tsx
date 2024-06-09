@@ -34,7 +34,7 @@ function Contact() {
                 </div>
                 <div className="contact_content">
                     <div>
-                        <p className="contact_text_link" onClick={copyToClipboard}>alexandre.tourretpro@gmail.com</p>
+                        <p className="contact_text_link" onClick={copyToClipboard}>contact@atourret.fr</p>
                         <div className="contact_content_socials">
                             <div data-tooltip-id="linkedin" data-tooltip-content="Linkedin" className='icon' onClick={handleLinkedinClick}>
                                 <Linkedin />

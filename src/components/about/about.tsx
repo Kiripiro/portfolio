@@ -17,7 +17,7 @@ function About() {
                     </p>
                 </div>
                 <div className="about_content_button">
-                    <a href="mailto:alexandre.tourretpro@gmail.com" className="about_content_button_link">
+                    <a href="mailto:contact@atourret.fr" className="about_content_button_link">
                         <div className="about_content_button_link_text_container">
                             <p className="about_content_button_link_text">Let's have a chat !</p>
                         </div>
