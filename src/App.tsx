@@ -29,9 +29,6 @@ function App() {
   const [showNavbar, setShowNavbar] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
 
-  const today = new Date().toISOString().slice(0, 10);
-  const lastLoadDate = localStorage.getItem('lastLoadDate');
-
   useEffect(() => {
     async function fetchData() {
       try {
@@ -68,15 +65,11 @@ function App() {
     };
   }, [isMenuToggled, showMenu]);
 
-  useEffect(() => {
-    if (lastLoadDate === today)
-      setIsLoading(false);
-  })
-
   return (
     <div id="home" data-scroll className="App">
+      <div className='grain-overlay'></div>
       <AnimatePresence mode='wait'>
-        {isLoading && repos.length > 0 && <Preloader setIsLoading={setIsLoading} />}
+        {isLoading && <Preloader setIsLoading={setIsLoading} />}
       </AnimatePresence>
       <div className="wrapper">
         <header>
@@ -107,7 +100,7 @@ function App() {
             )}
         </main>
       </div>
-    </div >
+    </div>
   );
 }
 

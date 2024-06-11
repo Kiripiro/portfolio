@@ -17,8 +17,19 @@ body {
     position: relative;
     overflow-x: hidden;
     overflow-y: scroll;
-    background-color: #303030;
+    background-color: #191919;
     margin: 0;
+}
+
+.grain-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('/grain-overlay.gif');
+    opacity: 0.03;
+    z-index: -1;
 }
 
 main {

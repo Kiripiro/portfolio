@@ -27,7 +27,7 @@ function Projects({ repos }: { repos: Repo[] }) {
     const max = 6;
     let maxProjects = isWebsiteOnDesktop() ? repos.length : max;
 
-    if (repos.length === 0) return (<>Error fetching Github repositories</>);
+    if (repos.length === 0) return (<>Loading Github repositories...</>);
     return (
         <section id="projects" className="projects">
             <div className="projects_container">

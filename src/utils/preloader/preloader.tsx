@@ -35,9 +35,7 @@ function Preloader({ setIsLoading }: { setIsLoading: Dispatch<SetStateAction<boo
     }, [])
 
     useEffect(() => {
-        const today = new Date().toISOString().slice(0, 10);
-
-        const delay = index === 0 ? 1000 : 180;
+        const delay = index === 0 ? 1250 : 180;
 
         if (index < words.length) {
             timeout = setTimeout(() => {
@@ -47,7 +45,6 @@ function Preloader({ setIsLoading }: { setIsLoading: Dispatch<SetStateAction<boo
 
         if (index === words.length - 1) {
             setTimeout(() => setIsLoading(false), 500);
-            localStorage.setItem('lastLoadDate', today);
         }
 
         return () => {
