@@ -1,4 +1,5 @@
 import '../../styles/projects.scss'
+import '../../styles/style.scss'
 
 interface Repo {
     id: number;
@@ -33,7 +34,7 @@ function Projects({ repos }: { repos: Repo[] }) {
             <div className="projects_container">
                 <div className="projects_container_title">
                     <h1>Projects</h1>
-                    <p>Each project is a milestone</p>
+                    <span className='highlight'>Each project is a milestone</span>
                 </div>
                 <div className="projects_container_list">
                     {repos.slice(0, maxProjects).map((repo: Repo) => (

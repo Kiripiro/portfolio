@@ -1,16 +1,17 @@
-import { useEffect, useRef, useState } from 'react';
+import { Suspense, lazy, useEffect, useRef, useState } from 'react';
 import About from './components/about/about';
 import Hero from './components/hero/hero';
 import Navbar from './components/navbar/navbar';
 import Cursor from './utils/cursor/cursor';
 import './styles/style.scss';
-import Projects from './components/projects/projects';
 import Contact from './components/footer/footer';
 import { fetchGithub } from './utils/api/api';
 import MenuBurger from './components/navbar/menuBurger/menuBurger';
 import { SnackbarProvider } from 'notistack';
 import Preloader from './utils/preloader/preloader';
 import { AnimatePresence } from 'framer-motion';
+
+const Projects = lazy(() => import('./components/projects/projects'));
 
 function App() {
   interface Repo {
@@ -92,7 +93,10 @@ function App() {
                   <div className="container">
                     <Hero />
                     <About />
-                    <Projects repos={repos} />
+                    {/* <Projects repos={repos} /> */}
+                    <Suspense fallback={<div>Loading projects...</div>}>
+                      <Projects repos={repos} />
+                    </Suspense>
                     <Contact />
                   </div>
                 </div>

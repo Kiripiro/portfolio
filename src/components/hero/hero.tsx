@@ -41,7 +41,7 @@ function Hero() {
                             <span>Creative Full-Stack Developer</span>
                         </motion.h1>
                         <div className="hero_subtext">
-                            <p>Building innovative and dynamic websites that leave a lasting impression.</p>
+                            <p>Building <span className='highlight'>innovative</span> and <span className='highlight'>dynamic</span> websites that leave a <span className='highlight'>lasting impression</span>.</p>
                         </div>
                     </div>
                 </motion.div>

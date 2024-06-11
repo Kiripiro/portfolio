@@ -9,11 +9,12 @@ function About() {
                 <div className="about_content_text">
                     <p className="about_content_text_paragraph">
                         Enchanté ! <br></br>
-                        My name is Alexandre - you can call me Alex, a french creative junior full stack developer with a passion for web development.<br></br>
-                        As a 42 school student, I've been learning to code for 4 years now. <br></br>
+                        My name is <span className='highlight'>Alexandre</span> - you can call me <span className='highlight'>Alex</span>, a french creative junior full stack developer with a <span className='highlight'>passion</span> for web development.<br></br>
+                        As a 42 school student, I've been learning to code for <span className='highlight'>4 years</span> now. <br></br><br></br>
+
                         I'm currently doing an internship as a full stack developer at Onepoint, Lyon.<br></br>
-                        I am seeking an apprenticeship as part of my studies to prepare for a Level 7 RNCP certification.<br></br>
-                        You can also contact me if you want to talk about a freelance project !
+                        I am seeking an <span className='highlight'>apprenticeship</span> as part of my studies to prepare for a <span className='highlight'>Level 7 RNCP certification</span>.<br></br>
+                        You can also contact me if you want to talk about a <span className='highlight'>freelance</span> project !
                     </p>
                 </div>
                 <div className="about_content_button">
