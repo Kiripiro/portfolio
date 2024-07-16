@@ -27,4 +27,12 @@
         position: absolute;
         z-index: 1;
     }
+
+    .test {
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        margin-right: 5vw;
+        font-size: 1rem;
+    }
 }

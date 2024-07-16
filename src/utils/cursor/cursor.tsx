@@ -1,6 +1,6 @@
 import { CSSProperties, useEffect, useState } from 'react';
 
-function Cursor() {
+function Cursor({ isDataFetched }: { isDataFetched: boolean }) {
     const storedPosition = JSON.parse(localStorage.getItem('mousePosition') || '{}');
     const [mousePosition, setMousePosition] = useState(storedPosition);
     const [hoveringLink, setHoveringLink] = useState(false);
@@ -10,7 +10,9 @@ function Cursor() {
         return window.navigator.userAgent.indexOf('Mobile') === -1 && window.navigator.userAgent.indexOf('Tablet') === -1;
     }
 
-    useEffect(() => {
+    function handleCursorAnimation() {
+        if (!isDataFetched) return;
+
         const handleMouseEnterLink = () => {
             setHoveringLink(true);
         };
@@ -38,7 +40,6 @@ function Cursor() {
         }
 
         if (projectDivs) {
-            console.log('test')
             projectDivs.forEach((div) => {
                 div.addEventListener('mouseover', handleMouseEnterProject);
                 div.addEventListener('mouseout', handleMouseLeaveProject);
@@ -55,7 +56,11 @@ function Cursor() {
         return () => {
             window.removeEventListener('mousemove', handleMouseMove);
         };
-    }, []);
+    };
+
+    useEffect(() =>
+        handleCursorAnimation()
+    ), [isDataFetched]
 
     const baseCursorSize = 16;
     const linkCursorSize = 32;

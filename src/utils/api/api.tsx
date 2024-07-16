@@ -43,6 +43,7 @@ export async function fetchGithub() {
             repo.languages = languagesResponse.data;
         }
 
+        console.log(sortedRepos)
         return sortedRepos;
     } catch (error) {
         console.error('Error fetching repositories:', error);

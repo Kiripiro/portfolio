@@ -22,9 +22,9 @@ export const slideUp = {
     }
 }
 
-const words = ["Alexandre Tourret", "Web developer", "Angular", "React", "Node.js", "TypeScript", "Young", "Passionate", "Welcome to my portfolio"]
+const words = ["Web developer", "Angular", "React", "Node.js", "TypeScript", "Young", "Passionate", "Welcome to my portfolio"]
 
-function Preloader({ setIsLoading }: { setIsLoading: Dispatch<SetStateAction<boolean>> }) {
+function Preloader({ setIsLoading, isDataFetched }: { setIsLoading: Dispatch<SetStateAction<boolean>>, isDataFetched: boolean }) {
     const [index, setIndex] = useState(0);
     const [dimension, setDimension] = useState({ width: 0, height: 0 });
     let timeout: NodeJS.Timeout;
@@ -34,6 +34,8 @@ function Preloader({ setIsLoading }: { setIsLoading: Dispatch<SetStateAction<boo
     }, [])
 
     useEffect(() => {
+        if (!isDataFetched) return;
+
         const delay = index === 0 ? 1250 : 180;
 
         if (index < words.length) {
@@ -50,7 +52,7 @@ function Preloader({ setIsLoading }: { setIsLoading: Dispatch<SetStateAction<boo
             if (timeout)
                 clearTimeout(timeout);
         }
-    }, [index, setIsLoading])
+    }, [index, isDataFetched, setIsLoading])
 
     const initialPath = `M0 0 L${dimension.width} 0 L${dimension.width} ${dimension.height} Q${dimension.width / 2} ${dimension.height + 300} 0 ${dimension.height}  L0 0`
     const targetPath = `M0 0 L${dimension.width} 0 L${dimension.width} ${dimension.height} Q${dimension.width / 2} ${dimension.height} 0 ${dimension.height}  L0 0`
@@ -68,14 +70,20 @@ function Preloader({ setIsLoading }: { setIsLoading: Dispatch<SetStateAction<boo
 
     return (
         <motion.div variants={slideUp} initial="initial" exit="exit" className="introduction">
-            {dimension.width > 0 &&
+            {!isDataFetched ? (
+                <>
+                    <p>Alexandre Tourret</p>
+                    <motion.p className='test' variants={opacity} initial="initial" animate="enter">Initializing website...</motion.p>
+                </>
+            ) : (
+                dimension.width > 0 &&
                 <>
                     <motion.p variants={opacity} initial="initial" animate="enter">{words[index]}</motion.p>
                     <svg>
                         <motion.path variants={curve} initial="initial" exit="exit"></motion.path>
                     </svg>
                 </>
-            }
+            )}
         </motion.div>
     )
 }
