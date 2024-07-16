@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import '../../styles/about.scss'
 import MailSVG from "../../utils/svgs/mail";
 import Banner from './banner';
@@ -13,7 +14,7 @@ function About() {
                         As a 42 school student, I've been learning to code for <span className='highlight'>4 years</span> now. <br></br><br></br>
 
                         I'm currently doing an internship as a full stack developer at Onepoint, Lyon.<br></br>
-                        I am seeking an <span className='highlight'>apprenticeship</span> as part of my studies to prepare for a <span className='highlight'>Level 7 RNCP certification</span>.<br></br>
+                        I'll be doing an <span className='highlight'>apprenticeship</span> as part of my studies to prepare for a <span className='highlight'>RNCP certification</span> specialized in web and mobile development !<br></br>
                         You can also contact me if you want to talk about a <span className='highlight'>freelance</span> project !
                     </p>
                 </div>
@@ -25,6 +26,7 @@ function About() {
                         <MailSVG />
                     </a>
                 </div>
+
                 <div className="about_content_skills">
                     <Banner />
                     <div className="about_content_skills_list">

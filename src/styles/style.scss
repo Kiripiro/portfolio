@@ -4,19 +4,21 @@
 }
 
 * {
-    cursor: none;
+    cursor: none !important;
 }
 
 html {
     font-family: 'PP Mori', sans-serif;
     line-height: 1.15;
     height: auto;
+    overflow: hidden;
+
 }
 
 body {
     position: relative;
-    overflow-x: hidden;
-    overflow-y: scroll;
+    top: 0;
+    bottom: 0;
     background-color: #191919;
     margin: 0;
 }

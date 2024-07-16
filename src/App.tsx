@@ -10,6 +10,7 @@ import MenuBurger from './components/navbar/menuBurger/menuBurger';
 import { SnackbarProvider } from 'notistack';
 import Preloader from './utils/preloader/preloader';
 import { AnimatePresence } from 'framer-motion';
+import Lenis from 'lenis'
 
 const Projects = lazy(() => import('./components/projects/projects'));
 
@@ -43,6 +44,17 @@ function App() {
   }, []);
 
   useEffect(() => {
+    const lenis = new Lenis()
+
+    function raf(time: any) {
+      lenis.raf(time)
+      requestAnimationFrame(raf)
+    }
+
+    requestAnimationFrame(raf)
+  }, [])
+
+  useEffect(() => {
     if (isMenuToggled && window.scrollY < 100) {
       setIsMenuToggled(false);
       setShowMenu(false);
@@ -67,7 +79,7 @@ function App() {
   }, [isMenuToggled, showMenu]);
 
   return (
-    <div id="home" data-scroll className="App">
+    <div id="home" className="App" >
       <div className='grain-overlay'></div>
       <AnimatePresence mode='wait'>
         {isLoading && <Preloader setIsLoading={setIsLoading} />}
@@ -93,7 +105,6 @@ function App() {
                   <div className="container">
                     <Hero />
                     <About />
-                    {/* <Projects repos={repos} /> */}
                     <Suspense fallback={<div>Loading projects...</div>}>
                       <Projects repos={repos} />
                     </Suspense>
@@ -104,7 +115,7 @@ function App() {
             )}
         </main>
       </div>
-    </div>
+    </div >
   );
 }
 

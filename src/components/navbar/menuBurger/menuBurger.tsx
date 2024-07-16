@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Pivot as Hamburger } from 'hamburger-react';
 import '../../../styles/menuBurger.scss';
 import MagneticButton from './magneticButton';
@@ -6,12 +6,45 @@ import Linkedin from '../../../utils/svgs/linkedin';
 import Github from '../../../utils/svgs/github';
 import ReadCv from '../../../utils/svgs/read';
 import { Tooltip } from 'react-tooltip'
-import LocomotiveScroll from 'locomotive-scroll';
+import Lenis from 'lenis'
 
 function MenuBurger({ isVisible, isMenuToggled, setIsMenuToggled }: { isVisible: boolean, isMenuToggled: boolean, setIsMenuToggled: React.Dispatch<React.SetStateAction<boolean>> }) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [buttonColor, setButtonColor] = useState('#efefef');
     const [hasScrolled, setHasScrolled] = useState(false);
+
+    const lenis = useRef<Lenis | null>(null);
+
+    useEffect(() => {
+        lenis.current = new Lenis({
+            duration: 1.2,
+            easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            orientation: 'vertical',
+            gestureOrientation: 'vertical',
+            smoothWheel: true,
+            syncTouch: true,
+            touchMultiplier: 2,
+            infinite: false,
+        });
+
+        function raf(time: number) {
+            lenis.current?.raf(time);
+            requestAnimationFrame(raf);
+        }
+
+        requestAnimationFrame(raf);
+
+        return () => {
+            lenis.current?.destroy();
+        };
+    }, []);
+
+    const scrollToSection = (sectionId: string) => {
+        const section = document.getElementById(sectionId);
+        if (section && lenis.current) {
+            lenis.current.scrollTo(section);
+        }
+    };
 
     const isWebsiteOnDesktop = () => {
         return window.navigator.userAgent.indexOf('Mobile') === -1 && window.navigator.userAgent.indexOf('Tablet') === -1;
@@ -29,19 +62,6 @@ function MenuBurger({ isVisible, isMenuToggled, setIsMenuToggled }: { isVisible:
         window.open('https://read.cv/atourret', '_blank');
     }
 
-    const locomotiveScroll = new LocomotiveScroll();
-
-    function scrollTo(params: { target: string; options?: any }) {
-        const { target, options } = params;
-        locomotiveScroll.scrollTo(target, options);
-    }
-
-    const redirect = (url: string) => {
-        scrollTo({ target: url, options: { duration: 1.2 } });
-        setIsMenuOpen(false);
-        setIsMenuToggled(false);
-    }
-
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
         setButtonColor(isMenuOpen ? '#efefef' : '#F7CA18');
@@ -56,14 +76,6 @@ function MenuBurger({ isVisible, isMenuToggled, setIsMenuToggled }: { isVisible:
         setIsMenuOpen(isMenuToggled);
         setButtonColor(isMenuToggled ? '#F7CA18' : '#F7CA18');
     }, [isMenuToggled]);
-
-    useEffect(() => {
-        if (isMenuOpen && !isWebsiteOnDesktop()) {
-            document.body.style.overflow = 'hidden';
-        } else {
-            document.body.style.overflow = 'auto';
-        }
-    }, [isMenuOpen]);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -99,15 +111,16 @@ function MenuBurger({ isVisible, isMenuToggled, setIsMenuToggled }: { isVisible:
                         </MagneticButton>
                     </div>
                 </MagneticButton>
+
             )}
             <div className={`menu ${isMenuOpen ? 'visible' : 'hidden'}`}>
                 <div className="menu-content">
                     <span className="menu-title">Navigation</span>
                     <div className="menu-items">
-                        <div className={`menu-item`} onClick={() => redirect("#home")}><span>Home</span></div>
-                        <div className={`menu-item`} onClick={() => redirect("#about")}><span>About</span></div>
-                        <div className={`menu-item`} onClick={() => redirect("#projects")}><span>Projects</span></div>
-                        <div className={`menu-item`} onClick={() => redirect("#contact")}><span>Contact</span></div>
+                        <div className={`menu-item`} onClick={() => scrollToSection("home")}><span>Home</span></div>
+                        <div className={`menu-item`} onClick={() => scrollToSection("about")}><span>About</span></div>
+                        < div className={`menu-item`} onClick={() => scrollToSection("projects")}><span>Projects</span></div>
+                        <div className={`menu-item`} onClick={() => scrollToSection("contact")}><span>Contact</span></div>
                         <div className='menu-socials'>
                             <div data-tooltip-id="linkedin" data-tooltip-content="Linkedin" className='icon' onClick={handleLinkedinClick}>
                                 <Linkedin />

@@ -38,6 +38,7 @@ function Cursor() {
         }
 
         if (projectDivs) {
+            console.log('test')
             projectDivs.forEach((div) => {
                 div.addEventListener('mouseover', handleMouseEnterProject);
                 div.addEventListener('mouseout', handleMouseLeaveProject);
