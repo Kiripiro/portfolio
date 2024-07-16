@@ -1,6 +1,6 @@
 .hero_content {
     display: grid;
-    grid-template-columns: 14fr 4fr;
+    grid-template-columns: 15fr 3fr;
     align-items: flex-end;
     color: #efefef;
 
@@ -74,7 +74,11 @@
 
 .hero_subtext {
     color: #efefef;
-    margin-bottom: 7vh;
+    margin-bottom: 5vh;
+
+    @media screen and (min-width: 1600px) {
+        padding-left: 10vw;
+    }
 
     @media screen and (max-width: 1200px) {
         margin-bottom: 2.3rem;
