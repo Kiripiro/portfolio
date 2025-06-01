@@ -80,7 +80,6 @@ function Cursor({ isDataFetched }: { isDataFetched: boolean }) {
         border: `2px solid ${hoveringProject ? 'transparent' : (hoveringLink ? '#efefef' : 'transparent')}`,
         zIndex: 9999,
         pointerEvents: 'none',
-        cursor: 'none',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
