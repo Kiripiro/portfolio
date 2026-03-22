@@ -17,7 +17,7 @@ const HoverImage = ({
 
   useEffect(() => {
     const savedMousePos = JSON.parse(
-      localStorage.getItem("mousePosition") || '{"x": 0, "y": 0}'
+      localStorage.getItem("mousePosition") || '{"x": 0, "y": 0}',
     );
     setMousePos(savedMousePos);
     setLastMousePos(savedMousePos);
