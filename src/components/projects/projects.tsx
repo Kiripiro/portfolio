@@ -1,88 +1,110 @@
-import '../../styles/projects.scss'
-import '../../styles/style.scss'
+import "../../styles/projects.scss";
+import "../../styles/style.scss";
 
 interface Repo {
-    id: number;
-    name: string;
-    description: string;
-    html_url: string;
-    created_at: string;
-    languages: Record<string, number>;
+  id: number;
+  name: string;
+  description: string;
+  html_url: string;
+  created_at: string;
+  languages: Record<string, number>;
 }
 
 /**
  * Renders a section containing a list of projects.
- * Each project is displayed as a clickable item and includes the project name, description, 
+ * Each project is displayed as a clickable item and includes the project name, description,
  * and tags representing the programming languages used.
- * 
+ *
  * @component
- * 
+ *
  * @param {Object[]} repos - An array of `Repo` objects representing the projects to be displayed.
- * 
+ *
  * @returns {JSX.Element} The rendered component.
  */
-function Projects({ repos, isDataFetched }: { repos: Repo[]; isDataFetched: boolean }) {
-    const skeletonRows = Array.from({ length: 6 });
+function Projects({
+  repos,
+  isDataFetched,
+}: {
+  repos: Repo[];
+  isDataFetched: boolean;
+}) {
+  const skeletonRows = Array.from({ length: 6 });
 
-    return (
-        <section id="projects" className="projects">
-            <div className="projects_container">
-                <div className="projects_container_title">
-                    <h1>Projects</h1>
-                    <span className='highlight'>Each project is a milestone</span>
+  return (
+    <section id="projects" className="projects">
+      <div className="projects_container">
+        <div className="projects_container_title">
+          <h1>Projects</h1>
+          <span className="highlight">Each project is a milestone</span>
+        </div>
+        <div className="projects_container_list">
+          {!isDataFetched ? (
+            skeletonRows.map((_, index) => (
+              <div
+                className="projects_container_list_item loading"
+                key={`skeleton-${index}`}
+              >
+                <div className="projects_container_list_item_container">
+                  <h3 className="projects_container_list_item_title skeleton-line skeleton-title"></h3>
+                  <div className="projects_container_bottom">
+                    <p className="projects_container_list_item_text skeleton-line skeleton-text"></p>
+                    <div className="projects_container_list_item_tags">
+                      <div className="projects_container_list_item_tag skeleton-tag"></div>
+                      <div className="projects_container_list_item_tag skeleton-tag"></div>
+                    </div>
+                  </div>
                 </div>
-                <div className="projects_container_list">
-                    {!isDataFetched ? (
-                        skeletonRows.map((_, index) => (
-                            <div className="projects_container_list_item loading" key={`skeleton-${index}`}>
-                                <div className="projects_container_list_item_container">
-                                    <h3 className="projects_container_list_item_title skeleton-line skeleton-title"></h3>
-                                    <div className="projects_container_bottom">
-                                        <p className="projects_container_list_item_text skeleton-line skeleton-text"></p>
-                                        <div className="projects_container_list_item_tags">
-                                            <div className="projects_container_list_item_tag skeleton-tag"></div>
-                                            <div className="projects_container_list_item_tag skeleton-tag"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        ))
-                    ) : repos.length > 0 ? (
-                        repos.map((repo: Repo) => (
-                            <a
-                                className="projects_container_list_item"
-                                key={repo.id}
-                                href={repo.html_url}
-                                target="_blank"
-                                rel="noreferrer"
-                            >
-                                <div className="projects_container_list_item_container">
-                                    <h3 className="projects_container_list_item_title">{repo.name}</h3>
-                                    <div className="projects_container_bottom">
-                                        <p className="projects_container_list_item_text">{repo.description}</p>
-                                        <div className="projects_container_list_item_tags">
-                                            {Object.keys(repo.languages).map((language) => (
-                                                <div className="projects_container_list_item_tag" key={language}>
-                                                    <p>{language}</p>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        ))
-                    ) : (
-                        <div className="projects_container_info">
-                            <p>Projects data is temporarily unavailable. You can still visit my <a href="https://github.com/Kiripiro">GitHub</a>.</p>
+              </div>
+            ))
+          ) : repos.length > 0 ? (
+            repos.map((repo: Repo) => (
+              <a
+                className="projects_container_list_item"
+                key={repo.id}
+                href={repo.html_url}
+                target="_blank"
+                rel="noreferrer"
+              >
+                <div className="projects_container_list_item_container">
+                  <h3 className="projects_container_list_item_title">
+                    {repo.name}
+                  </h3>
+                  <div className="projects_container_bottom">
+                    <p className="projects_container_list_item_text">
+                      {repo.description}
+                    </p>
+                    <div className="projects_container_list_item_tags">
+                      {Object.keys(repo.languages).map((language) => (
+                        <div
+                          className="projects_container_list_item_tag"
+                          key={language}
+                        >
+                          <p>{language}</p>
                         </div>
-                    )}
+                      ))}
+                    </div>
+                  </div>
                 </div>
-                <div className="projects_container_info">
-                    <p>Want the full details and source code? Visit my <a href="https://github.com/Kiripiro">GitHub</a>.</p>
-                </div>
+              </a>
+            ))
+          ) : (
+            <div className="projects_container_info">
+              <p>
+                Projects data is temporarily unavailable. You can still visit my{" "}
+                <a href="https://github.com/Kiripiro">GitHub</a>.
+              </p>
             </div>
-        </section >
-    );
+          )}
+        </div>
+        <div className="projects_container_info">
+          <p>
+            Want the full details and source code? Visit my{" "}
+            <a href="https://github.com/Kiripiro">GitHub</a>.
+          </p>
+        </div>
+      </div>
+    </section>
+  );
 }
 
-export default Projects
+export default Projects;
