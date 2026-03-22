@@ -1,6 +1,6 @@
 import React, { ReactNode, useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import "./HoverImage.scss";
+import "./hoverImage.scss";
 
 const HoverImage = ({
   children,
