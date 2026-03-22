@@ -34,12 +34,8 @@ function App() {
 
   useEffect(() => {
     async function fetchData() {
-      if (isDataFetched || repos.length > 0) return;
       try {
-        const data = await fetchGithub({
-          fetchAll: true,
-          onAllReposFetched: (allRepos) => setRepos(allRepos),
-        });
+        const data = await fetchGithub();
         setRepos(data);
       } catch (error) {
         console.error("Error fetching GitHub data:", error);
@@ -48,7 +44,7 @@ function App() {
       }
     }
     fetchData();
-  }, [isDataFetched, repos]);
+  }, []);
 
   useEffect(() => {
     const lenis = new Lenis();
@@ -124,7 +120,7 @@ function App() {
                   <Hero />
                   <About />
                   <Suspense fallback={<div>Loading projects...</div>}>
-                    <Projects repos={repos} />
+                    <Projects repos={repos} isDataFetched={isDataFetched} />
                   </Suspense>
                   <Contact />
                 </div>

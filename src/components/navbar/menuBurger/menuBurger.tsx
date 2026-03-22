@@ -4,7 +4,6 @@ import '../../../styles/menuBurger.scss';
 import MagneticButton from './magneticButton';
 import Linkedin from '../../../utils/svgs/linkedin';
 import Github from '../../../utils/svgs/github';
-import ReadCv from '../../../utils/svgs/read';
 import { Tooltip } from 'react-tooltip'
 import Lenis from 'lenis'
 
@@ -12,6 +11,7 @@ function MenuBurger({ isVisible, isMenuToggled, setIsMenuToggled }: { isVisible:
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [buttonColor, setButtonColor] = useState('#efefef');
     const [hasScrolled, setHasScrolled] = useState(false);
+    const currentYear = new Date().getFullYear();
 
     const lenis = useRef<Lenis | null>(null);
 
@@ -56,10 +56,6 @@ function MenuBurger({ isVisible, isMenuToggled, setIsMenuToggled }: { isVisible:
 
     function handleGithubClick() {
         window.open('https://github.com/Kiripiro', '_blank');
-    }
-
-    function handleReadCvClick() {
-        window.open('https://read.cv/atourret', '_blank');
     }
 
     const toggleMenu = () => {
@@ -128,16 +124,12 @@ function MenuBurger({ isVisible, isMenuToggled, setIsMenuToggled }: { isVisible:
                             <div data-tooltip-id="github" data-tooltip-content="Github" className='icon' onClick={handleGithubClick}>
                                 <Github />
                             </div>
-                            <div data-tooltip-id="read.cv" data-tooltip-content="Read.cv" className='icon' onClick={handleReadCvClick}>
-                                <ReadCv />
-                            </div>
                             <Tooltip id="linkedin" />
                             <Tooltip id="github" />
-                            <Tooltip id="read.cv" />
                         </div>
                     </div>
                     <div className="menu-footer">
-                        @ 2024 Alexandre Tourret
+                        @ {currentYear} Alexandre Tourret
                     </div>
                 </div>
             </div>

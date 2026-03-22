@@ -1,0 +1,283 @@
+[
+  {
+    "id": 1041616075,
+    "name": "leaffliction",
+    "description": "Image classification by disease recognition on leaves",
+    "html_url": "https://github.com/Kiripiro/leaffliction",
+    "created_at": "2025-08-20T18:49:35Z",
+    "languages": {
+      "Python": 247576
+    }
+  },
+  {
+    "id": 943794909,
+    "name": "total-perspective-vortex",
+    "description": "Brain computer interface with machine learning based on electoencephalographic data.",
+    "html_url": "https://github.com/Kiripiro/total-perspective-vortex",
+    "created_at": "2025-03-06T09:25:00Z",
+    "languages": {
+      "Python": 75775
+    }
+  },
+  {
+    "id": 830453578,
+    "name": "multilayer-perceptron",
+    "description": "This project is an introduction to artificial neural networks, with the implementation of a multilayer perceptron",
+    "html_url": "https://github.com/Kiripiro/multilayer-perceptron",
+    "created_at": "2024-07-18T09:54:58Z",
+    "languages": {
+      "Python": 90122,
+      "Shell": 1151
+    }
+  },
+  {
+    "id": 695616751,
+    "name": "portfolio",
+    "description": "This is my current portfolio website, work in progress !",
+    "html_url": "https://github.com/Kiripiro/portfolio",
+    "created_at": "2023-09-23T17:58:00Z",
+    "languages": {
+      "TypeScript": 51466,
+      "SCSS": 20791,
+      "HTML": 364
+    }
+  },
+  {
+    "id": 914427808,
+    "name": "darkly",
+    "description": "This project is an introduction to cyber security in the field of the Web",
+    "html_url": "https://github.com/Kiripiro/darkly",
+    "created_at": "2025-01-09T15:21:45Z",
+    "languages": {
+      "Python": 2269
+    }
+  },
+  {
+    "id": 897778332,
+    "name": "mobilePiscine",
+    "description": "Mobile piscine at 42",
+    "html_url": "https://github.com/Kiripiro/mobilePiscine",
+    "created_at": "2024-12-03T08:18:42Z",
+    "languages": {
+      "TypeScript": 254206,
+      "JavaScript": 18900,
+      "Objective-C++": 5446,
+      "Ruby": 5232,
+      "Objective-C": 654,
+      "Swift": 226,
+      "C": 206
+    }
+  },
+  {
+    "id": 879775477,
+    "name": "Snow-crash",
+    "description": "This project is a modest introduction to the wide world of cyber security. A world where you’ll have no margin for errors.",
+    "html_url": "https://github.com/Kiripiro/Snow-crash",
+    "created_at": "2024-10-28T14:26:29Z",
+    "languages": {}
+  },
+  {
+    "id": 870177858,
+    "name": "Tokenizer",
+    "description": "Build and deploy your first smart contract",
+    "html_url": "https://github.com/Kiripiro/Tokenizer",
+    "created_at": "2024-10-09T15:19:51Z",
+    "languages": {
+      "Solidity": 7024
+    }
+  },
+  {
+    "id": 666503269,
+    "name": "swiftyCompanion",
+    "description": "This project is an introduction to mobile development and managing API calls",
+    "html_url": "https://github.com/Kiripiro/swiftyCompanion",
+    "created_at": "2023-07-14T17:29:40Z",
+    "languages": {
+      "JavaScript": 24093
+    }
+  },
+  {
+    "id": 830888053,
+    "name": "avaj-launcher",
+    "description": "This project is the introduction to the Java world at 42.",
+    "html_url": "https://github.com/Kiripiro/avaj-launcher",
+    "created_at": "2024-07-19T07:57:33Z",
+    "languages": {
+      "Java": 22351,
+      "Makefile": 1029,
+      "Shell": 564
+    }
+  },
+  {
+    "id": 815639632,
+    "name": "scraper",
+    "description": "This project is a web scraping application developed in Python, designed to scrape electric vehicle listings from the Bymycar website.",
+    "html_url": "https://github.com/Kiripiro/scraper",
+    "created_at": "2024-06-15T17:32:04Z",
+    "languages": {
+      "Python": 3036
+    }
+  },
+  {
+    "id": 742004277,
+    "name": "ft_linear_regression",
+    "description": "This project is an introduction to machine learning, using a simple linear regression and gradient descent algorithm",
+    "html_url": "https://github.com/Kiripiro/ft_linear_regression",
+    "created_at": "2024-01-11T15:05:49Z",
+    "languages": {
+      "Python": 11523,
+      "Makefile": 308
+    }
+  },
+  {
+    "id": 719165181,
+    "name": "hypertube",
+    "description": "This project uses Torrents to create a streaming website",
+    "html_url": "https://github.com/Kiripiro/hypertube",
+    "created_at": "2023-11-15T15:36:15Z",
+    "languages": {
+      "JavaScript": 176467,
+      "TypeScript": 123653,
+      "SCSS": 41917,
+      "HTML": 33315,
+      "Makefile": 1371,
+      "Dockerfile": 448
+    }
+  },
+  {
+    "id": 698218731,
+    "name": "matcha",
+    "description": "This project aims to create a dating website",
+    "html_url": "https://github.com/Kiripiro/matcha",
+    "created_at": "2023-09-29T12:29:56Z",
+    "languages": {
+      "JavaScript": 169170,
+      "TypeScript": 145876,
+      "SCSS": 44421,
+      "HTML": 36220,
+      "Makefile": 954,
+      "Dockerfile": 443
+    }
+  },
+  {
+    "id": 494421597,
+    "name": "ft_transcendence",
+    "description": "The goal of this project is to recreate an online Pong game, including a live chat, friend list and notifications",
+    "html_url": "https://github.com/Kiripiro/ft_transcendence",
+    "created_at": "2022-05-20T10:31:58Z",
+    "languages": {
+      "TypeScript": 600245,
+      "SCSS": 81575,
+      "CSS": 17521,
+      "JavaScript": 878,
+      "Dockerfile": 714,
+      "HTML": 594,
+      "Makefile": 290
+    }
+  },
+  {
+    "id": 592782755,
+    "name": "camagru",
+    "description": "The goal of this project was to create a social media website, and learn how to use PHP (MVC) as well as JS",
+    "html_url": "https://github.com/Kiripiro/camagru",
+    "created_at": "2023-01-24T14:26:14Z",
+    "languages": {
+      "PHP": 419065,
+      "JavaScript": 36974,
+      "CSS": 8129,
+      "Makefile": 779,
+      "Dockerfile": 359
+    }
+  },
+  {
+    "id": 494392968,
+    "name": "inception",
+    "description": "This project aims to broaden your knowledge of system administration by using Docker, through multiple images",
+    "html_url": "https://github.com/Kiripiro/inception",
+    "created_at": "2022-05-20T09:01:33Z",
+    "languages": {
+      "PHP": 3119,
+      "Dockerfile": 1339,
+      "Shell": 1302,
+      "Makefile": 568
+    }
+  },
+  {
+    "id": 483203278,
+    "name": "ft_containers",
+    "description": "The goal of this project was to reimplement the various container types of the C++ standard library",
+    "html_url": "https://github.com/Kiripiro/ft_containers",
+    "created_at": "2022-04-19T10:41:55Z",
+    "languages": {
+      "C++": 84157,
+      "Makefile": 3231,
+      "Shell": 1294
+    }
+  },
+  {
+    "id": 404710369,
+    "name": "philosophers",
+    "description": "The goal of this project was to learn how to use threads and mutexes",
+    "html_url": "https://github.com/Kiripiro/philosophers",
+    "created_at": "2021-09-09T12:18:29Z",
+    "languages": {
+      "C": 15820
+    }
+  },
+  {
+    "id": 374065305,
+    "name": "minitalk",
+    "description": "The purpose of this project was to code a small data exchange program using UNIX signals",
+    "html_url": "https://github.com/Kiripiro/minitalk",
+    "created_at": "2021-06-05T08:49:46Z",
+    "languages": {
+      "C": 81129,
+      "Makefile": 2638
+    }
+  },
+  {
+    "id": 364815035,
+    "name": "ft_server",
+    "description": "The purpose of this project was to learn how to use Docker and deploy a Wordpress website",
+    "html_url": "https://github.com/Kiripiro/ft_server",
+    "created_at": "2021-05-06T07:00:08Z",
+    "languages": {
+      "Shell": 1840,
+      "PHP": 1446,
+      "Dockerfile": 511
+    }
+  },
+  {
+    "id": 331670399,
+    "name": "printf",
+    "description": "The purpose of this project was to reimplement the \"printf\" function",
+    "html_url": "https://github.com/Kiripiro/printf",
+    "created_at": "2021-01-21T15:30:03Z",
+    "languages": {
+      "C": 84902,
+      "Makefile": 6794
+    }
+  },
+  {
+    "id": 317622321,
+    "name": "get_next_line",
+    "description": "This project was about programming a function that returns a line read from a file descriptor and learn about the static variables",
+    "html_url": "https://github.com/Kiripiro/get_next_line",
+    "created_at": "2020-12-01T17:48:13Z",
+    "languages": {
+      "C": 11211
+    }
+  },
+  {
+    "id": 301740239,
+    "name": "piscine42",
+    "description": "This is my 42 Piscine exercices, including the BSQ",
+    "html_url": "https://github.com/Kiripiro/piscine42",
+    "created_at": "2020-10-06T13:42:27Z",
+    "languages": {
+      "C": 116171,
+      "Makefile": 892,
+      "Shell": 532
+    }
+  }
+]

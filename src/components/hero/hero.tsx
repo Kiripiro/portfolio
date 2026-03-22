@@ -32,7 +32,7 @@ function Hero() {
                     animate={{ opacity: 1 }}
                     transition={{ duration: 1, ease: 'easeInOut', delay: 0.5 }}
                 >
-                    <HoverImage imageSrc="/moi.jpeg">
+                    <HoverImage imageSrc="/moi-optimized.jpg">
                         <div className="hero_content">
                             <motion.h1
                                 className="hero_text"
