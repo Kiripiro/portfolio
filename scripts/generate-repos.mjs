@@ -3,16 +3,8 @@ import { existsSync } from "node:fs";
 import path from "node:path";
 
 const OUTPUT_PATH = path.resolve(process.cwd(), "src/data/repos.json");
-const username =
-  process.env.DATA_USERNAME ||
-  process.env.GITHUB_DATA_USERNAME ||
-  process.env.VITE_GITHUB_API_USERNAME ||
-  "Kiripiro";
-const token =
-  process.env.DATA_TOKEN ||
-  process.env.GITHUB_DATA_TOKEN ||
-  process.env.VITE_GITHUB_API_KEY ||
-  "";
+const username = process.env.DATA_USERNAME || "Kiripiro";
+const token = process.env.DATA_TOKEN || "";
 const limit = Number.parseInt(process.env.GITHUB_REPOS_LIMIT || "30", 10);
 const includeForks = process.env.GITHUB_INCLUDE_FORKS === "true";
 const excludedRepoNames = new Set(

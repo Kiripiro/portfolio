@@ -9,7 +9,7 @@ interface Repo {
   languages: Record<string, number>;
 }
 
-export async function fetchGithub({
+export async function fetchRepos({
   limit,
 }: {
   limit?: number;

@@ -5,7 +5,7 @@ import Navbar from "./components/navbar/navbar";
 import Cursor from "./utils/cursor/cursor";
 import "./styles/style.scss";
 import Contact from "./components/footer/footer";
-import { fetchGithub } from "./utils/api/api";
+import { fetchRepos } from "./utils/api/api";
 import MenuBurger from "./components/navbar/menuBurger/menuBurger";
 import { SnackbarProvider } from "notistack";
 import Preloader from "./utils/preloader/preloader";
@@ -35,10 +35,10 @@ function App() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const data = await fetchGithub();
+        const data = await fetchRepos();
         setRepos(data);
       } catch (error) {
-        console.error("Error fetching GitHub data:", error);
+        console.error("Error loading projects data:", error);
       } finally {
         setIsDataFetched(true);
       }
