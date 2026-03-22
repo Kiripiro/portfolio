@@ -7,7 +7,6 @@
     "dev": "vite",
     "tunnel": "ngrok http 5173",
     "generate:repos": "node scripts/generate-repos.mjs",
-    "prebuild": "npm run generate:repos",
     "build": "tsc && vite build",
     "preview": "vite build && vite preview",
     "predeploy": "vite build && tsc",
