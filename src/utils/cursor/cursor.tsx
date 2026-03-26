@@ -106,8 +106,9 @@ function Cursor({ isDataFetched }: { isDataFetched: boolean }) {
         ?.getAttribute("data-cursor-hero");
       const ctaButton = target?.closest(".ui_button") as HTMLElement | null;
       const isPrimaryCta = !!ctaButton?.classList.contains("ui_button_primary");
-      const isSecondaryCta =
-        !!ctaButton?.classList.contains("ui_button_secondary");
+      const isSecondaryCta = !!ctaButton?.classList.contains(
+        "ui_button_secondary",
+      );
       const isCertificationCard = !!target?.closest(
         '[data-cursor-certification="true"]',
       );
