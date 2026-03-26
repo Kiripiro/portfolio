@@ -52,6 +52,11 @@
     width: 70px;
     height: 70px;
 
+    @media screen and (max-width: 768px) {
+        width: 56px;
+        height: 56px;
+    }
+
     &:hover:before {
         top: 0%;
         bottom: auto;
@@ -100,6 +105,13 @@
     display: block;
     animation: scaleUpAnimation 0.2s cubic-bezier(0.34, 1.5, 0.64, 1);
 
+    @media screen and (max-width: 768px) {
+        top: 2.2vh;
+        right: 3.8vw;
+        height: 78px;
+        width: 78px;
+    }
+
     &:hover:before {
         top: 0%;
         bottom: auto;
@@ -136,14 +148,15 @@
 
 .menu {
     position: fixed;
-    right: -100%;
+    right: 0;
     top: 0;
     height: 100%;
     width: 35vw;
     background: #efefef;
     z-index: 2;
-    transition: right 0.8s cubic-bezier(0.7, 0, 0.2, 1);
-    will-change: right;
+    transition: transform 0.8s cubic-bezier(0.7, 0, 0.2, 1);
+    will-change: transform;
+    transform: translateX(110%);
 
     @media screen and (max-width: 576px) {
         width: 100vw;
@@ -166,11 +179,11 @@
     }
 
     &.visible {
-        right: 0;
+        transform: translateX(0);
     }
 
     &.hidden {
-        right: -150%;
+        transform: translateX(120%);
     }
 
     .menu-content {
@@ -214,9 +227,15 @@
             margin-left: 5vw;
 
             .icon {
+                display: flex;
+                align-items: center;
+                justify-content: center;
                 width: 32px;
                 height: 32px;
                 margin-right: 1rem;
+                color: #303030;
+                text-decoration: none;
+                cursor: pointer;
             }
         }
 

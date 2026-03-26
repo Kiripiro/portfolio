@@ -24,6 +24,8 @@ jobs:
         run: npm ci
 
       - name: Build
+        env:
+          VITE_PRELOADER_MODE: prod
         run: npm run build
 
       - name: Deploy dist via FTP

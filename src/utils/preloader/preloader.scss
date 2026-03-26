@@ -5,8 +5,21 @@
     align-items: center;
     justify-content: center;
     position: fixed;
-    z-index: 99;
-    background-color: #efefef;
+    z-index: 120;
+    background:
+        radial-gradient(circle at 75% 20%, rgba(247, 202, 24, 0.08), transparent 52%),
+        linear-gradient(165deg, #151515 0%, #191919 58%, #1d1d1d 100%);
+
+    &::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+            linear-gradient(transparent 98%, rgba(247, 202, 24, 0.06) 100%);
+        background-size: 100% 12px;
+        opacity: 0.18;
+        pointer-events: none;
+    }
 
     svg {
         position: absolute;
@@ -15,16 +28,229 @@
         height: calc(100% + 300px);
 
         path {
-            fill: #efefef;
+            fill: #191919;
         }
     }
 
-    p {
-        display: flex;
-        color: #191919;
-        font-size: 42px;
-        align-items: center;
+    .preloader_terminal {
         position: absolute;
+        width: min(680px, calc(100% - 2.5rem));
+        border: 1px solid rgba(239, 239, 239, 0.16);
+        border-radius: 14px;
+        background: linear-gradient(180deg, rgba(20, 20, 20, 0.9) 0%, rgba(26, 26, 26, 0.84) 100%);
+        box-shadow: 0 24px 52px -30px rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(2px);
         z-index: 1;
+        overflow: hidden;
+    }
+
+    .preloader_terminal_head {
+        display: flex;
+        align-items: center;
+        gap: 0.46rem;
+        height: 38px;
+        padding: 0 0.9rem;
+        border-bottom: 1px solid rgba(239, 239, 239, 0.08);
+        background: rgba(239, 239, 239, 0.03);
+    }
+
+    .preloader_dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 999px;
+        background: rgba(239, 239, 239, 0.28);
+
+        &:first-child {
+            background: rgba(242, 95, 95, 0.85);
+        }
+
+        &:nth-child(2) {
+            background: rgba(247, 202, 24, 0.9);
+        }
+
+        &:nth-child(3) {
+            background: rgba(52, 199, 89, 0.82);
+        }
+    }
+
+    .preloader_terminal_title {
+        margin-left: 0.45rem;
+        font-size: 0.74rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: rgba(239, 239, 239, 0.58);
+        font-family: "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+
+    .preloader_word {
+        display: flex;
+        color: #efefef;
+        font-size: clamp(1.02rem, 2.1vw, 1.26rem);
+        font-weight: 500;
+        letter-spacing: 0.01em;
+        text-align: left;
+        padding: 1.15rem 1rem 0.5rem;
+        align-items: center;
+        position: relative;
+        z-index: 2;
+        text-shadow: none;
+    }
+
+    .preloader_logs {
+        display: grid;
+        gap: 0.72rem;
+        padding: 0.3rem 1rem 0.9rem;
+        min-height: 198px;
+        max-height: 198px;
+        overflow: hidden;
+    }
+
+    .preloader_log_group {
+        display: grid;
+        gap: 0.18rem;
+    }
+
+    .preloader_log_line {
+        margin: 0;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.58rem;
+        color: rgba(239, 239, 239, 0.84);
+        font-size: clamp(0.82rem, 1.35vw, 0.92rem);
+        line-height: 1.36;
+        letter-spacing: 0.015em;
+        font-family: "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .preloader_log_prompt {
+        color: rgba(247, 202, 24, 0.95);
+        flex-shrink: 0;
+    }
+
+    .preloader_log_level {
+        font-size: 0.7rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        opacity: 0.9;
+    }
+
+    .preloader_log_level--info {
+        color: rgba(239, 239, 239, 0.62);
+    }
+
+    .preloader_log_level--ok {
+        color: rgba(101, 213, 129, 0.88);
+    }
+
+    .preloader_log_output {
+        margin: 0;
+        padding-left: 1.05rem;
+        color: rgba(239, 239, 239, 0.62);
+        font-size: 0.78rem;
+        line-height: 1.34;
+        letter-spacing: 0.01em;
+        font-family: "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .preloader_log_line--final {
+        margin-top: 0.1rem;
+        opacity: 0.86;
+    }
+
+    .preloader_cursor {
+        width: 7px;
+        height: 1.05em;
+        border-radius: 2px;
+        background: rgba(247, 202, 24, 0.9);
+        animation: preloaderBlink 0.9s steps(1) infinite;
+    }
+
+    .preloader_hud {
+        position: relative;
+        left: 0;
+        bottom: 0;
+        transform: none;
+        width: auto;
+        display: grid;
+        gap: 0.58rem;
+        z-index: 2;
+        padding: 0 1rem 1rem;
+    }
+
+    .preloader_hud_label {
+        color: rgba(247, 202, 24, 0.78);
+        font-size: 0.68rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        font-family: "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+
+    .preloader_hud_value {
+        color: rgba(239, 239, 239, 0.46);
+        font-size: 0.64rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        font-family: "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+
+    .preloader_progress_track {
+        width: 100%;
+        height: 5px;
+        border-radius: 999px;
+        background: rgba(239, 239, 239, 0.13);
+        overflow: hidden;
+        border: 1px solid rgba(239, 239, 239, 0.14);
+    }
+
+    .preloader_progress_fill {
+        display: block;
+        width: 100%;
+        height: 100%;
+        transform-origin: left;
+        background: linear-gradient(90deg, #f7ca18 0%, #f9d853 100%);
+        transition: transform 0.22s ease;
+    }
+
+    @media screen and (max-width: 640px) {
+        .preloader_terminal {
+            width: calc(100% - 1.6rem);
+        }
+
+        .preloader_word {
+            padding-top: 0.92rem;
+            font-size: 0.94rem;
+        }
+
+        .preloader_logs {
+            min-height: 168px;
+            max-height: 168px;
+        }
+
+        .preloader_log_line {
+            font-size: 0.76rem;
+        }
+
+        .preloader_log_output {
+            font-size: 0.72rem;
+            padding-left: 0.8rem;
+        }
+    }
+}
+
+@keyframes preloaderBlink {
+    0%,
+    45% {
+        opacity: 1;
+    }
+
+    46%,
+    100% {
+        opacity: 0;
     }
 }

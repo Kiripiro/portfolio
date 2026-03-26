@@ -1,7 +1,7 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import gsap from 'gsap';
 
-interface MagneticButtonProps {
+interface MagneticButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     children: React.ReactNode;
     className?: string;
     speed?: number;
@@ -30,6 +30,42 @@ const MagneticButton: React.FC<MagneticButtonProps> = ({
     const itemBound = useRef<DOMRect | null>(null);
     const diffBound = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
 
+    const refreshBounds = () => {
+        if (!$root.current || !$item.current) return;
+        rootBound.current = $root.current.getBoundingClientRect();
+        itemBound.current = $item.current.getBoundingClientRect();
+        diffBound.current.x = (rootBound.current.width * scale - rootBound.current.width) / 2;
+        diffBound.current.y = (rootBound.current.height * scale - rootBound.current.height) / 2;
+    };
+
+    const getMagneticPosition = (x: number, y: number) => {
+        if (!rootBound.current || !itemBound.current) return null;
+
+        const maxX = (rootBound.current.width - itemBound.current.width) / 2 * tolerance;
+        const maxY = (rootBound.current.height - itemBound.current.height) / 2 * tolerance;
+
+        const mappedX = gsap.utils.mapRange(
+            0,
+            rootBound.current.width * scale,
+            -maxX,
+            maxX,
+            x - rootBound.current.x + diffBound.current.x
+        );
+
+        const mappedY = gsap.utils.mapRange(
+            0,
+            rootBound.current.height * scale,
+            -maxY,
+            maxY,
+            y - rootBound.current.y + diffBound.current.y
+        );
+
+        const newX = gsap.utils.clamp(-maxX, maxX, mappedX);
+        const newY = gsap.utils.clamp(-maxY, maxY, mappedY);
+
+        return { newX, newY };
+    };
+
     const isWebsiteOnDesktop = () => {
         return window.innerWidth > 768 && window.innerHeight > 768 && window.navigator.userAgent.indexOf('Mobile') === -1 && window.navigator.userAgent.indexOf('Tablet') === -1;
     }
@@ -42,12 +78,7 @@ const MagneticButton: React.FC<MagneticButtonProps> = ({
             background: debug ? 'rgba(0, 125, 255, .4)' : 'transparent',
         });
 
-        if ($root.current && $item.current && $hover.current) {
-            rootBound.current = $root.current.getBoundingClientRect();
-            itemBound.current = $item.current.getBoundingClientRect();
-            diffBound.current.x = (rootBound.current.width * scale - rootBound.current.width) / 2;
-            diffBound.current.y = (rootBound.current.height * scale - rootBound.current.height) / 2;
-        }
+        if ($hover.current) refreshBounds();
     };
 
     const handleMouseLeave = () => {
@@ -63,36 +94,19 @@ const MagneticButton: React.FC<MagneticButtonProps> = ({
         });
     };
 
-    const handleMouseMove = (e: any) => {
+    const handleMouseMove = (e: React.MouseEvent<HTMLButtonElement>) => {
         if (!isWebsiteOnDesktop()) return;
-        const x = e.clientX || e.touches[0].clientX;
-        const y = e.clientY || e.touches[0].clientY;
+        const x = e.clientX;
+        const y = e.clientY;
 
-        if (!rootBound.current || !itemBound.current) return;
-
-        const maxX = (rootBound.current.width - itemBound.current.width) / 2 * tolerance;
-        const maxY = (rootBound.current.height - itemBound.current.height) / 2 * tolerance;
-
-        const newX = gsap.utils.mapRange(
-            0,
-            rootBound.current.width * scale,
-            -maxX,
-            maxX,
-            x - rootBound.current.x + diffBound.current.x
-        );
-
-        const newY = gsap.utils.mapRange(
-            0,
-            rootBound.current.height * scale,
-            -maxY,
-            maxY,
-            y - rootBound.current.y + diffBound.current.y
-        );
+        refreshBounds();
+        const position = getMagneticPosition(x, y);
+        if (!position) return;
 
         gsap.killTweensOf($item.current);
         gsap.to($item.current, {
-            x: newX,
-            y: newY,
+            x: position.newX,
+            y: position.newY,
             ease: 'power3.out',
             duration: speed,
         });
@@ -123,29 +137,9 @@ const MagneticButton: React.FC<MagneticButtonProps> = ({
     };
 
     const handleMoveStart = (x: number, y: number) => {
-        if (!rootBound.current || !itemBound.current) return;
-
-        const maxX = (rootBound.current.width - itemBound.current.width) / 2 * tolerance;
-        const maxY = (rootBound.current.height - itemBound.current.height) / 2 * tolerance;
-
-        diffBound.current.x = (rootBound.current.width * scale - rootBound.current.width) / 2;
-        diffBound.current.y = (rootBound.current.height * scale - rootBound.current.height) / 2;
-
-        const newX = gsap.utils.mapRange(
-            0,
-            rootBound.current.width * scale,
-            -maxX,
-            maxX,
-            x - rootBound.current.x + diffBound.current.x
-        );
-
-        const newY = gsap.utils.mapRange(
-            0,
-            rootBound.current.height * scale,
-            -maxY,
-            maxY,
-            y - rootBound.current.y + diffBound.current.y
-        );
+        refreshBounds();
+        const position = getMagneticPosition(x, y);
+        if (!position) return;
 
         gsap.killTweensOf($item.current);
         gsap.set($hover.current, {
@@ -155,37 +149,20 @@ const MagneticButton: React.FC<MagneticButtonProps> = ({
         });
 
         gsap.set($item.current, {
-            x: newX,
-            y: newY,
+            x: position.newX,
+            y: position.newY,
         });
     };
 
     const handleMove = (x: number, y: number) => {
-        if (!rootBound.current || !itemBound.current) return;
-
-        const maxX = (rootBound.current.width - itemBound.current.width) / 2 * tolerance;
-        const maxY = (rootBound.current.height - itemBound.current.height) / 2 * tolerance;
-
-        const newX = gsap.utils.mapRange(
-            0,
-            rootBound.current.width * scale,
-            -maxX,
-            maxX,
-            x - rootBound.current.x + diffBound.current.x
-        );
-
-        const newY = gsap.utils.mapRange(
-            0,
-            rootBound.current.height * scale,
-            -maxY,
-            maxY,
-            y - rootBound.current.y + diffBound.current.y
-        );
+        refreshBounds();
+        const position = getMagneticPosition(x, y);
+        if (!position) return;
 
         gsap.killTweensOf($item.current);
         gsap.to($item.current, {
-            x: newX,
-            y: newY,
+            x: position.newX,
+            y: position.newY,
             ease: 'power3.out',
             duration: speed,
         });
@@ -200,7 +177,7 @@ const MagneticButton: React.FC<MagneticButtonProps> = ({
                 onMouseMove={handleMouseMove}
                 onMouseLeave={handleMouseLeave}
                 onTouchMove={handleTouchMove}
-                onTouchStart={handleMouseEnter}
+                onTouchStart={handleTouchStart}
                 onTouchEnd={handleTouchEnd}
                 style={style}
                 {...props}

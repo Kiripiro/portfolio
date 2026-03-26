@@ -1,5 +1,6 @@
 import "../../styles/projects.scss";
 import "../../styles/style.scss";
+import SectionIntro from "../shared/sectionIntro";
 
 interface Repo {
   id: number;
@@ -33,10 +34,13 @@ function Projects({
   return (
     <section id="projects" className="projects">
       <div className="projects_container">
-        <div className="projects_container_title">
-          <h1>Projects</h1>
-          <span className="highlight">Each project is a milestone</span>
-        </div>
+        <SectionIntro
+          eyebrow="Projects"
+          title="Selected Work"
+          subtitle="Built under real constraints, with clear trade-offs."
+          titleTag="h2"
+          className="projects_section_intro"
+        />
         <div className="projects_container_list">
           {!isDataFetched ? (
             skeletonRows.map((_, index) => (
@@ -91,16 +95,26 @@ function Projects({
             <div className="projects_container_info">
               <p>
                 Projects data is temporarily unavailable. You can still visit my{" "}
-                <a href="https://github.com/Kiripiro">GitHub</a>.
+                <a className="ui_inline_link" href="https://github.com/Kiripiro" target="_blank" rel="noreferrer">GitHub</a>.
               </p>
             </div>
           )}
         </div>
-        <div className="projects_container_info">
-          <p>
-            Want the full details and source code? Visit my{" "}
-            <a href="https://github.com/Kiripiro">GitHub</a>.
-          </p>
+        <div className="projects_cta" aria-label="More projects on GitHub">
+          <div className="projects_cta_text">
+            <p className="projects_cta_title">Want to go deeper?</p>
+            <p className="projects_cta_subtitle">
+              Explore full repositories, commit history, and technical details.
+            </p>
+          </div>
+          <a
+            className="projects_cta_button ui_button ui_button_primary"
+            href="https://github.com/Kiripiro"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Browse GitHub
+          </a>
         </div>
       </div>
     </section>

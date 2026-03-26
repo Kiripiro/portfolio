@@ -1,103 +1,170 @@
-import { CSSProperties, useEffect, useState } from 'react';
+import { CSSProperties, useCallback, useEffect, useRef, useState } from 'react';
+import './cursor.scss';
+
+type CursorMode = 'default' | 'github' | 'projects';
 
 function Cursor({ isDataFetched }: { isDataFetched: boolean }) {
-    const storedPosition = JSON.parse(localStorage.getItem('mousePosition') || '{}');
-    const [mousePosition, setMousePosition] = useState(storedPosition);
-    const [hoveringLink, setHoveringLink] = useState(false);
-    const [hoveringProject, setHoveringProject] = useState(false);
+    const PERSIST_INTERVAL_MS = 180;
+
+    const getInitialPosition = () => {
+        try {
+            const raw = localStorage.getItem('mousePosition');
+            if (!raw) return { x: 0, y: 0 };
+            const parsed = JSON.parse(raw);
+            if (typeof parsed?.x === 'number' && typeof parsed?.y === 'number') {
+                return parsed;
+            }
+        } catch {
+            // Ignore malformed localStorage payloads.
+        }
+        return { x: 0, y: 0 };
+    };
+
+    const initialPosition = getInitialPosition();
+    const [cursorMode, setCursorMode] = useState<CursorMode>('default');
+    const latestMousePosition = useRef(initialPosition);
+    const renderedMousePosition = useRef(initialPosition);
+    const lastPersistTime = useRef(0);
+    const cursorModeRef = useRef<CursorMode>('default');
+    const cursorRef = useRef<HTMLDivElement | null>(null);
+    const rafId = useRef<number | null>(null);
+    const cursorSizeRef = useRef(16);
+
+    const paintCursorPosition = useCallback(({ immediate = false }: { immediate?: boolean } = {}) => {
+        const cursorElement = cursorRef.current;
+        if (!cursorElement) return;
+
+        const next = latestMousePosition.current;
+        const current = renderedMousePosition.current;
+
+        if (immediate) {
+            renderedMousePosition.current = next;
+        } else {
+            renderedMousePosition.current = {
+                x: current.x + (next.x - current.x) * 0.28,
+                y: current.y + (next.y - current.y) * 0.28,
+            };
+        }
+
+        const { x, y } = renderedMousePosition.current;
+        const size = cursorSizeRef.current;
+        cursorElement.style.transform = `translate3d(${x - size}px, ${y - size}px, 0)`;
+    }, []);
+
+    const animateCursor = useCallback(() => {
+        paintCursorPosition();
+
+        const target = latestMousePosition.current;
+        const current = renderedMousePosition.current;
+        const isStillMoving = Math.abs(target.x - current.x) > 0.2 || Math.abs(target.y - current.y) > 0.2;
+
+        if (isStillMoving) {
+            rafId.current = requestAnimationFrame(animateCursor);
+        } else {
+            rafId.current = null;
+        }
+    }, [paintCursorPosition]);
 
     function isWebsiteOnDesktop() {
         return window.navigator.userAgent.indexOf('Mobile') === -1 && window.navigator.userAgent.indexOf('Tablet') === -1;
     }
 
-    function handleCursorAnimation() {
+    useEffect(() => {
         if (!isDataFetched) return;
 
-        const handleMouseEnterLink = () => {
-            setHoveringLink(true);
+        const updateCursorMode = (nextMode: CursorMode) => {
+            if (cursorModeRef.current === nextMode) return;
+            cursorModeRef.current = nextMode;
+            setCursorMode(nextMode);
         };
-
-        const handleMouseLeaveLink = () => {
-            setHoveringLink(false);
-        };
-
-        const handleMouseEnterProject = () => {
-            setHoveringProject(true);
-        };
-
-        const handleMouseLeaveProject = () => {
-            setHoveringProject(false);
-        };
-
-        const links = document.querySelectorAll('a');
-        const projectDivs = document.querySelectorAll('.projects_container_list_item');
-
-        if (links) {
-            links.forEach((link) => {
-                link.addEventListener('mouseover', handleMouseEnterLink);
-                link.addEventListener('mouseout', handleMouseLeaveLink);
-            });
-        }
-
-        if (projectDivs) {
-            projectDivs.forEach((div) => {
-                div.addEventListener('mouseover', handleMouseEnterProject);
-                div.addEventListener('mouseout', handleMouseLeaveProject);
-            });
-        }
 
         const handleMouseMove = (e: MouseEvent) => {
-            setMousePosition({ x: e.clientX, y: e.clientY });
-            localStorage.setItem('mousePosition', JSON.stringify({ x: e.clientX, y: e.clientY }));
+            const nextPosition = { x: e.clientX, y: e.clientY };
+            latestMousePosition.current = nextPosition;
+
+            const target = e.target as Element | null;
+            const shouldForceDefaultCursor = !!target?.closest('[data-cursor-default="true"]');
+            const isProjectLink = !!target?.closest('.projects_container_list_item:not(.loading)');
+            const isGithubLink = !!target?.closest('a[href*="github.com"], [data-tooltip-content="Github"]');
+
+            if (shouldForceDefaultCursor) {
+                updateCursorMode('default');
+            } else if (isProjectLink) {
+                updateCursorMode('projects');
+            } else if (isGithubLink) {
+                updateCursorMode('github');
+            } else {
+                updateCursorMode('default');
+            }
+
+            if (rafId.current === null) {
+                rafId.current = requestAnimationFrame(animateCursor);
+            }
+
+            const now = performance.now();
+            if (now - lastPersistTime.current >= PERSIST_INTERVAL_MS) {
+                localStorage.setItem('mousePosition', JSON.stringify(nextPosition));
+                lastPersistTime.current = now;
+            }
         };
 
-        window.addEventListener('mousemove', handleMouseMove);
+        window.addEventListener('mousemove', handleMouseMove, { passive: true });
 
         return () => {
             window.removeEventListener('mousemove', handleMouseMove);
+            if (rafId.current !== null) {
+                cancelAnimationFrame(rafId.current);
+                rafId.current = null;
+            }
+            localStorage.setItem('mousePosition', JSON.stringify(latestMousePosition.current));
         };
-    };
-
-    useEffect(() =>
-        handleCursorAnimation()
-    ), [isDataFetched]
+    }, [animateCursor, isDataFetched]);
 
     const baseCursorSize = 16;
-    const linkCursorSize = 32;
+    const githubCursorSize = 32;
     const projectCursorSize = 40;
 
-    const cursorSize = hoveringLink ? linkCursorSize : hoveringProject ? projectCursorSize : baseCursorSize;
+    const cursorSize = cursorMode === 'projects' ? projectCursorSize : cursorMode === 'github' ? githubCursorSize : baseCursorSize;
+    cursorSizeRef.current = cursorSize;
+
+    useEffect(() => {
+        paintCursorPosition({ immediate: true });
+    }, [cursorSize, paintCursorPosition]);
 
     const cursorStyle: CSSProperties = {
         position: 'fixed',
-        top: mousePosition.y - cursorSize,
-        left: mousePosition.x - cursorSize,
+        top: 0,
+        left: 0,
         width: cursorSize * 2,
         height: cursorSize * 2,
         borderRadius: '50%',
-        backgroundColor: hoveringProject ? '#F7CA18' : (hoveringLink ? 'transparent' : '#C0C0C0'),
-        opacity: hoveringLink || hoveringProject ? 1 : 0.4,
-        border: `2px solid ${hoveringProject ? 'transparent' : (hoveringLink ? '#efefef' : 'transparent')}`,
+        backgroundColor: cursorMode === 'default' ? '#C0C0C0' : '#F7CA18',
+        opacity: cursorMode === 'default' ? 0.4 : 1,
+        border: '2px solid transparent',
         zIndex: 9999,
         pointerEvents: 'none',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        transition: 'transform 0.5s ease-in-out, opacity 0.5s ease-in-out',
-        transform: hoveringProject ? 'scale(1.2)' : 'scale(1)',
+        transition: 'opacity 0.16s ease-out, background-color 0.16s ease-out, border-color 0.16s ease-out, width 0.16s ease-out, height 0.16s ease-out',
+        willChange: 'transform',
     };
 
     if (isWebsiteOnDesktop()) {
         return (
-            <div className="cursor-circle" style={cursorStyle}>
-                {hoveringProject && (
+            <div
+                className={`cursor-circle ${cursorMode === 'projects' ? 'project-active' : ''} ${cursorMode === 'github' ? 'github-active' : ''}`}
+                style={cursorStyle}
+                ref={cursorRef}
+            >
+                {cursorMode !== 'default' && (
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="36"
                         height="36"
                         viewBox="0 0 24 24"
                         fill="none"
-                        stroke="white"
+                        stroke="#ffffff"
                         strokeWidth="2"
                         strokeLinecap="round"
                         strokeLinejoin="round"

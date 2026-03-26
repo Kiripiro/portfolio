@@ -4,17 +4,23 @@ import "../../../styles/menuBurger.scss";
 import MagneticButton from "./magneticButton";
 import Linkedin from "../../../utils/svgs/linkedin";
 import Github from "../../../utils/svgs/github";
-import { Tooltip } from "react-tooltip";
+import CvLink from "../../shared/cvLink";
 import Lenis from "lenis";
+
+const SCROLL_SHOW_THRESHOLD = 220;
+const SCROLL_HIDE_THRESHOLD = 170;
+const TOP_RESET_THRESHOLD = 24;
 
 function MenuBurger({
   isVisible,
   isMenuToggled,
   setIsMenuToggled,
+  isPinned = false,
 }: {
   isVisible: boolean;
   isMenuToggled: boolean;
   setIsMenuToggled: React.Dispatch<React.SetStateAction<boolean>>;
+  isPinned?: boolean;
 }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [buttonColor, setButtonColor] = useState("#efefef");
@@ -49,16 +55,23 @@ function MenuBurger({
 
   const scrollToSection = (sectionId: string) => {
     const section = document.getElementById(sectionId);
-    if (section && lenis.current) {
-      lenis.current.scrollTo(section);
-    }
-  };
+    if (!section) return;
 
-  const isWebsiteOnDesktop = () => {
-    return (
-      window.navigator.userAgent.indexOf("Mobile") === -1 &&
-      window.navigator.userAgent.indexOf("Tablet") === -1
-    );
+    if (lenis.current) {
+      lenis.current.scrollTo(section, {
+        duration: 1.15,
+        easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      });
+    } else {
+      section.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+
+    setIsMenuOpen(false);
+    setIsMenuToggled(false);
+    setButtonColor("#efefef");
   };
 
   function handleLinkedinClick() {
@@ -69,41 +82,65 @@ function MenuBurger({
     window.open("https://github.com/Kiripiro", "_blank");
   }
 
+  function handleCvClick() {
+    setIsMenuOpen(false);
+    setIsMenuToggled(false);
+    setButtonColor("#efefef");
+  }
+
   const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-    setButtonColor(isMenuOpen ? "#efefef" : "#F7CA18");
-    setIsMenuToggled(!isMenuToggled);
+    setIsMenuOpen((prev) => {
+      const next = !prev;
+      setButtonColor(next ? "#F7CA18" : "#efefef");
+      setIsMenuToggled(next);
+      return next;
+    });
   };
 
   useEffect(() => {
-    setIsMenuToggled(isMenuToggled);
-  }, [isMenuOpen, setIsMenuToggled]);
-
-  useEffect(() => {
     setIsMenuOpen(isMenuToggled);
-    setButtonColor(isMenuToggled ? "#F7CA18" : "#F7CA18");
+    setButtonColor(isMenuToggled ? "#F7CA18" : "#efefef");
   }, [isMenuToggled]);
 
   useEffect(() => {
+    if (isPinned) {
+      setHasScrolled(true);
+      return;
+    }
+
     const handleScroll = () => {
-      if (window.scrollY > 200) setHasScrolled(true);
+      const currentY = window.scrollY;
+
+      setHasScrolled((prev) => {
+        if (prev) return currentY > SCROLL_HIDE_THRESHOLD;
+        return currentY > SCROLL_SHOW_THRESHOLD;
+      });
+
+      if (currentY <= TOP_RESET_THRESHOLD) {
+        setIsMenuOpen(false);
+        setIsMenuToggled(false);
+        setButtonColor("#efefef");
+      }
     };
 
+    handleScroll();
     window.addEventListener("scroll", handleScroll);
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, []);
+  }, [isPinned, setIsMenuToggled]);
 
   return (
     <>
       {hasScrolled && (
         <MagneticButton
-          className={`button-2 ${isVisible ? "visible" : "hidden"}`}
+          className={`button-2 ${isVisible || isPinned ? "visible" : "hidden"}`}
           speed={0.3}
           scale={1.2}
           tolerance={0.9}
+          type="button"
+          aria-label={isMenuOpen ? "Close navigation menu" : "Open navigation menu"}
         >
           <div className={`burger-icon`} onClick={toggleMenu}>
             <MagneticButton
@@ -112,6 +149,8 @@ function MenuBurger({
               scale={1.2}
               tolerance={0.9}
               style={{ background: buttonColor }}
+              type="button"
+              aria-label="Navigation menu icon"
             >
               <Hamburger size={32} color="#fff" toggled={isMenuOpen} />
             </MagneticButton>
@@ -136,6 +175,12 @@ function MenuBurger({
             </div>
             <div
               className={`menu-item`}
+              onClick={() => scrollToSection("certifications")}
+            >
+              <span>Certifications</span>
+            </div>
+            <div
+              className={`menu-item`}
               onClick={() => scrollToSection("projects")}
             >
               <span>Projects</span>
@@ -148,23 +193,24 @@ function MenuBurger({
             </div>
             <div className="menu-socials">
               <div
-                data-tooltip-id="linkedin"
-                data-tooltip-content="Linkedin"
                 className="icon"
                 onClick={handleLinkedinClick}
               >
                 <Linkedin />
               </div>
               <div
-                data-tooltip-id="github"
-                data-tooltip-content="Github"
                 className="icon"
                 onClick={handleGithubClick}
               >
                 <Github />
               </div>
-              <Tooltip id="linkedin" />
-              <Tooltip id="github" />
+              <CvLink
+                variant="icon"
+                className="icon"
+                onClick={handleCvClick}
+                aria-label="Open CV"
+                title="Open CV"
+              />
             </div>
           </div>
           <div className="menu-footer">@ {currentYear} Alexandre Tourret</div>

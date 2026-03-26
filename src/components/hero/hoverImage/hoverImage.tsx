@@ -9,11 +9,28 @@ const HoverImage = ({
   children: ReactNode;
   imageSrc: string;
 }) => {
+  const IMAGE_WIDTH = 240;
+  const IMAGE_HEIGHT = 320;
+  const VIEWPORT_PADDING = 24;
+
   const [isHovering, setIsHovering] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const [imagePos, setImagePos] = useState({ top: 0, left: 0 });
   const [lastMousePos, setLastMousePos] = useState({ x: 0, y: 0 });
   const [lastMoveTime, setLastMoveTime] = useState(Date.now());
   const [showHoverImage, setShowHoverImage] = useState(false);
+
+  function getClampedImagePosition(x: number, y: number) {
+    const minLeft = VIEWPORT_PADDING;
+    const maxLeft = Math.max(minLeft, window.innerWidth - IMAGE_WIDTH - VIEWPORT_PADDING);
+    const minTop = VIEWPORT_PADDING;
+    const maxTop = Math.max(minTop, window.innerHeight - IMAGE_HEIGHT - VIEWPORT_PADDING);
+
+    const left = Math.min(Math.max(x - IMAGE_WIDTH / 2, minLeft), maxLeft);
+    const top = Math.min(Math.max(y - IMAGE_HEIGHT / 2, minTop), maxTop);
+
+    return { top, left };
+  }
 
   useEffect(() => {
     const savedMousePos = JSON.parse(
@@ -32,7 +49,7 @@ const HoverImage = ({
   useEffect(() => {
     if (!isHovering) return;
 
-    const handleMouseMove = (e: any) => {
+    const handleMouseMove = (e: MouseEvent) => {
       const currentTime = Date.now();
       const deltaTime = currentTime - lastMoveTime;
       const deltaX = e.clientX - lastMousePos.x;
@@ -42,6 +59,7 @@ const HoverImage = ({
 
       const newMousePos = { x: e.clientX, y: e.clientY };
       setMousePos(newMousePos);
+      setImagePos(getClampedImagePosition(e.clientX, e.clientY));
       setLastMousePos(newMousePos);
       setLastMoveTime(currentTime);
 
@@ -63,6 +81,7 @@ const HoverImage = ({
     setIsHovering(true);
     setLastMousePos(mousePos);
     setLastMoveTime(Date.now());
+    setImagePos(getClampedImagePosition(mousePos.x, mousePos.y));
   };
 
   const handleMouseLeave = () => {
@@ -82,13 +101,12 @@ const HoverImage = ({
           alt="hover"
           className={`hover-image ${isHovering ? "show" : ""}`}
           animate={{
-            top: mousePos.y - 50,
-            left: mousePos.x - 50,
+            top: imagePos.top,
+            left: imagePos.left,
           }}
           transition={{ type: "spring", stiffness: 150, damping: 50 }}
           style={{
             position: "fixed",
-            width: "250px",
             height: "auto",
             pointerEvents: "none",
           }}

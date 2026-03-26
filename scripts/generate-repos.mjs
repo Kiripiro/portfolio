@@ -50,7 +50,7 @@ async function generateRepos() {
 
         try {
           languages = await fetchJson(repo.languages_url);
-        } catch (error) {
+        } catch {
           console.warn(`Could not fetch languages for ${repo.name}. Keeping empty languages.`);
         }
 

@@ -22,6 +22,7 @@ const MailSVG = () => {
     const svgRef = useRef<SVGSVGElement>(null);
 
     useEffect(() => {
+        const currentSvg = svgRef.current;
         const observer = new IntersectionObserver(
             ([entry]) => {
                 if (entry.isIntersecting && entry.intersectionRatio == 1 && svgRef.current) {
@@ -32,12 +33,12 @@ const MailSVG = () => {
                 threshold: 1,
             }
         );
-        if (svgRef.current)
-            observer.observe(svgRef.current);
+        if (currentSvg)
+            observer.observe(currentSvg);
 
         return () => {
-            if (svgRef.current)
-                observer.unobserve(svgRef.current);
+            if (currentSvg)
+                observer.unobserve(currentSvg);
         };
     }, []);
 

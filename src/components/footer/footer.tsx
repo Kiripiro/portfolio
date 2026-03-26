@@ -3,7 +3,7 @@ import ArrowDiagonalRight from "../../utils/svgs/arrowDiagonalRight";
 import Linkedin from "../../utils/svgs/linkedin";
 import Github from "../../utils/svgs/github";
 import { enqueueSnackbar } from "notistack";
-import { Tooltip } from "react-tooltip";
+import CvLink from "../shared/cvLink";
 
 function Contact() {
   const contactEmail = "contact@atourret.fr";
@@ -11,7 +11,7 @@ function Contact() {
 
   function copyToClipboard() {
     navigator.clipboard.writeText(contactEmail);
-    enqueueSnackbar("Email copied to clipboard !", {
+    enqueueSnackbar("Email copied to clipboard.", {
       variant: "success",
       preventDuplicate: true,
       autoHideDuration: 2000,
@@ -29,39 +29,70 @@ function Contact() {
   return (
     <footer>
       <section id="contact" className="contact">
-        <div className="contact_content_title">
-          <h1>Got a project in mind ?</h1>
-          <p>Let's connect !</p>
-        </div>
-        <div className="contact_content">
-          <div>
-            <p className="contact_text_link" onClick={copyToClipboard}>
-              {contactEmail}
+        <div className="contact_shell">
+          <div className="contact_intro">
+            <p className="section_eyebrow">Contact</p>
+            <h2>Let's make something that matters.</h2>
+            <p>
+              From problem framing to stable release, with pragmatic
+              engineering.
             </p>
-            <div className="contact_content_socials">
-              <div
-                data-tooltip-id="linkedin"
-                data-tooltip-content="Linkedin"
-                className="icon"
-                onClick={handleLinkedinClick}
-              >
-                <Linkedin />
+          </div>
+
+          <div className="contact_panel">
+            <div className="contact_panel_main">
+              <div className="contact_actions">
+                <button
+                  type="button"
+                  className="contact_text_link ui_button ui_button_primary"
+                  onClick={copyToClipboard}
+                >
+                  {contactEmail}
+                </button>
+                <CvLink className="contact_cv_link" />
+                <div className="contact_content_socials">
+                  <button
+                    type="button"
+                    data-cursor-default="true"
+                    className="icon ui_icon_button"
+                    onClick={handleLinkedinClick}
+                    aria-label="Open LinkedIn profile"
+                  >
+                    <Linkedin />
+                  </button>
+                  <button
+                    type="button"
+                    data-cursor-default="true"
+                    className="icon ui_icon_button"
+                    onClick={handleGithubClick}
+                    aria-label="Open GitHub profile"
+                  >
+                    <Github />
+                  </button>
+                </div>
               </div>
-              <div
-                data-tooltip-id="github"
-                data-tooltip-content="Github"
-                className="icon"
-                onClick={handleGithubClick}
-              >
-                <Github />
+
+              <div className="contact_meta">
+                <p className="contact_status">
+                  <span className="contact_status_dot" aria-hidden="true" />
+                  Available to discuss your project
+                </p>
+                <p className="contact_location">
+                  Remote friendly · Lyon, France
+                </p>
+                <p className="contact_response">
+                  Usually replies within 24 hours
+                </p>
               </div>
-              <Tooltip id="linkedin" />
-              <Tooltip id="github" />
+            </div>
+
+            <div className="contact_arrow_wrap" aria-hidden="true">
+              <div className="contact-arrow">
+                <ArrowDiagonalRight />
+              </div>
             </div>
           </div>
-          <div className="contact-arrow">
-            <ArrowDiagonalRight />
-          </div>
+
           <div className="contact_bottom">
             <p className="contact_bottom_text">
               © {currentYear} Alexandre Tourret

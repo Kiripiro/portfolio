@@ -1,42 +1,52 @@
 import "../../styles/navbar.scss";
-import LocomotiveScroll from "locomotive-scroll";
 
 const links = [
   { path: "#about", label: "About" },
+  { path: "#certifications", label: "Certifications" },
   { path: "#projects", label: "Projects" },
   { path: "#contact", label: "Contact" },
 ];
 
 function Navbar() {
-  const locomotiveScroll = new LocomotiveScroll();
+  function scrollTo(target: string) {
+    const section = document.querySelector<HTMLElement>(target);
+    if (!section) return;
 
-  function scrollTo(params: { target: string; options?: any }) {
-    const { target, options } = params;
-    locomotiveScroll.scrollTo(target, options);
+    const top = section.getBoundingClientRect().top + window.scrollY;
+    window.scrollTo({
+      top,
+      behavior: "smooth",
+    });
   }
 
   return (
     <nav className="nav">
       <div className="nav_logo">
-        <a href="/">Alex</a>
+        <a
+          href="#home"
+          onClick={(event) => {
+            event.preventDefault();
+            scrollTo("#home");
+          }}
+        >
+          Alex Tourret
+        </a>
       </div>
       <div className="nav_links">
         {links.map((link, index) => (
           <a
             key={index}
             href={link.path}
-            onClick={() =>
-              scrollTo({ target: link.path, options: { duration: 1.2 } })
-            }
-            className="nav_link"
+            onClick={(event) => {
+              event.preventDefault();
+              scrollTo(link.path);
+            }}
+            className="nav_link ui_nav_link"
           >
             {link.label}
           </a>
         ))}
       </div>
-      <label className="nav_status">
-        <span></span> Unavailable
-      </label>
     </nav>
   );
 }
