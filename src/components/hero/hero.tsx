@@ -105,13 +105,15 @@ function Hero() {
                   <a
                     href="#projects"
                     className="hero_action ui_button ui_button_primary"
+                    data-cursor-hero="black"
                   >
                     View Projects
                   </a>
-                  <CvLink className="hero_action hero_action_cv" />
+                  <CvLink className="hero_action hero_action_cv" data-cursor-hero="white" />
                   <a
                     href="#contact"
                     className="hero_action ui_button ui_button_secondary"
+                    data-cursor-hero="yellow"
                   >
                     Let's Talk
                   </a>

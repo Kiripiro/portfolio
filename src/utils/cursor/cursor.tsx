@@ -1,7 +1,14 @@
 import { CSSProperties, useCallback, useEffect, useRef, useState } from "react";
 import "./cursor.scss";
 
-type CursorMode = "default" | "github" | "projects";
+type CursorMode =
+  | "default"
+  | "github"
+  | "projects"
+  | "certifications"
+  | "link-black"
+  | "link-white"
+  | "link-yellow";
 
 function Cursor({ isDataFetched }: { isDataFetched: boolean }) {
   const PERSIST_INTERVAL_MS = 180;
@@ -94,6 +101,12 @@ function Cursor({ isDataFetched }: { isDataFetched: boolean }) {
       const shouldForceDefaultCursor = !!target?.closest(
         '[data-cursor-default="true"]',
       );
+      const heroCursorVariant = target
+        ?.closest("[data-cursor-hero]")
+        ?.getAttribute("data-cursor-hero");
+      const isCertificationCard = !!target?.closest(
+        '[data-cursor-certification="true"]',
+      );
       const isProjectLink = !!target?.closest(
         ".projects_container_list_item:not(.loading)",
       );
@@ -103,6 +116,14 @@ function Cursor({ isDataFetched }: { isDataFetched: boolean }) {
 
       if (shouldForceDefaultCursor) {
         updateCursorMode("default");
+      } else if (heroCursorVariant === "black") {
+        updateCursorMode("link-black");
+      } else if (heroCursorVariant === "white") {
+        updateCursorMode("link-white");
+      } else if (heroCursorVariant === "yellow") {
+        updateCursorMode("link-yellow");
+      } else if (isCertificationCard) {
+        updateCursorMode("certifications");
       } else if (isProjectLink) {
         updateCursorMode("projects");
       } else if (isGithubLink) {
@@ -138,15 +159,26 @@ function Cursor({ isDataFetched }: { isDataFetched: boolean }) {
   }, [animateCursor, isDataFetched]);
 
   const baseCursorSize = 16;
-  const githubCursorSize = 32;
+  const ctaCursorSize = 24;
+  const githubCursorSize = 30;
+  const certificationCursorSize = 24;
   const projectCursorSize = 40;
+
+  const isCtaCursor =
+    cursorMode === "link-black" ||
+    cursorMode === "link-white" ||
+    cursorMode === "link-yellow";
 
   const cursorSize =
     cursorMode === "projects"
       ? projectCursorSize
-      : cursorMode === "github"
-        ? githubCursorSize
-        : baseCursorSize;
+      : cursorMode === "certifications"
+        ? certificationCursorSize
+        : cursorMode === "github"
+          ? githubCursorSize
+          : isCtaCursor
+            ? ctaCursorSize
+            : baseCursorSize;
   cursorSizeRef.current = cursorSize;
 
   useEffect(() => {
@@ -160,7 +192,14 @@ function Cursor({ isDataFetched }: { isDataFetched: boolean }) {
     width: cursorSize * 2,
     height: cursorSize * 2,
     borderRadius: "50%",
-    backgroundColor: cursorMode === "default" ? "#C0C0C0" : "#F7CA18",
+    backgroundColor:
+      cursorMode === "default"
+        ? "#C0C0C0"
+        : cursorMode === "link-white"
+          ? "#EFEFEF"
+          : cursorMode === "link-black"
+            ? "#111111"
+            : "#F7CA18",
     opacity: cursorMode === "default" ? 0.4 : 1,
     border: "2px solid transparent",
     zIndex: 9999,
@@ -176,7 +215,7 @@ function Cursor({ isDataFetched }: { isDataFetched: boolean }) {
   if (isWebsiteOnDesktop()) {
     return (
       <div
-        className={`cursor-circle ${cursorMode === "projects" ? "project-active" : ""} ${cursorMode === "github" ? "github-active" : ""}`}
+        className={`cursor-circle ${cursorMode === "projects" ? "project-active" : ""} ${cursorMode === "github" ? "github-active" : ""} ${cursorMode === "certifications" ? "certifications-active" : ""} ${cursorMode === "link-black" ? "link-black-active" : ""} ${cursorMode === "link-white" ? "link-white-active" : ""} ${cursorMode === "link-yellow" ? "link-yellow-active" : ""}`}
         style={cursorStyle}
         ref={cursorRef}
       >
@@ -187,7 +226,7 @@ function Cursor({ isDataFetched }: { isDataFetched: boolean }) {
             height="36"
             viewBox="0 0 24 24"
             fill="none"
-            stroke="#ffffff"
+            stroke={cursorMode === "link-white" ? "#111111" : "#ffffff"}
             strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"

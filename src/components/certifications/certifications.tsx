@@ -44,7 +44,11 @@ function Certifications() {
 
         <div className="certifications_grid">
           {certifications.map((certification) => (
-            <article className="cert_card" key={certification.title}>
+            <article
+              className="cert_card certifications-active"
+              key={certification.title}
+              data-cursor-certification="true"
+            >
               <p className="cert_issuer">{certification.issuer}</p>
               <h3>{certification.title}</h3>
               <p className="cert_detail">{certification.detail}</p>

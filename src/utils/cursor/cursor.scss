@@ -44,7 +44,19 @@
     box-shadow: 0 0 0 4px rgba(247, 202, 24, 0.18);
   }
 
+  &.certifications-active {
+    border-color: rgba(247, 202, 24, 0.76);
+    box-shadow: 0 0 0 4px rgba(247, 202, 24, 0.18);
+  }
+
   &.project-active {
+    border-color: rgba(247, 202, 24, 0.82);
+    animation: cursorPulseGlow 1.1s ease-in-out infinite;
+  }
+
+  &.link-black-active,
+  &.link-white-active,
+  &.link-yellow-active {
     border-color: rgba(247, 202, 24, 0.82);
     animation: cursorPulseGlow 1.1s ease-in-out infinite;
   }
