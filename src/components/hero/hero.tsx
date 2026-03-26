@@ -109,7 +109,10 @@ function Hero() {
                   >
                     View Projects
                   </a>
-                  <CvLink className="hero_action hero_action_cv" data-cursor-hero="white" />
+                  <CvLink
+                    className="hero_action hero_action_cv"
+                    data-cursor-hero="white"
+                  />
                   <a
                     href="#contact"
                     className="hero_action ui_button ui_button_secondary"
