@@ -95,7 +95,15 @@ function Projects({
             <div className="projects_container_info">
               <p>
                 Projects data is temporarily unavailable. You can still visit my{" "}
-                <a className="ui_inline_link" href="https://github.com/Kiripiro" target="_blank" rel="noreferrer">GitHub</a>.
+                <a
+                  className="ui_inline_link"
+                  href="https://github.com/Kiripiro"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  GitHub
+                </a>
+                .
               </p>
             </div>
           )}

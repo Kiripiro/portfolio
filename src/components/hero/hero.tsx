@@ -98,9 +98,8 @@ function Hero() {
             <div className="hero_bottom">
               <div className="hero_bottom_left">
                 <p className="hero_lead">
-                  Based in Lyon, I turn requirements into reliable
-                  product features, from technical choices to testing and
-                  observability.
+                  Based in Lyon, I turn requirements into reliable product
+                  features, from technical choices to testing and observability.
                 </p>
                 <div className="hero_actions">
                   <a
@@ -124,8 +123,12 @@ function Hero() {
                   <li className="hero_skill hero_skill--hi">
                     Feature Ownership, End to End
                   </li>
-                  <li className="hero_skill hero_skill--hi">Backend, Frontend & API Design</li>
-                  <li className="hero_skill">Architecture · Testing · Observability</li>
+                  <li className="hero_skill hero_skill--hi">
+                    Backend, Frontend & API Design
+                  </li>
+                  <li className="hero_skill">
+                    Architecture · Testing · Observability
+                  </li>
                   <li className="hero_skill">AI & Automation in Practice</li>
                 </ul>
                 <p className="hero_avail">

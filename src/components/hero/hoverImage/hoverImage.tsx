@@ -22,9 +22,15 @@ const HoverImage = ({
 
   function getClampedImagePosition(x: number, y: number) {
     const minLeft = VIEWPORT_PADDING;
-    const maxLeft = Math.max(minLeft, window.innerWidth - IMAGE_WIDTH - VIEWPORT_PADDING);
+    const maxLeft = Math.max(
+      minLeft,
+      window.innerWidth - IMAGE_WIDTH - VIEWPORT_PADDING,
+    );
     const minTop = VIEWPORT_PADDING;
-    const maxTop = Math.max(minTop, window.innerHeight - IMAGE_HEIGHT - VIEWPORT_PADDING);
+    const maxTop = Math.max(
+      minTop,
+      window.innerHeight - IMAGE_HEIGHT - VIEWPORT_PADDING,
+    );
 
     const left = Math.min(Math.max(x - IMAGE_WIDTH / 2, minLeft), maxLeft);
     const top = Math.min(Math.max(y - IMAGE_HEIGHT / 2, minTop), maxTop);

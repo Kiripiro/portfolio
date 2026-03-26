@@ -140,7 +140,9 @@ function MenuBurger({
           scale={1.2}
           tolerance={0.9}
           type="button"
-          aria-label={isMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+          aria-label={
+            isMenuOpen ? "Close navigation menu" : "Open navigation menu"
+          }
         >
           <div className={`burger-icon`} onClick={toggleMenu}>
             <MagneticButton
@@ -192,16 +194,10 @@ function MenuBurger({
               <span>Contact</span>
             </div>
             <div className="menu-socials">
-              <div
-                className="icon"
-                onClick={handleLinkedinClick}
-              >
+              <div className="icon" onClick={handleLinkedinClick}>
                 <Linkedin />
               </div>
-              <div
-                className="icon"
-                onClick={handleGithubClick}
-              >
+              <div className="icon" onClick={handleGithubClick}>
                 <Github />
               </div>
               <CvLink

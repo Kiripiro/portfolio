@@ -17,9 +17,10 @@ function CvLink({
   onClick,
   ...props
 }: CvLinkProps) {
-  const classes = variant === "icon"
-    ? `cv_link_icon ${className ?? ""}`.trim()
-    : `cv_link_button ui_button ui_button_secondary ${className ?? ""}`.trim();
+  const classes =
+    variant === "icon"
+      ? `cv_link_icon ${className ?? ""}`.trim()
+      : `cv_link_button ui_button ui_button_secondary ${className ?? ""}`.trim();
 
   function handleClick(event: MouseEvent<HTMLAnchorElement>) {
     onClick?.(event);

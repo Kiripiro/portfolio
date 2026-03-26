@@ -91,7 +91,10 @@ function Preloader({
     }
 
     if (index === bootSteps.length - 1) {
-      finishTimeoutRef.current = window.setTimeout(() => setIsLoading(false), 760);
+      finishTimeoutRef.current = window.setTimeout(
+        () => setIsLoading(false),
+        760,
+      );
     }
 
     return () => {
@@ -128,7 +131,10 @@ function Preloader({
 
   const currentStep = bootSteps[Math.min(index, bootSteps.length - 1)];
   const progress = Math.min((index + 1) / bootSteps.length, 1);
-  const visibleSteps = bootSteps.slice(0, Math.min(index + 1, bootSteps.length));
+  const visibleSteps = bootSteps.slice(
+    0,
+    Math.min(index + 1, bootSteps.length),
+  );
   const displayedSteps = visibleSteps.slice(-3);
 
   return (
@@ -139,11 +145,17 @@ function Preloader({
       className="introduction"
     >
       {!isDataFetched ? (
-        <p className="preloader_word preloader_word--brand">Alexandre Tourret</p>
+        <p className="preloader_word preloader_word--brand">
+          Alexandre Tourret
+        </p>
       ) : (
         dimension.width > 0 && (
           <>
-            <div className="preloader_terminal" role="status" aria-live="polite">
+            <div
+              className="preloader_terminal"
+              role="status"
+              aria-live="polite"
+            >
               <div className="preloader_terminal_head">
                 <span className="preloader_dot" aria-hidden="true" />
                 <span className="preloader_dot" aria-hidden="true" />
@@ -151,7 +163,12 @@ function Preloader({
                 <span className="preloader_terminal_title">portfolio.boot</span>
               </div>
 
-              <motion.p className="preloader_word" variants={opacity} initial="initial" animate="enter">
+              <motion.p
+                className="preloader_word"
+                variants={opacity}
+                initial="initial"
+                animate="enter"
+              >
                 Alexandre Tourret · Full-Stack Engineer
               </motion.p>
 
@@ -159,8 +176,12 @@ function Preloader({
                 {displayedSteps.map((step, lineIndex) => (
                   <div key={step.command} className="preloader_log_group">
                     <p className="preloader_log_line">
-                      <span className="preloader_log_prompt">alex@portfolio %</span>
-                      <span className={`preloader_log_level preloader_log_level--${step.level}`}>
+                      <span className="preloader_log_prompt">
+                        alex@portfolio %
+                      </span>
+                      <span
+                        className={`preloader_log_level preloader_log_level--${step.level}`}
+                      >
                         [{step.level}]
                       </span>
                       <span>{step.command}</span>
@@ -176,21 +197,28 @@ function Preloader({
 
                 {index === bootSteps.length - 1 && (
                   <p className="preloader_log_line preloader_log_line--final">
-                    <span className="preloader_log_prompt">alex@portfolio %</span>
+                    <span className="preloader_log_prompt">
+                      alex@portfolio %
+                    </span>
                     <span>_</span>
                   </p>
                 )}
               </div>
 
               <div className="preloader_hud" aria-hidden="true">
-                <span className="preloader_hud_label">{currentStep.status}</span>
+                <span className="preloader_hud_label">
+                  {currentStep.status}
+                </span>
                 <div className="preloader_progress_track" role="presentation">
                   <span
                     className="preloader_progress_fill"
                     style={{ transform: `scaleX(${progress})` }}
                   />
                 </div>
-                <span className="preloader_hud_value">step {Math.min(index + 1, bootSteps.length)}/{bootSteps.length}</span>
+                <span className="preloader_hud_value">
+                  step {Math.min(index + 1, bootSteps.length)}/
+                  {bootSteps.length}
+                </span>
               </div>
             </div>
             <svg>

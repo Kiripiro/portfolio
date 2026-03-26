@@ -18,9 +18,12 @@ const NAV_DESKTOP_MIN_WIDTH = 1024;
 const Projects = lazy(() => import("./components/projects/projects"));
 
 function App() {
-  const preloaderMode = (import.meta.env.VITE_PRELOADER_MODE ?? "prod").toLowerCase();
-  const shouldUsePreloader = preloaderMode === "always"
-    || (preloaderMode !== "off" && import.meta.env.PROD);
+  const preloaderMode = (
+    import.meta.env.VITE_PRELOADER_MODE ?? "prod"
+  ).toLowerCase();
+  const shouldUsePreloader =
+    preloaderMode === "always" ||
+    (preloaderMode !== "off" && import.meta.env.PROD);
 
   interface Repo {
     id: number;
@@ -37,7 +40,9 @@ function App() {
   const [isMenuToggled, setIsMenuToggled] = useState(false);
   const [showNavbar, setShowNavbar] = useState(true);
   const [isWideViewport, setIsWideViewport] = useState(
-    typeof window !== "undefined" ? window.innerWidth >= NAV_DESKTOP_MIN_WIDTH : true,
+    typeof window !== "undefined"
+      ? window.innerWidth >= NAV_DESKTOP_MIN_WIDTH
+      : true,
   );
   const [isLoading, setIsLoading] = useState(shouldUsePreloader);
   const [isDataFetched, setIsDataFetched] = useState(false);
@@ -163,7 +168,10 @@ function App() {
                   <Certifications />
                   <Suspense
                     fallback={
-                      <section className="projects_suspense_placeholder" aria-hidden="true">
+                      <section
+                        className="projects_suspense_placeholder"
+                        aria-hidden="true"
+                      >
                         <div className="projects_suspense_line" />
                         <div className="projects_suspense_line" />
                         <div className="projects_suspense_line" />

@@ -1,184 +1,206 @@
-import { CSSProperties, useCallback, useEffect, useRef, useState } from 'react';
-import './cursor.scss';
+import { CSSProperties, useCallback, useEffect, useRef, useState } from "react";
+import "./cursor.scss";
 
-type CursorMode = 'default' | 'github' | 'projects';
+type CursorMode = "default" | "github" | "projects";
 
 function Cursor({ isDataFetched }: { isDataFetched: boolean }) {
-    const PERSIST_INTERVAL_MS = 180;
+  const PERSIST_INTERVAL_MS = 180;
 
-    const getInitialPosition = () => {
-        try {
-            const raw = localStorage.getItem('mousePosition');
-            if (!raw) return { x: 0, y: 0 };
-            const parsed = JSON.parse(raw);
-            if (typeof parsed?.x === 'number' && typeof parsed?.y === 'number') {
-                return parsed;
-            }
-        } catch {
-            // Ignore malformed localStorage payloads.
-        }
-        return { x: 0, y: 0 };
-    };
-
-    const initialPosition = getInitialPosition();
-    const [cursorMode, setCursorMode] = useState<CursorMode>('default');
-    const latestMousePosition = useRef(initialPosition);
-    const renderedMousePosition = useRef(initialPosition);
-    const lastPersistTime = useRef(0);
-    const cursorModeRef = useRef<CursorMode>('default');
-    const cursorRef = useRef<HTMLDivElement | null>(null);
-    const rafId = useRef<number | null>(null);
-    const cursorSizeRef = useRef(16);
-
-    const paintCursorPosition = useCallback(({ immediate = false }: { immediate?: boolean } = {}) => {
-        const cursorElement = cursorRef.current;
-        if (!cursorElement) return;
-
-        const next = latestMousePosition.current;
-        const current = renderedMousePosition.current;
-
-        if (immediate) {
-            renderedMousePosition.current = next;
-        } else {
-            renderedMousePosition.current = {
-                x: current.x + (next.x - current.x) * 0.28,
-                y: current.y + (next.y - current.y) * 0.28,
-            };
-        }
-
-        const { x, y } = renderedMousePosition.current;
-        const size = cursorSizeRef.current;
-        cursorElement.style.transform = `translate3d(${x - size}px, ${y - size}px, 0)`;
-    }, []);
-
-    const animateCursor = useCallback(() => {
-        paintCursorPosition();
-
-        const target = latestMousePosition.current;
-        const current = renderedMousePosition.current;
-        const isStillMoving = Math.abs(target.x - current.x) > 0.2 || Math.abs(target.y - current.y) > 0.2;
-
-        if (isStillMoving) {
-            rafId.current = requestAnimationFrame(animateCursor);
-        } else {
-            rafId.current = null;
-        }
-    }, [paintCursorPosition]);
-
-    function isWebsiteOnDesktop() {
-        return window.navigator.userAgent.indexOf('Mobile') === -1 && window.navigator.userAgent.indexOf('Tablet') === -1;
+  const getInitialPosition = () => {
+    try {
+      const raw = localStorage.getItem("mousePosition");
+      if (!raw) return { x: 0, y: 0 };
+      const parsed = JSON.parse(raw);
+      if (typeof parsed?.x === "number" && typeof parsed?.y === "number") {
+        return parsed;
+      }
+    } catch {
+      // Ignore malformed localStorage payloads.
     }
+    return { x: 0, y: 0 };
+  };
 
-    useEffect(() => {
-        if (!isDataFetched) return;
+  const initialPosition = getInitialPosition();
+  const [cursorMode, setCursorMode] = useState<CursorMode>("default");
+  const latestMousePosition = useRef(initialPosition);
+  const renderedMousePosition = useRef(initialPosition);
+  const lastPersistTime = useRef(0);
+  const cursorModeRef = useRef<CursorMode>("default");
+  const cursorRef = useRef<HTMLDivElement | null>(null);
+  const rafId = useRef<number | null>(null);
+  const cursorSizeRef = useRef(16);
 
-        const updateCursorMode = (nextMode: CursorMode) => {
-            if (cursorModeRef.current === nextMode) return;
-            cursorModeRef.current = nextMode;
-            setCursorMode(nextMode);
+  const paintCursorPosition = useCallback(
+    ({ immediate = false }: { immediate?: boolean } = {}) => {
+      const cursorElement = cursorRef.current;
+      if (!cursorElement) return;
+
+      const next = latestMousePosition.current;
+      const current = renderedMousePosition.current;
+
+      if (immediate) {
+        renderedMousePosition.current = next;
+      } else {
+        renderedMousePosition.current = {
+          x: current.x + (next.x - current.x) * 0.28,
+          y: current.y + (next.y - current.y) * 0.28,
         };
+      }
 
-        const handleMouseMove = (e: MouseEvent) => {
-            const nextPosition = { x: e.clientX, y: e.clientY };
-            latestMousePosition.current = nextPosition;
+      const { x, y } = renderedMousePosition.current;
+      const size = cursorSizeRef.current;
+      cursorElement.style.transform = `translate3d(${x - size}px, ${y - size}px, 0)`;
+    },
+    [],
+  );
 
-            const target = e.target as Element | null;
-            const shouldForceDefaultCursor = !!target?.closest('[data-cursor-default="true"]');
-            const isProjectLink = !!target?.closest('.projects_container_list_item:not(.loading)');
-            const isGithubLink = !!target?.closest('a[href*="github.com"], [data-tooltip-content="Github"]');
+  const animateCursor = useCallback(() => {
+    paintCursorPosition();
 
-            if (shouldForceDefaultCursor) {
-                updateCursorMode('default');
-            } else if (isProjectLink) {
-                updateCursorMode('projects');
-            } else if (isGithubLink) {
-                updateCursorMode('github');
-            } else {
-                updateCursorMode('default');
-            }
+    const target = latestMousePosition.current;
+    const current = renderedMousePosition.current;
+    const isStillMoving =
+      Math.abs(target.x - current.x) > 0.2 ||
+      Math.abs(target.y - current.y) > 0.2;
 
-            if (rafId.current === null) {
-                rafId.current = requestAnimationFrame(animateCursor);
-            }
+    if (isStillMoving) {
+      rafId.current = requestAnimationFrame(animateCursor);
+    } else {
+      rafId.current = null;
+    }
+  }, [paintCursorPosition]);
 
-            const now = performance.now();
-            if (now - lastPersistTime.current >= PERSIST_INTERVAL_MS) {
-                localStorage.setItem('mousePosition', JSON.stringify(nextPosition));
-                lastPersistTime.current = now;
-            }
-        };
+  function isWebsiteOnDesktop() {
+    return (
+      window.navigator.userAgent.indexOf("Mobile") === -1 &&
+      window.navigator.userAgent.indexOf("Tablet") === -1
+    );
+  }
 
-        window.addEventListener('mousemove', handleMouseMove, { passive: true });
+  useEffect(() => {
+    if (!isDataFetched) return;
 
-        return () => {
-            window.removeEventListener('mousemove', handleMouseMove);
-            if (rafId.current !== null) {
-                cancelAnimationFrame(rafId.current);
-                rafId.current = null;
-            }
-            localStorage.setItem('mousePosition', JSON.stringify(latestMousePosition.current));
-        };
-    }, [animateCursor, isDataFetched]);
-
-    const baseCursorSize = 16;
-    const githubCursorSize = 32;
-    const projectCursorSize = 40;
-
-    const cursorSize = cursorMode === 'projects' ? projectCursorSize : cursorMode === 'github' ? githubCursorSize : baseCursorSize;
-    cursorSizeRef.current = cursorSize;
-
-    useEffect(() => {
-        paintCursorPosition({ immediate: true });
-    }, [cursorSize, paintCursorPosition]);
-
-    const cursorStyle: CSSProperties = {
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        width: cursorSize * 2,
-        height: cursorSize * 2,
-        borderRadius: '50%',
-        backgroundColor: cursorMode === 'default' ? '#C0C0C0' : '#F7CA18',
-        opacity: cursorMode === 'default' ? 0.4 : 1,
-        border: '2px solid transparent',
-        zIndex: 9999,
-        pointerEvents: 'none',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        transition: 'opacity 0.16s ease-out, background-color 0.16s ease-out, border-color 0.16s ease-out, width 0.16s ease-out, height 0.16s ease-out',
-        willChange: 'transform',
+    const updateCursorMode = (nextMode: CursorMode) => {
+      if (cursorModeRef.current === nextMode) return;
+      cursorModeRef.current = nextMode;
+      setCursorMode(nextMode);
     };
 
-    if (isWebsiteOnDesktop()) {
-        return (
-            <div
-                className={`cursor-circle ${cursorMode === 'projects' ? 'project-active' : ''} ${cursorMode === 'github' ? 'github-active' : ''}`}
-                style={cursorStyle}
-                ref={cursorRef}
-            >
-                {cursorMode !== 'default' && (
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="36"
-                        height="36"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="#ffffff"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className="cursor-arrow"
-                        style={{ transformOrigin: 'center' }}
-                    >
-                        <path d="M5 12h14"></path>
-                        <path d="M12 5l7 7-7 7"></path>
-                    </svg>
-                )}
-            </div>
-        );
-    } else
-        return null;
+    const handleMouseMove = (e: MouseEvent) => {
+      const nextPosition = { x: e.clientX, y: e.clientY };
+      latestMousePosition.current = nextPosition;
+
+      const target = e.target as Element | null;
+      const shouldForceDefaultCursor = !!target?.closest(
+        '[data-cursor-default="true"]',
+      );
+      const isProjectLink = !!target?.closest(
+        ".projects_container_list_item:not(.loading)",
+      );
+      const isGithubLink = !!target?.closest(
+        'a[href*="github.com"], [data-tooltip-content="Github"]',
+      );
+
+      if (shouldForceDefaultCursor) {
+        updateCursorMode("default");
+      } else if (isProjectLink) {
+        updateCursorMode("projects");
+      } else if (isGithubLink) {
+        updateCursorMode("github");
+      } else {
+        updateCursorMode("default");
+      }
+
+      if (rafId.current === null) {
+        rafId.current = requestAnimationFrame(animateCursor);
+      }
+
+      const now = performance.now();
+      if (now - lastPersistTime.current >= PERSIST_INTERVAL_MS) {
+        localStorage.setItem("mousePosition", JSON.stringify(nextPosition));
+        lastPersistTime.current = now;
+      }
+    };
+
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
+
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      if (rafId.current !== null) {
+        cancelAnimationFrame(rafId.current);
+        rafId.current = null;
+      }
+      localStorage.setItem(
+        "mousePosition",
+        JSON.stringify(latestMousePosition.current),
+      );
+    };
+  }, [animateCursor, isDataFetched]);
+
+  const baseCursorSize = 16;
+  const githubCursorSize = 32;
+  const projectCursorSize = 40;
+
+  const cursorSize =
+    cursorMode === "projects"
+      ? projectCursorSize
+      : cursorMode === "github"
+        ? githubCursorSize
+        : baseCursorSize;
+  cursorSizeRef.current = cursorSize;
+
+  useEffect(() => {
+    paintCursorPosition({ immediate: true });
+  }, [cursorSize, paintCursorPosition]);
+
+  const cursorStyle: CSSProperties = {
+    position: "fixed",
+    top: 0,
+    left: 0,
+    width: cursorSize * 2,
+    height: cursorSize * 2,
+    borderRadius: "50%",
+    backgroundColor: cursorMode === "default" ? "#C0C0C0" : "#F7CA18",
+    opacity: cursorMode === "default" ? 0.4 : 1,
+    border: "2px solid transparent",
+    zIndex: 9999,
+    pointerEvents: "none",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    transition:
+      "opacity 0.16s ease-out, background-color 0.16s ease-out, border-color 0.16s ease-out, width 0.16s ease-out, height 0.16s ease-out",
+    willChange: "transform",
+  };
+
+  if (isWebsiteOnDesktop()) {
+    return (
+      <div
+        className={`cursor-circle ${cursorMode === "projects" ? "project-active" : ""} ${cursorMode === "github" ? "github-active" : ""}`}
+        style={cursorStyle}
+        ref={cursorRef}
+      >
+        {cursorMode !== "default" && (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="36"
+            height="36"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="#ffffff"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="cursor-arrow"
+            style={{ transformOrigin: "center" }}
+          >
+            <path d="M5 12h14"></path>
+            <path d="M12 5l7 7-7 7"></path>
+          </svg>
+        )}
+      </div>
+    );
+  } else return null;
 }
 
 export default Cursor;
