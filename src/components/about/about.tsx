@@ -1,9 +1,12 @@
 import "../../styles/about.scss";
 import MailSVG from "../../utils/svgs/mail";
+import Malt from "../../utils/svgs/malt";
 import Banner from "./banner";
 import SectionIntro from "../shared/sectionIntro";
 
 function About() {
+  const maltProfileUrl = "https://www.malt.fr/profile/alexandretourret";
+
   return (
     <section id="about" className="about_section">
       <div className="about_content">
@@ -55,10 +58,23 @@ function About() {
               <a
                 href="mailto:contact@atourret.fr"
                 className="about_content_button_link ui_button ui_button_secondary"
+                data-cursor-hero="yellow"
               >
                 <span>Start a discussion</span>
                 <span className="ui_button_icon" aria-hidden="true">
                   <MailSVG />
+                </span>
+              </a>
+              <a
+                href={maltProfileUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="about_content_button_link ui_button ui_button_primary"
+                data-cursor-hero="black"
+              >
+                <span>View Malt profile</span>
+                <span className="ui_button_icon" aria-hidden="true">
+                  <Malt />
                 </span>
               </a>
             </div>

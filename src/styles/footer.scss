@@ -145,11 +145,16 @@
 
     .contact_status,
     .contact_location,
-    .contact_response {
+    .contact_response,
+    .contact_malt_link {
         margin: 0;
         color: rgba(239, 239, 239, 0.72);
         font-size: 0.88rem;
         letter-spacing: 0.02em;
+    }
+
+    .contact_malt_link {
+        color: rgba(247, 202, 24, 0.94);
     }
 
     .contact_status {

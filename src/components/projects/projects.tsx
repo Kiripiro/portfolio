@@ -120,6 +120,7 @@ function Projects({
             href="https://github.com/Kiripiro"
             target="_blank"
             rel="noreferrer"
+            data-cursor-hero="black"
           >
             Browse GitHub
           </a>

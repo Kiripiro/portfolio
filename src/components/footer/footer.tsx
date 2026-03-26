@@ -2,11 +2,13 @@ import "../../styles/footer.scss";
 import ArrowDiagonalRight from "../../utils/svgs/arrowDiagonalRight";
 import Linkedin from "../../utils/svgs/linkedin";
 import Github from "../../utils/svgs/github";
+import Malt from "../../utils/svgs/malt";
 import { enqueueSnackbar } from "notistack";
 import CvLink from "../shared/cvLink";
 
 function Contact() {
   const contactEmail = "contact@atourret.fr";
+  const maltProfileUrl = "https://www.malt.fr/profile/alexandretourret";
   const currentYear = new Date().getFullYear();
 
   function copyToClipboard() {
@@ -24,6 +26,10 @@ function Contact() {
 
   function handleGithubClick() {
     window.open("https://github.com/Kiripiro", "_blank");
+  }
+
+  function handleMaltClick() {
+    window.open(maltProfileUrl, "_blank");
   }
 
   return (
@@ -69,13 +75,22 @@ function Contact() {
                   >
                     <Github />
                   </button>
+                  <button
+                    type="button"
+                    data-cursor-default="true"
+                    className="icon ui_icon_button"
+                    onClick={handleMaltClick}
+                    aria-label="Open Malt profile"
+                  >
+                    <Malt />
+                  </button>
                 </div>
               </div>
 
               <div className="contact_meta">
                 <p className="contact_status">
                   <span className="contact_status_dot" aria-hidden="true" />
-                  Available to discuss your project
+                  Open to discuss your project
                 </p>
                 <p className="contact_location">
                   Remote friendly · Lyon, France
@@ -83,6 +98,14 @@ function Contact() {
                 <p className="contact_response">
                   Usually replies within 24 hours
                 </p>
+                <a
+                  href={maltProfileUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="contact_malt_link ui_inline_link"
+                >
+                  Freelance profile on Malt
+                </a>
               </div>
             </div>
 

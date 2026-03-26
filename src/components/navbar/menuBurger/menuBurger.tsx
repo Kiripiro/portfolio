@@ -4,6 +4,7 @@ import "../../../styles/menuBurger.scss";
 import MagneticButton from "./magneticButton";
 import Linkedin from "../../../utils/svgs/linkedin";
 import Github from "../../../utils/svgs/github";
+import Malt from "../../../utils/svgs/malt";
 import CvLink from "../../shared/cvLink";
 import Lenis from "lenis";
 
@@ -80,6 +81,10 @@ function MenuBurger({
 
   function handleGithubClick() {
     window.open("https://github.com/Kiripiro", "_blank");
+  }
+
+  function handleMaltClick() {
+    window.open("https://www.malt.fr/profile/alexandretourret", "_blank");
   }
 
   function handleCvClick() {
@@ -194,15 +199,36 @@ function MenuBurger({
               <span>Contact</span>
             </div>
             <div className="menu-socials">
-              <div className="icon" onClick={handleLinkedinClick}>
+              <button
+                type="button"
+                className="icon menu_social_icon ui_icon_button"
+                data-cursor-default="true"
+                onClick={handleLinkedinClick}
+                aria-label="Open LinkedIn profile"
+              >
                 <Linkedin />
-              </div>
-              <div className="icon" onClick={handleGithubClick}>
+              </button>
+              <button
+                type="button"
+                className="icon menu_social_icon ui_icon_button"
+                data-cursor-default="true"
+                onClick={handleGithubClick}
+                aria-label="Open GitHub profile"
+              >
                 <Github />
-              </div>
+              </button>
+              <button
+                type="button"
+                className="icon menu_social_icon ui_icon_button"
+                data-cursor-default="true"
+                onClick={handleMaltClick}
+                aria-label="Open Malt profile"
+              >
+                <Malt />
+              </button>
               <CvLink
                 variant="icon"
-                className="icon"
+                className="icon menu_social_icon"
                 onClick={handleCvClick}
                 aria-label="Open CV"
                 title="Open CV"

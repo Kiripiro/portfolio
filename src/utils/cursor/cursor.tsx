@@ -104,6 +104,10 @@ function Cursor({ isDataFetched }: { isDataFetched: boolean }) {
       const heroCursorVariant = target
         ?.closest("[data-cursor-hero]")
         ?.getAttribute("data-cursor-hero");
+      const ctaButton = target?.closest(".ui_button") as HTMLElement | null;
+      const isPrimaryCta = !!ctaButton?.classList.contains("ui_button_primary");
+      const isSecondaryCta =
+        !!ctaButton?.classList.contains("ui_button_secondary");
       const isCertificationCard = !!target?.closest(
         '[data-cursor-certification="true"]',
       );
@@ -121,6 +125,12 @@ function Cursor({ isDataFetched }: { isDataFetched: boolean }) {
       } else if (heroCursorVariant === "white") {
         updateCursorMode("link-white");
       } else if (heroCursorVariant === "yellow") {
+        updateCursorMode("link-yellow");
+      } else if (isPrimaryCta) {
+        // Inverted contrast for bright CTAs (yellow background -> black cursor).
+        updateCursorMode("link-black");
+      } else if (isSecondaryCta) {
+        // Inverted contrast for dark CTAs (dark background -> yellow cursor).
         updateCursorMode("link-yellow");
       } else if (isCertificationCard) {
         updateCursorMode("certifications");

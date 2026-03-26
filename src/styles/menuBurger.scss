@@ -225,17 +225,37 @@
             margin-top: 5vh;
             padding-left: 20px;
             margin-left: 5vw;
+            gap: 0.46rem;
 
             .icon {
-                display: flex;
+                display: inline-flex;
                 align-items: center;
                 justify-content: center;
-                width: 32px;
-                height: 32px;
-                margin-right: 1rem;
-                color: #303030;
+                width: 2.15rem;
+                height: 2.15rem;
+                margin: 0;
+                color: rgba(48, 48, 48, 0.9);
                 text-decoration: none;
                 cursor: pointer;
+                border: 1px solid rgba(48, 48, 48, 0.16);
+                border-radius: 999px;
+                background: rgba(255, 255, 255, 0.08);
+                transition: background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+
+                svg {
+                    width: 1.08rem;
+                    height: 1.08rem;
+                    transition: none;
+                }
+
+                &:hover,
+                &:focus-visible {
+                    color: #f7ca18;
+                    background: rgba(247, 202, 24, 0.08);
+                    border-color: rgba(247, 202, 24, 0.45);
+                    outline: 1px solid rgba(247, 202, 24, 0.55);
+                    outline-offset: 1px;
+                }
             }
         }
 

@@ -105,8 +105,10 @@
     }
 
     .about_content_button {
-        display: inline-flex;
+        display: flex;
+        flex-wrap: wrap;
         align-items: center;
+        gap: 0.55rem;
         margin-top: clamp(0.9rem, 2.1vh, 1.3rem);
 
         .about_content_button_link {
