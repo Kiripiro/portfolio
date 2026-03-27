@@ -11,6 +11,10 @@ function Contact() {
   const maltProfileUrl = "https://www.malt.fr/profile/alexandretourret";
   const currentYear = new Date().getFullYear();
 
+  function openExternalUrl(url: string) {
+    window.open(url, "_blank", "noopener,noreferrer");
+  }
+
   function copyToClipboard() {
     navigator.clipboard.writeText(contactEmail);
     enqueueSnackbar("Email copied to clipboard.", {
@@ -21,15 +25,15 @@ function Contact() {
   }
 
   function handleLinkedinClick() {
-    window.open("https://www.linkedin.com/in/atourret/", "_blank");
+    openExternalUrl("https://www.linkedin.com/in/atourret/");
   }
 
   function handleGithubClick() {
-    window.open("https://github.com/Kiripiro", "_blank");
+    openExternalUrl("https://github.com/Kiripiro");
   }
 
   function handleMaltClick() {
-    window.open(maltProfileUrl, "_blank");
+    openExternalUrl(maltProfileUrl);
   }
 
   return (

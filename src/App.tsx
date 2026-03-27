@@ -147,7 +147,7 @@ function App() {
           <></>
         ) : (
           <>
-            <header>
+            <header className="app_header">
               {isWideViewport && showNavbar && <Navbar />}
               <div>
                 <MenuBurger

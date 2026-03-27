@@ -11,6 +11,10 @@ import Lenis from "lenis";
 const SCROLL_SHOW_THRESHOLD = 220;
 const SCROLL_HIDE_THRESHOLD = 170;
 const TOP_RESET_THRESHOLD = 24;
+const BURGER_BASE_BACKGROUND = "#efefef";
+const BURGER_BASE_LINES = "#F7CA18";
+const BURGER_ACTIVE_BACKGROUND = "#F7CA18";
+const BURGER_ACTIVE_LINES = "#efefef";
 
 function MenuBurger({
   isVisible,
@@ -24,7 +28,8 @@ function MenuBurger({
   isPinned?: boolean;
 }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [buttonColor, setButtonColor] = useState("#efefef");
+  const [isButtonHovered, setIsButtonHovered] = useState(false);
+  const [isButtonFocused, setIsButtonFocused] = useState(false);
   const [hasScrolled, setHasScrolled] = useState(false);
   const currentYear = new Date().getFullYear();
 
@@ -54,6 +59,10 @@ function MenuBurger({
     };
   }, []);
 
+  function openExternalUrl(url: string) {
+    window.open(url, "_blank", "noopener,noreferrer");
+  }
+
   const scrollToSection = (sectionId: string) => {
     const section = document.getElementById(sectionId);
     if (!section) return;
@@ -72,31 +81,28 @@ function MenuBurger({
 
     setIsMenuOpen(false);
     setIsMenuToggled(false);
-    setButtonColor("#efefef");
   };
 
   function handleLinkedinClick() {
-    window.open("https://www.linkedin.com/in/atourret/", "_blank");
+    openExternalUrl("https://www.linkedin.com/in/atourret/");
   }
 
   function handleGithubClick() {
-    window.open("https://github.com/Kiripiro", "_blank");
+    openExternalUrl("https://github.com/Kiripiro");
   }
 
   function handleMaltClick() {
-    window.open("https://www.malt.fr/profile/alexandretourret", "_blank");
+    openExternalUrl("https://www.malt.fr/profile/alexandretourret");
   }
 
   function handleCvClick() {
     setIsMenuOpen(false);
     setIsMenuToggled(false);
-    setButtonColor("#efefef");
   }
 
   const toggleMenu = () => {
     setIsMenuOpen((prev) => {
       const next = !prev;
-      setButtonColor(next ? "#F7CA18" : "#efefef");
       setIsMenuToggled(next);
       return next;
     });
@@ -104,7 +110,6 @@ function MenuBurger({
 
   useEffect(() => {
     setIsMenuOpen(isMenuToggled);
-    setButtonColor(isMenuToggled ? "#F7CA18" : "#efefef");
   }, [isMenuToggled]);
 
   useEffect(() => {
@@ -124,7 +129,6 @@ function MenuBurger({
       if (currentY <= TOP_RESET_THRESHOLD) {
         setIsMenuOpen(false);
         setIsMenuToggled(false);
-        setButtonColor("#efefef");
       }
     };
 
@@ -135,6 +139,14 @@ function MenuBurger({
       window.removeEventListener("scroll", handleScroll);
     };
   }, [isPinned, setIsMenuToggled]);
+
+  const isBurgerInverted = isMenuOpen || isButtonHovered || isButtonFocused;
+  const burgerBackgroundColor = isBurgerInverted
+    ? BURGER_ACTIVE_BACKGROUND
+    : BURGER_BASE_BACKGROUND;
+  const burgerLineColor = isBurgerInverted
+    ? BURGER_ACTIVE_LINES
+    : BURGER_BASE_LINES;
 
   return (
     <>
@@ -149,17 +161,27 @@ function MenuBurger({
             isMenuOpen ? "Close navigation menu" : "Open navigation menu"
           }
         >
-          <div className={`burger-icon`} onClick={toggleMenu}>
+          <div
+            className={`burger-icon`}
+            onClick={toggleMenu}
+            onMouseEnter={() => setIsButtonHovered(true)}
+            onMouseLeave={() => setIsButtonHovered(false)}
+          >
             <MagneticButton
               className={`button-1`}
               speed={0.3}
               scale={1.2}
               tolerance={0.9}
-              style={{ background: buttonColor }}
+              onFocus={() => setIsButtonFocused(true)}
+              onBlur={() => setIsButtonFocused(false)}
+              style={{
+                backgroundColor: burgerBackgroundColor,
+                color: burgerLineColor,
+              }}
               type="button"
               aria-label="Navigation menu icon"
             >
-              <Hamburger size={32} color="#fff" toggled={isMenuOpen} />
+              <Hamburger size={32} color="currentColor" toggled={isMenuOpen} />
             </MagneticButton>
           </div>
         </MagneticButton>

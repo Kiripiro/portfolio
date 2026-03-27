@@ -51,6 +51,7 @@
     border: none;
     width: 70px;
     height: 70px;
+    transition: background-color 0.2s ease, color 0.2s ease;
 
     @media screen and (max-width: 768px) {
         width: 56px;

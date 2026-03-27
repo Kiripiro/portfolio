@@ -55,6 +55,10 @@ main {
         margin-inline: auto;
     }
 
+    .app_header {
+        min-height: 0;
+    }
+
     .content_wrapper {
         margin-inline: 0;
     }
@@ -77,6 +81,14 @@ main {
 
     .lenis.lenis-scrolling iframe {
         pointer-events: none;
+    }
+}
+
+@media screen and (min-width: 1024px) {
+    .App {
+        .app_header {
+            min-height: clamp(2.8rem, 5vh, 3.2rem);
+        }
     }
 }
 
