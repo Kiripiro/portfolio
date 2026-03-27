@@ -47,6 +47,10 @@
 
 .button-1 {
     color: #efefef;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
     border-radius: 50%;
     border: none;
     width: 70px;
@@ -56,39 +60,6 @@
     @media screen and (max-width: 768px) {
         width: 56px;
         height: 56px;
-    }
-
-    &:hover:before {
-        top: 0%;
-        bottom: auto;
-        height: 100%;
-        border-radius: 50%;
-        transform: scale(1);
-        opacity: 1;
-        z-index: -1;
-    }
-
-    &:before {
-        display: block;
-        position: absolute;
-        content: '';
-        border-radius: 50%;
-        background: #F7CA18;
-        height: 100%;
-        width: 100%;
-        transform: scale(0);
-        opacity: 0;
-        transition: transform 0.4s cubic-bezier(0.215, 0.61, 0.355, 1), opacity 0.4s cubic-bezier(0.215, 0.61, 0.355, 1);
-
-        &.visible {
-            animation-fill-mode: forwards;
-            opacity: 1;
-        }
-
-        &.hidden {
-            animation: scaleDownAnimation 0.5s cubic-bezier(0.34, 1.5, 0.64, 1);
-            opacity: 0;
-        }
     }
 }
 
@@ -102,8 +73,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    color: transparent;
-    display: block;
+    color: inherit;
     animation: scaleUpAnimation 0.2s cubic-bezier(0.34, 1.5, 0.64, 1);
 
     @media screen and (max-width: 768px) {
@@ -111,28 +81,6 @@
         right: 3.8vw;
         height: 78px;
         width: 78px;
-    }
-
-    &:hover:before {
-        top: 0%;
-        bottom: auto;
-        height: 100%;
-        border-radius: 50%;
-        transform: scale(1);
-        opacity: 1;
-        z-index: -1;
-    }
-
-    &:before {
-        display: none;
-        position: absolute;
-        content: '';
-        border-radius: 50%;
-        height: 100%;
-        width: 100%;
-        transform: scale(0);
-        opacity: 0;
-        transition: transform 0.4s cubic-bezier(0.215, 0.61, 0.355, 1), opacity 0.4s cubic-bezier(0.215, 0.61, 0.355, 1);
     }
 
     &.visible {
@@ -155,9 +103,7 @@
     width: 35vw;
     background: #efefef;
     z-index: 2;
-    transition: transform 0.8s cubic-bezier(0.7, 0, 0.2, 1);
     will-change: transform;
-    transform: translateX(110%);
 
     @media screen and (max-width: 576px) {
         width: 100vw;
@@ -177,14 +123,6 @@
 
     @media screen and (max-width: 1024px) and (min-height: 1200px) {
         width: 55vw;
-    }
-
-    &.visible {
-        transform: translateX(0);
-    }
-
-    &.hidden {
-        transform: translateX(120%);
     }
 
     .menu-content {
@@ -221,8 +159,8 @@
 
         .menu-socials {
             display: flex;
-            flex-direction: inline;
-            align-items: left;
+            flex-direction: row;
+            align-items: flex-start;
             margin-top: 5vh;
             padding-left: 20px;
             margin-left: 5vw;
@@ -272,7 +210,7 @@
     .menu-items {
         display: flex;
         flex-direction: column;
-        align-items: left;
+        align-items: flex-start;
         margin-top: 15vh;
 
         @media screen and (max-width: 576px) {
@@ -289,10 +227,16 @@
     }
 
     .menu-item {
+        display: inline-flex;
         margin-left: 5vw;
         padding: 20px;
         color: #303030;
         font-size: 3rem;
+        text-decoration: none;
+        background: transparent;
+        border: none;
+        font: inherit;
+        text-align: left;
 
         span {
             position: relative;
@@ -313,6 +257,16 @@
             }
         }
 
+        &:focus-visible {
+            outline: 2px solid rgba(247, 202, 24, 0.65);
+            outline-offset: 4px;
+            border-radius: 12px;
+        }
+
+        &:focus-visible span::before {
+            width: 100%;
+        }
+
         @media screen and (max-width: 576px) {
             font-size: 2rem;
         }
@@ -328,5 +282,16 @@
         @media screen and (min-width: 1200px) {
             font-size: 3rem;
         }
+    }
+}
+
+.burger-trigger_shell {
+    pointer-events: auto;
+
+    > .magnetic-button--item {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        line-height: 0;
     }
 }
