@@ -22,6 +22,17 @@ function supportsCustomCursor() {
   return window.matchMedia("(hover: hover) and (pointer: fine)").matches;
 }
 
+function getCursorFollowFactor(mode: CursorMode) {
+  switch (mode) {
+    case "projects":
+      return 0.16;
+    case "default":
+      return 0.22;
+    default:
+      return 0.19;
+  }
+}
+
 function Cursor({ isDataFetched }: { isDataFetched: boolean }) {
   const initialPosition = getLastPointerPosition();
   const [isCursorEnabled, setIsCursorEnabled] = useState(supportsCustomCursor);
@@ -29,14 +40,13 @@ function Cursor({ isDataFetched }: { isDataFetched: boolean }) {
   const latestMousePosition = useRef(initialPosition);
   const renderedMousePosition = useRef(initialPosition);
   const cursorModeRef = useRef<CursorMode>("default");
-  const cursorRef = useRef<HTMLDivElement | null>(null);
+  const cursorShellRef = useRef<HTMLDivElement | null>(null);
   const rafId = useRef<number | null>(null);
-  const cursorSizeRef = useRef(16);
 
   const paintCursorPosition = useCallback(
     ({ immediate = false }: { immediate?: boolean } = {}) => {
-      const cursorElement = cursorRef.current;
-      if (!cursorElement) return;
+      const cursorShellElement = cursorShellRef.current;
+      if (!cursorShellElement) return;
 
       const next = latestMousePosition.current;
       const current = renderedMousePosition.current;
@@ -44,15 +54,15 @@ function Cursor({ isDataFetched }: { isDataFetched: boolean }) {
       if (immediate) {
         renderedMousePosition.current = next;
       } else {
+        const followFactor = getCursorFollowFactor(cursorModeRef.current);
         renderedMousePosition.current = {
-          x: current.x + (next.x - current.x) * 0.28,
-          y: current.y + (next.y - current.y) * 0.28,
+          x: current.x + (next.x - current.x) * followFactor,
+          y: current.y + (next.y - current.y) * followFactor,
         };
       }
 
       const { x, y } = renderedMousePosition.current;
-      const size = cursorSizeRef.current;
-      cursorElement.style.transform = `translate3d(${x - size}px, ${y - size}px, 0)`;
+      cursorShellElement.style.transform = `translate3d(${x}px, ${y}px, 0)`;
     },
     [],
   );
@@ -204,18 +214,24 @@ function Cursor({ isDataFetched }: { isDataFetched: boolean }) {
           : isCtaCursor
             ? ctaCursorSize
             : baseCursorSize;
-  cursorSizeRef.current = cursorSize;
 
-  useEffect(() => {
-    paintCursorPosition({ immediate: true });
-  }, [cursorSize, paintCursorPosition]);
-
-  const cursorStyle: CSSProperties = {
+  const isDirectionalCursor = cursorMode !== "default";
+  const cursorShellStyle: CSSProperties = {
     position: "fixed",
+    top: 0,
+    left: 0,
+    zIndex: 9999,
+    pointerEvents: "none",
+    transform: `translate3d(${renderedMousePosition.current.x}px, ${renderedMousePosition.current.y}px, 0)`,
+    willChange: "transform",
+  };
+  const cursorStyle: CSSProperties = {
+    position: "absolute",
     top: 0,
     left: 0,
     width: cursorSize * 2,
     height: cursorSize * 2,
+    transform: "translate3d(-50%, -50%, 0)",
     borderRadius: "50%",
     backgroundColor:
       cursorMode === "default"
@@ -227,41 +243,46 @@ function Cursor({ isDataFetched }: { isDataFetched: boolean }) {
             : "#F7CA18",
     opacity: cursorMode === "default" ? 0.4 : 1,
     border: "2px solid transparent",
-    zIndex: 9999,
-    pointerEvents: "none",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
     transition:
-      "opacity 0.16s ease-out, background-color 0.16s ease-out, border-color 0.16s ease-out, width 0.16s ease-out, height 0.16s ease-out",
-    willChange: "transform",
+      "opacity 0.18s ease-out, background-color 0.22s ease-out, border-color 0.24s ease-out, box-shadow 0.3s cubic-bezier(0.22, 1, 0.36, 1), width 0.32s cubic-bezier(0.22, 1, 0.36, 1), height 0.32s cubic-bezier(0.22, 1, 0.36, 1)",
+    willChange: "width, height, background-color, border-color, box-shadow",
   };
 
   if (isCursorEnabled) {
     return (
       <div
-        className={`cursor-circle ${cursorMode === "projects" ? "project-active" : ""} ${cursorMode === "github" ? "github-active" : ""} ${cursorMode === "certifications" ? "certifications-active" : ""} ${cursorMode === "link-black" ? "link-black-active" : ""} ${cursorMode === "link-white" ? "link-white-active" : ""} ${cursorMode === "link-yellow" ? "link-yellow-active" : ""}`}
-        style={cursorStyle}
-        ref={cursorRef}
+        className="cursor-shell"
+        style={cursorShellStyle}
+        ref={cursorShellRef}
       >
-        {cursorMode !== "default" && (
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="36"
-            height="36"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke={cursorMode === "link-white" ? "#111111" : "#ffffff"}
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="cursor-arrow"
-            style={{ transformOrigin: "center" }}
+        <div
+          className={`cursor-circle ${cursorMode === "projects" ? "project-active" : ""} ${cursorMode === "github" ? "github-active" : ""} ${cursorMode === "certifications" ? "certifications-active" : ""} ${cursorMode === "link-black" ? "link-black-active" : ""} ${cursorMode === "link-white" ? "link-white-active" : ""} ${cursorMode === "link-yellow" ? "link-yellow-active" : ""}`}
+          style={cursorStyle}
+        >
+          <span
+            className={`cursor-arrow-shell ${isDirectionalCursor ? "visible" : ""}`}
           >
-            <path d="M5 12h14"></path>
-            <path d="M12 5l7 7-7 7"></path>
-          </svg>
-        )}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="36"
+              height="36"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke={cursorMode === "link-white" ? "#111111" : "#ffffff"}
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="cursor-arrow"
+              style={{ transformOrigin: "center" }}
+            >
+              <path d="M5 12h14"></path>
+              <path d="M12 5l7 7-7 7"></path>
+            </svg>
+          </span>
+        </div>
       </div>
     );
   } else return null;

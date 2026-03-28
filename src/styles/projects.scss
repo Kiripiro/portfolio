@@ -3,6 +3,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@1,9..144,300&display=swap');
 
 .projects_container {
+    --projects-hover-ease: cubic-bezier(0.22, 1, 0.36, 1);
+    --projects-hover-fade: 0.34s ease;
+    --projects-hover-duration: 0.48s;
+    --projects-hover-expand: 0.58s;
+    --projects-row-min-height: clamp(6.2rem, 9vh, 8.8rem);
+    --projects-row-padding-block: 1rem;
+    --projects-title-rail-height: calc(var(--projects-row-min-height) - (var(--projects-row-padding-block) * 2));
     position: relative;
     margin-top: clamp(0.7rem, 2.5vh, 1.8rem);
     width: 100%;
@@ -19,10 +26,13 @@
 
     .projects_container_list_item {
         border-bottom: 2px solid #5a595964;
-        min-height: clamp(6.2rem, 9vh, 8.8rem);
+        min-height: var(--projects-row-min-height);
         height: auto;
         display: block;
-        transition: border-color 0.2s ease, outline-color 0.2s ease;
+        transition:
+            border-color 0.32s var(--projects-hover-ease),
+            outline-color 0.32s var(--projects-hover-ease),
+            background-color 0.32s var(--projects-hover-ease);
 
         @include bp.down(bp.$bp-tablet-wide) {
             height: auto;
@@ -32,13 +42,15 @@
         .projects_container_list_item_container {
             display: flex;
             align-items: flex-start;
+            min-height: var(--projects-title-rail-height);
             gap: clamp(1rem, 2vw, 2rem);
-            padding-block: 1rem;
+            padding-block: var(--projects-row-padding-block);
 
             @include bp.down(bp.$bp-desktop) {
                 flex-direction: column;
                 align-items: flex-start;
                 height: auto;
+                min-height: 0;
                 gap: 0.82rem;
                 margin-bottom: 3vh;
             }
@@ -47,8 +59,11 @@
                 font-family: 'Fraunces', serif;
                 font-size: 1.7rem;
                 font-weight: 300;
+                width: 100%;
+                line-height: 1.1;
                 margin: 0;
-                transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+                text-align: inherit;
+                transition: color 0.24s ease;
                 color: #efefef;
                 overflow-wrap: anywhere;
 
@@ -60,13 +75,24 @@
             .projects_container_list_item_title {
                 display: flex;
                 align-items: center;
+                justify-content: flex-start;
                 flex: 0 0 clamp(11rem, 20vw, 18rem);
                 min-width: 0;
+                min-height: var(--projects-title-rail-height);
+                text-align: left;
                 opacity: 1;
-                transition: opacity 0.5s ease-in-out;
+                transform: translate3d(0, 0, 0);
+                backface-visibility: hidden;
+                transition:
+                    transform var(--projects-hover-duration) var(--projects-hover-ease),
+                    opacity var(--projects-hover-fade);
+                will-change: transform;
 
                 @include bp.down(bp.$bp-desktop) {
                     flex-basis: auto;
+                    min-height: 0;
+                    justify-content: flex-start;
+                    text-align: left;
                 }
             }
 
@@ -96,12 +122,17 @@
                 margin-bottom: 0;
                 color: #efefef;
                 text-wrap: pretty;
-                transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out;
+                transform: translate3d(0, 0.35rem, 0);
+                transition:
+                    max-height var(--projects-hover-expand) var(--projects-hover-ease),
+                    opacity var(--projects-hover-fade),
+                    transform var(--projects-hover-duration) var(--projects-hover-ease);
 
                 @include bp.down(bp.$bp-tablet-wide) {
                     flex: none;
                     opacity: 1;
                     max-height: 100%;
+                    transform: none;
                     width: 100%;
                 }
             }
@@ -116,11 +147,16 @@
                 max-height: 0;
                 overflow: hidden;
                 opacity: 0;
-                transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out;
+                transform: translate3d(0, 0.42rem, 0);
+                transition:
+                    max-height var(--projects-hover-expand) var(--projects-hover-ease),
+                    opacity var(--projects-hover-fade),
+                    transform calc(var(--projects-hover-duration) + 0.04s) var(--projects-hover-ease);
 
                 @include bp.down(bp.$bp-tablet-wide) {
                     opacity: 1;
                     max-height: 8rem;
+                    transform: none;
                     width: 100%;
                 }
             }
@@ -156,10 +192,11 @@
             .projects_container_list_item_tags {
                 max-height: 14rem;
                 opacity: 1;
+                transform: translate3d(0, 0, 0);
             }
 
-            h3 {
-                transform: translateX(10px);
+            .projects_container_list_item_title {
+                transform: translate3d(clamp(0.32rem, 0.6vw, 0.6rem), 0, 0);
             }
         }
 
@@ -175,9 +212,10 @@
             .projects_container_list_item_tags {
                 opacity: 1;
                 max-height: 14rem;
+                transform: none;
             }
 
-            h3 {
+            .projects_container_list_item_title {
                 transform: none;
             }
         }
