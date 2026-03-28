@@ -1,3 +1,5 @@
+@use "./breakpoints" as bp;
+
 .hero_section {
   --hero-primary-shift: 0px;
   --hero-canvas-shift: 0px;
@@ -44,14 +46,19 @@
   padding-block: clamp(4.8rem, 10vh, 6.4rem) clamp(2.4rem, 5vh, 3.2rem);
   color: #efefef;
 
-  @media screen and (max-width: 1024px) {
+  @include bp.down(bp.$bp-tablet-wide) {
     min-height: auto;
     padding-block: clamp(3rem, 7vh, 4.2rem) clamp(1.6rem, 4vh, 2.4rem);
   }
 
-  @media screen and (max-width: 768px) {
+  @include bp.down(bp.$bp-tablet) {
     padding-block: clamp(2.6rem, 6vh, 3.4rem) 1.4rem;
     gap: 2.4rem;
+  }
+
+  @include bp.down(bp.$bp-phone-compact) {
+    gap: 2rem;
+    padding-block: clamp(2.2rem, 5vh, 3rem) 1.2rem;
   }
 }
 
@@ -87,12 +94,12 @@
     white-space: nowrap;
   }
 
-  @media screen and (max-width: 1024px) {
+  @include bp.down(bp.$bp-tablet-wide) {
     font-size: clamp(4.06rem, 12.55vw, 6.4rem);
     line-height: 0.94;
   }
 
-  @media screen and (max-width: 768px) {
+  @include bp.down(bp.$bp-tablet) {
     font-size: clamp(3.63rem, 14.52vw, 5.66rem);
     line-height: 0.95;
 
@@ -101,8 +108,12 @@
     }
   }
 
-  @media screen and (max-width: 390px) {
+  @include bp.down(bp.$bp-phone-compact) {
     font-size: clamp(2.97rem, 13.66vw, 4.25rem);
+  }
+
+  @include bp.down(bp.$bp-compact-android) {
+    font-size: clamp(2.72rem, 13.1vw, 3.96rem);
   }
 }
 
@@ -116,7 +127,7 @@
   justify-content: space-between;
   gap: clamp(2rem, 4vw, 4rem);
 
-  @media screen and (max-width: 768px) {
+  @include bp.down(bp.$bp-tablet) {
     flex-direction: column;
     align-items: flex-start;
     gap: 1.6rem;
@@ -129,7 +140,7 @@
   gap: clamp(1rem, 1.45vw, 1.35rem);
   max-width: 44ch;
 
-  @media screen and (max-width: 768px) {
+  @include bp.down(bp.$bp-tablet) {
     max-width: 100%;
   }
 }
@@ -147,13 +158,19 @@
   flex-wrap: wrap;
   gap: 0.54rem;
 
-  @media screen and (max-width: 390px) {
+  @include bp.down(bp.$bp-phone-compact) {
     width: 100%;
     gap: 0.42rem;
 
     .hero_action {
-      flex: 1 1 auto;
+      flex: 1 1 calc(50% - 0.42rem);
       justify-content: center;
+    }
+  }
+
+  @include bp.down(bp.$bp-compact-android) {
+    .hero_action {
+      flex-basis: 100%;
     }
   }
 }
@@ -194,7 +211,7 @@
   opacity: var(--hero-aside-opacity);
   will-change: transform, opacity;
 
-  @media screen and (max-width: 768px) {
+  @include bp.down(bp.$bp-tablet) {
     align-items: flex-start;
     transform: none;
   }
@@ -209,7 +226,7 @@
   align-items: flex-end;
   gap: 0.28rem;
 
-  @media screen and (max-width: 768px) {
+  @include bp.down(bp.$bp-tablet) {
     align-items: flex-start;
   }
 }
@@ -266,7 +283,7 @@
   }
 }
 
-@media screen and (min-width: 1600px) {
+@include bp.up(bp.$bp-desktop-wide) {
   .hero_section {
     min-height: calc(100svh - 3.2rem);
   }
@@ -284,7 +301,7 @@
   }
 }
 
-@media screen and (max-width: 1024px) {
+@include bp.down(bp.$bp-tablet-wide) {
   .hero_section {
     min-height: calc(94svh - 2.8rem);
     padding-block: 1rem 0.75rem;
@@ -296,7 +313,7 @@
   }
 }
 
-@media screen and (max-width: 768px) {
+@include bp.down(bp.$bp-tablet) {
   .hero_section {
     min-height: calc(92svh - 2.3rem);
   }
@@ -320,5 +337,24 @@
     min-height: 35px;
     padding: 0.16rem 0.78rem;
     font-size: 0.84rem;
+  }
+}
+
+@include bp.down(bp.$bp-phone-compact) {
+  .hero_kicker {
+    font-size: 0.72rem;
+    letter-spacing: 0.11em;
+  }
+
+  .hero_lead {
+    font-size: 0.98rem;
+    line-height: 1.52;
+  }
+
+  .hero_action,
+  .hero_action.ui_button {
+    min-height: 34px;
+    padding-inline: 0.72rem;
+    font-size: 0.82rem;
   }
 }

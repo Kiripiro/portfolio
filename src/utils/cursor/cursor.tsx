@@ -14,8 +14,17 @@ type CursorMode =
   | "link-white"
   | "link-yellow";
 
+function supportsCustomCursor() {
+  if (typeof window === "undefined") {
+    return false;
+  }
+
+  return window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+}
+
 function Cursor({ isDataFetched }: { isDataFetched: boolean }) {
   const initialPosition = getLastPointerPosition();
+  const [isCursorEnabled, setIsCursorEnabled] = useState(supportsCustomCursor);
   const [cursorMode, setCursorMode] = useState<CursorMode>("default");
   const latestMousePosition = useRef(initialPosition);
   const renderedMousePosition = useRef(initialPosition);
@@ -64,15 +73,35 @@ function Cursor({ isDataFetched }: { isDataFetched: boolean }) {
     }
   }, [paintCursorPosition]);
 
-  function isWebsiteOnDesktop() {
-    return (
-      window.navigator.userAgent.indexOf("Mobile") === -1 &&
-      window.navigator.userAgent.indexOf("Tablet") === -1
-    );
-  }
+  useEffect(() => {
+    const pointerQuery = window.matchMedia("(hover: hover) and (pointer: fine)");
+    const legacyPointerQuery = pointerQuery as MediaQueryList & {
+      addListener?: (listener: (event: MediaQueryListEvent) => void) => void;
+      removeListener?: (listener: (event: MediaQueryListEvent) => void) => void;
+    };
+    const syncCursorAvailability = () => {
+      setIsCursorEnabled(pointerQuery.matches);
+    };
+
+    syncCursorAvailability();
+
+    if ("addEventListener" in pointerQuery) {
+      pointerQuery.addEventListener("change", syncCursorAvailability);
+    } else {
+      legacyPointerQuery.addListener?.(syncCursorAvailability);
+    }
+
+    return () => {
+      if ("removeEventListener" in pointerQuery) {
+        pointerQuery.removeEventListener("change", syncCursorAvailability);
+      } else {
+        legacyPointerQuery.removeListener?.(syncCursorAvailability);
+      }
+    };
+  }, []);
 
   useEffect(() => {
-    if (!isDataFetched) return;
+    if (!isDataFetched || !isCursorEnabled) return;
 
     const updateCursorMode = (nextMode: CursorMode) => {
       if (cursorModeRef.current === nextMode) return;
@@ -145,7 +174,14 @@ function Cursor({ isDataFetched }: { isDataFetched: boolean }) {
         rafId.current = null;
       }
     };
-  }, [animateCursor, isDataFetched]);
+  }, [animateCursor, isCursorEnabled, isDataFetched]);
+
+  useEffect(() => {
+    if (isCursorEnabled || rafId.current === null) return;
+
+    cancelAnimationFrame(rafId.current);
+    rafId.current = null;
+  }, [isCursorEnabled]);
 
   const baseCursorSize = 16;
   const ctaCursorSize = 24;
@@ -201,7 +237,7 @@ function Cursor({ isDataFetched }: { isDataFetched: boolean }) {
     willChange: "transform",
   };
 
-  if (isWebsiteOnDesktop()) {
+  if (isCursorEnabled) {
     return (
       <div
         className={`cursor-circle ${cursorMode === "projects" ? "project-active" : ""} ${cursorMode === "github" ? "github-active" : ""} ${cursorMode === "certifications" ? "certifications-active" : ""} ${cursorMode === "link-black" ? "link-black-active" : ""} ${cursorMode === "link-white" ? "link-white-active" : ""} ${cursorMode === "link-yellow" ? "link-yellow-active" : ""}`}

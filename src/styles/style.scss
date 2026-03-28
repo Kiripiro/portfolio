@@ -1,3 +1,5 @@
+@use "./breakpoints" as bp;
+
 @font-face {
     src: url('./fonts/PPMori-Regular.otf') format('truetype');
     font-family: 'PP Mori';
@@ -10,8 +12,10 @@
     --section-gap: clamp(2.2rem, 5vh, 4rem);
 }
 
-* {
-    cursor: none !important;
+@media (hover: hover) and (pointer: fine) {
+    * {
+        cursor: none !important;
+    }
 }
 
 html {
@@ -79,6 +83,18 @@ main {
     >.wrapper {
         width: min(1720px, calc(100% - 3rem));
         margin-inline: auto;
+
+        @include bp.down(bp.$bp-phone-large) {
+            width: min(1720px, calc(100% - 2.5rem));
+        }
+
+        @include bp.down(bp.$bp-phone-compact) {
+            width: min(1720px, calc(100% - 2rem));
+        }
+
+        @include bp.down(bp.$bp-compact-android) {
+            width: min(1720px, calc(100% - 1.5rem));
+        }
     }
 
     .app_header {
@@ -112,7 +128,7 @@ main {
     }
 }
 
-@media screen and (min-width: 1024px) {
+@include bp.up(bp.$bp-tablet-wide) {
     .App {
         .app_header {
             padding-top: clamp(0.8rem, 2vh, 1.25rem);
@@ -128,7 +144,7 @@ main {
     gap: var(--section-gap);
 }
 
-@media screen and (min-width: 1200px) {
+@include bp.up(bp.$bp-desktop) {
     .container {
         gap: clamp(2.8rem, 6.2vh, 5rem);
     }
@@ -172,6 +188,7 @@ a {
     --btn-text: var(--ui-text);
     --btn-shadow: transparent;
     display: inline-flex;
+    box-sizing: border-box;
     align-items: center;
     justify-content: center;
     gap: 0.42rem;
