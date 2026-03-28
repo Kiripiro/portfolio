@@ -1,4 +1,5 @@
 import "../../styles/navbar.scss";
+import { useSmoothScroll } from "../../utils/scroll/useSmoothScroll";
 
 const links = [
   { path: "#about", label: "About" },
@@ -8,16 +9,7 @@ const links = [
 ];
 
 function Navbar() {
-  function scrollTo(target: string) {
-    const section = document.querySelector<HTMLElement>(target);
-    if (!section) return;
-
-    const top = section.getBoundingClientRect().top + window.scrollY;
-    window.scrollTo({
-      top,
-      behavior: "smooth",
-    });
-  }
+  const { scrollToHash } = useSmoothScroll();
 
   return (
     <nav className="nav">
@@ -26,7 +18,7 @@ function Navbar() {
           href="#home"
           onClick={(event) => {
             event.preventDefault();
-            scrollTo("#home");
+            scrollToHash("#home");
           }}
         >
           Alex Tourret
@@ -39,7 +31,7 @@ function Navbar() {
             href={link.path}
             onClick={(event) => {
               event.preventDefault();
-              scrollTo(link.path);
+              scrollToHash(link.path);
             }}
             className="nav_link ui_nav_link"
           >

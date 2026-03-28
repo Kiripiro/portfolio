@@ -11,9 +11,11 @@ import MenuBurger from "./components/navbar/menuBurger/menuBurger";
 import { SnackbarProvider } from "notistack";
 import Preloader from "./utils/preloader/preloader";
 import { AnimatePresence } from "framer-motion";
-import Lenis from "lenis";
+import { SmoothScrollProvider } from "./utils/scroll/smoothScroll";
 
 const NAV_DESKTOP_MIN_WIDTH = 1024;
+const DESKTOP_NAV_HIDE_THRESHOLD = 120;
+const DESKTOP_NAV_RESTORE_THRESHOLD = 24;
 
 const Projects = lazy(() => import("./components/projects/projects"));
 
@@ -39,6 +41,7 @@ function App() {
   const [showMenu, setShowMenu] = useState(false);
   const [isMenuToggled, setIsMenuToggled] = useState(false);
   const [showNavbar, setShowNavbar] = useState(true);
+  const showNavbarRef = useRef(true);
   const [isWideViewport, setIsWideViewport] = useState(
     typeof window !== "undefined"
       ? window.innerWidth >= NAV_DESKTOP_MIN_WIDTH
@@ -62,32 +65,21 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const lenis = new Lenis();
-    let animationFrameId = 0;
-
-    function raf(time: number) {
-      lenis.raf(time);
-      animationFrameId = requestAnimationFrame(raf);
-    }
-
-    animationFrameId = requestAnimationFrame(raf);
-
-    return () => {
-      cancelAnimationFrame(animationFrameId);
-      lenis.destroy();
-    };
-  }, []);
-
-  useEffect(() => {
     const updateViewportMode = () => {
       const wideViewport = window.innerWidth >= NAV_DESKTOP_MIN_WIDTH;
       setIsWideViewport(wideViewport);
 
       if (wideViewport) {
-        const atTop = window.scrollY <= 100;
-        setShowNavbar(atTop);
-        setShowMenu(!atTop);
+        const currentY = window.scrollY;
+        const nextShowNavbar = showNavbarRef.current
+          ? currentY <= DESKTOP_NAV_HIDE_THRESHOLD
+          : currentY <= DESKTOP_NAV_RESTORE_THRESHOLD;
+
+        showNavbarRef.current = nextShowNavbar;
+        setShowNavbar(nextShowNavbar);
+        setShowMenu(!nextShowNavbar);
       } else {
+        showNavbarRef.current = false;
         setShowNavbar(false);
         setShowMenu(true);
       }
@@ -103,27 +95,34 @@ function App() {
 
   useEffect(() => {
     if (!isWideViewport) {
+      showNavbarRef.current = false;
       setShowNavbar(false);
       setShowMenu(true);
       return;
     }
 
-    if (isMenuToggled && window.scrollY < 100) {
+    if (isMenuToggled && window.scrollY < DESKTOP_NAV_RESTORE_THRESHOLD) {
       setIsMenuToggled(false);
       setShowMenu(false);
       setShowNavbar(true);
+      showNavbarRef.current = true;
     }
-    const handleScroll = () => {
-      const scrollThreshold = 100;
 
-      if (window.scrollY > scrollThreshold) {
-        setShowMenu(true);
-        setShowNavbar(false);
-      } else {
-        setShowMenu(false);
-        setShowNavbar(true);
+    const handleScroll = () => {
+      const currentY = window.scrollY;
+      let nextShowNavbar = showNavbarRef.current;
+
+      if (nextShowNavbar) {
+        nextShowNavbar = currentY <= DESKTOP_NAV_HIDE_THRESHOLD;
+      } else if (currentY <= DESKTOP_NAV_RESTORE_THRESHOLD) {
+        nextShowNavbar = true;
       }
+
+      showNavbarRef.current = nextShowNavbar;
+      setShowNavbar(nextShowNavbar);
+      setShowMenu(!nextShowNavbar);
     };
+
     window.addEventListener("scroll", handleScroll);
 
     return () => {
@@ -132,63 +131,72 @@ function App() {
   }, [isMenuToggled, isWideViewport]);
 
   return (
-    <div id="home" className="App">
-      <div className="grain-overlay"></div>
-      <AnimatePresence mode="wait">
-        {shouldUsePreloader && isLoading && (
-          <Preloader
-            setIsLoading={setIsLoading}
-            isDataFetched={isDataFetched}
-          />
-        )}
-      </AnimatePresence>
-      <div className="wrapper">
-        {isLoading ? (
-          <></>
-        ) : (
-          <>
-            <header className="app_header">
-              {isWideViewport && showNavbar && <Navbar />}
-              <div>
-                <MenuBurger
-                  isVisible={isWideViewport ? showMenu : true}
-                  isMenuToggled={isMenuToggled}
-                  setIsMenuToggled={setIsMenuToggled}
-                  isPinned={!isWideViewport}
-                />
-              </div>
-            </header>
-            <main>
-              <SnackbarProvider />
-              <Cursor isDataFetched={isDataFetched} />
-              <div className="content_wrapper" ref={containerRef}>
-                <div className="container">
-                  <Hero />
-                  <About />
-                  <Certifications />
-                  <Suspense
-                    fallback={
-                      <section
-                        className="projects_suspense_placeholder"
-                        aria-hidden="true"
-                      >
-                        <div className="projects_suspense_line" />
-                        <div className="projects_suspense_line" />
-                        <div className="projects_suspense_line" />
-                        <div className="projects_suspense_line" />
-                      </section>
-                    }
+    <SmoothScrollProvider>
+      <div id="home" className="App">
+        <div className="grain-overlay"></div>
+        <AnimatePresence mode="wait">
+          {shouldUsePreloader && isLoading && (
+            <Preloader
+              setIsLoading={setIsLoading}
+              isDataFetched={isDataFetched}
+            />
+          )}
+        </AnimatePresence>
+        <div className="wrapper">
+          {isLoading ? (
+            <></>
+          ) : (
+            <>
+              <header className="app_header">
+                {isWideViewport && (
+                  <div
+                    className={`desktop_nav_shell ${showNavbar ? "visible" : "hidden"}`}
+                    aria-hidden={!showNavbar}
                   >
-                    <Projects repos={repos} isDataFetched={isDataFetched} />
-                  </Suspense>
-                  <Contact />
+                    <Navbar />
+                  </div>
+                )}
+                <div>
+                  <MenuBurger
+                    isVisible={isWideViewport ? showMenu : true}
+                    isMenuToggled={isMenuToggled}
+                    setIsMenuToggled={setIsMenuToggled}
+                    isPinned={!isWideViewport}
+                  />
                 </div>
-              </div>
-            </main>
-          </>
-        )}
+              </header>
+              <main>
+                <SnackbarProvider />
+                <Cursor isDataFetched={isDataFetched} />
+                <div className="content_wrapper" ref={containerRef}>
+                  <div className="container">
+                    <Hero />
+                    <About />
+                    <Certifications />
+                    <Suspense
+                      fallback={
+                        <section
+                          className="projects_suspense_placeholder"
+                          aria-hidden="true"
+                        >
+                          <div className="projects_suspense_line" />
+                          <div className="projects_suspense_line" />
+                          <div className="projects_suspense_line" />
+                          <div className="projects_suspense_line" />
+                        </section>
+                      }
+                    >
+                      <Projects repos={repos} isDataFetched={isDataFetched} />
+                    </Suspense>
+                    <Contact />
+                  </div>
+                </div>
+              </main>
+            </>
+          )}
+        </div>
       </div>
-    </div>
+    </SmoothScrollProvider>
   );
 }
 

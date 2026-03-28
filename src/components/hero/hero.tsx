@@ -1,9 +1,12 @@
 import { useEffect, useRef } from "react";
 import "../../styles/hero.scss";
 import CvLink from "../shared/cvLink";
+import { useSmoothScroll } from "../../utils/scroll/useSmoothScroll";
 
 function Hero() {
+  const sectionRef = useRef<HTMLElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const { scrollToHash, subscribe } = useSmoothScroll();
 
   useEffect(() => {
     const cv = canvasRef.current;
@@ -73,9 +76,93 @@ function Hero() {
     };
   }, []);
 
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+
+    const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const legacyMotionQuery = motionQuery as MediaQueryList & {
+      addListener?: (listener: (event: MediaQueryListEvent) => void) => void;
+      removeListener?: (listener: (event: MediaQueryListEvent) => void) => void;
+    };
+
+    const resetHeroMotion = () => {
+      section.style.setProperty("--hero-primary-shift", "0px");
+      section.style.setProperty("--hero-canvas-shift", "0px");
+      section.style.setProperty("--hero-canvas-scale", "1");
+      section.style.setProperty("--hero-aside-shift", "-6px");
+      section.style.setProperty("--hero-aside-opacity", "1");
+    };
+
+    const canAnimateHero = () =>
+      !motionQuery.matches && window.innerWidth >= 1024;
+
+    const applyHeroMotion = ({ scroll }: { scroll: number }) => {
+      if (!canAnimateHero()) {
+        resetHeroMotion();
+        return;
+      }
+
+      const travelWindow = Math.max(window.innerHeight * 0.78, 620);
+      const progress = Math.min(1, Math.max(0, scroll / travelWindow));
+
+      section.style.setProperty(
+        "--hero-primary-shift",
+        `${(progress * 40).toFixed(2)}px`,
+      );
+      section.style.setProperty(
+        "--hero-canvas-shift",
+        `${(progress * 26).toFixed(2)}px`,
+      );
+      section.style.setProperty(
+        "--hero-canvas-scale",
+        `${(1 + progress * 0.03).toFixed(4)}`,
+      );
+      section.style.setProperty(
+        "--hero-aside-shift",
+        `${(-6 + progress * 22).toFixed(2)}px`,
+      );
+      section.style.setProperty(
+        "--hero-aside-opacity",
+        `${(1 - progress * 0.18).toFixed(3)}`,
+      );
+    };
+
+    const unsubscribe = subscribe(applyHeroMotion);
+
+    const handleResize = () => {
+      applyHeroMotion({
+        scroll: window.scrollY,
+      });
+    };
+
+    const handleMotionPreferenceChange = () => {
+      handleResize();
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    if ("addEventListener" in motionQuery) {
+      motionQuery.addEventListener("change", handleMotionPreferenceChange);
+    } else {
+      legacyMotionQuery.addListener?.(handleMotionPreferenceChange);
+    }
+
+    return () => {
+      unsubscribe();
+      resetHeroMotion();
+      window.removeEventListener("resize", handleResize);
+      if ("removeEventListener" in motionQuery) {
+        motionQuery.removeEventListener("change", handleMotionPreferenceChange);
+      } else {
+        legacyMotionQuery.removeListener?.(handleMotionPreferenceChange);
+      }
+    };
+  }, [subscribe]);
+
   return (
     <>
-      <section className="hero_section">
+      <section ref={sectionRef} className="hero_section">
         <canvas ref={canvasRef} className="hero_canvas" aria-hidden="true" />
 
         <div className="hero">
@@ -106,6 +193,10 @@ function Hero() {
                     href="#projects"
                     className="hero_action ui_button ui_button_primary"
                     data-cursor-hero="black"
+                    onClick={(event) => {
+                      event.preventDefault();
+                      scrollToHash("#projects");
+                    }}
                   >
                     View Projects
                   </a>
@@ -117,6 +208,10 @@ function Hero() {
                     href="#contact"
                     className="hero_action ui_button ui_button_secondary"
                     data-cursor-hero="yellow"
+                    onClick={(event) => {
+                      event.preventDefault();
+                      scrollToHash("#contact");
+                    }}
                   >
                     Let's Talk
                   </a>

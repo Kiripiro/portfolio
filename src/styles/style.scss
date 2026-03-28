@@ -32,6 +32,32 @@ body {
     overflow-x: hidden;
 }
 
+html.lenis,
+html.lenis body {
+    height: auto;
+}
+
+.lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+}
+
+.lenis [data-lenis-prevent],
+.lenis [data-lenis-prevent-wheel],
+.lenis [data-lenis-prevent-touch],
+.lenis [data-lenis-prevent-vertical],
+.lenis [data-lenis-prevent-horizontal] {
+    overscroll-behavior: contain;
+}
+
+.lenis:not(.lenis-autoToggle).lenis-stopped {
+    overflow: clip;
+}
+
+.lenis.lenis-scrolling iframe,
+.lenis.lenis-smooth iframe {
+    pointer-events: none;
+}
+
 .grain-overlay {
     position: fixed;
     top: 0;
@@ -59,35 +85,39 @@ main {
         min-height: 0;
     }
 
+    .desktop_nav_shell {
+        opacity: 0;
+        transform: translate3d(0, -10px, 0);
+        visibility: hidden;
+        pointer-events: none;
+        transition:
+            opacity 0.18s ease,
+            transform 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+            visibility 0s linear 0.22s;
+
+        &.visible {
+            opacity: 1;
+            transform: translate3d(0, 0, 0);
+            visibility: visible;
+            pointer-events: auto;
+            transition:
+                opacity 0.18s ease,
+                transform 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+                visibility 0s linear 0s;
+        }
+    }
+
     .content_wrapper {
         margin-inline: 0;
-    }
-
-    html.lenis {
-        height: auto;
-    }
-
-    .lenis.lenis-smooth {
-        scroll-behavior: auto !important;
-    }
-
-    .lenis.lenis-smooth [data-lenis-prevent] {
-        overscroll-behavior: contain;
-    }
-
-    .lenis.lenis-stopped {
-        overflow: hidden;
-    }
-
-    .lenis.lenis-scrolling iframe {
-        pointer-events: none;
     }
 }
 
 @media screen and (min-width: 1024px) {
     .App {
         .app_header {
+            padding-top: clamp(0.8rem, 2vh, 1.25rem);
             min-height: clamp(2.8rem, 5vh, 3.2rem);
+            box-sizing: border-box;
         }
     }
 }

@@ -6,7 +6,7 @@ import Github from "../../../utils/svgs/github";
 import Malt from "../../../utils/svgs/malt";
 import CvLink from "../../shared/cvLink";
 import MagneticButton, { MagneticLayer } from "./magneticButton";
-import Lenis from "lenis";
+import { useSmoothScroll } from "../../../utils/scroll/useSmoothScroll";
 
 const SCROLL_SHOW_THRESHOLD = 220;
 const SCROLL_HIDE_THRESHOLD = 170;
@@ -123,37 +123,13 @@ function MenuBurger({
   const [hasScrolled, setHasScrolled] = useState(false);
   const currentYear = new Date().getFullYear();
 
-  const lenis = useRef<Lenis | null>(null);
+  const { scrollToSection: navigateToSection } = useSmoothScroll();
   const triggerRef = useRef<HTMLButtonElement | null>(null);
   const menuRef = useRef<HTMLElement | null>(null);
   const firstMenuItemRef = useRef<HTMLAnchorElement | null>(null);
   const shouldRestoreFocusRef = useRef(true);
 
   const isMenuOpen = isMenuToggled;
-
-  useEffect(() => {
-    lenis.current = new Lenis({
-      duration: 1.2,
-      easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      orientation: "vertical",
-      gestureOrientation: "vertical",
-      smoothWheel: true,
-      syncTouch: true,
-      touchMultiplier: 2,
-      infinite: false,
-    });
-
-    function raf(time: number) {
-      lenis.current?.raf(time);
-      requestAnimationFrame(raf);
-    }
-
-    requestAnimationFrame(raf);
-
-    return () => {
-      lenis.current?.destroy();
-    };
-  }, []);
 
   const closeMenu = useCallback(
     ({ restoreFocus = true }: { restoreFocus?: boolean } = {}) => {
@@ -171,23 +147,6 @@ function MenuBurger({
 
     setIsMenuToggled(true);
   }
-
-  const scrollToSection = (sectionId: string) => {
-    const section = document.getElementById(sectionId);
-    if (!section) return;
-
-    if (lenis.current) {
-      lenis.current.scrollTo(section, {
-        duration: 1.15,
-        easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      });
-    } else {
-      section.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    }
-  };
 
   useEffect(() => {
     if (isPinned) {
@@ -260,6 +219,7 @@ function MenuBurger({
   }, [closeMenu, isMenuOpen]);
 
   const isBurgerInverted = isMenuOpen || isButtonHovered || isButtonFocused;
+  const shouldShowBurger = isPinned || (hasScrolled && isVisible);
   const burgerBackgroundColor = isBurgerInverted
     ? BURGER_ACTIVE_BACKGROUND
     : BURGER_BASE_BACKGROUND;
@@ -269,41 +229,37 @@ function MenuBurger({
 
   return (
     <>
-      {hasScrolled && (
-        <MagneticButton
-          ref={triggerRef}
-          className={`button-2 ${isVisible || isPinned ? "visible" : "hidden"}`}
+      <MagneticButton
+        ref={triggerRef}
+        className={`button-2 ${shouldShowBurger ? "visible" : "hidden"}`}
+        speed={0.3}
+        scale={1.2}
+        tolerance={0.9}
+        type="button"
+        aria-label={isMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+        aria-controls={MENU_PANEL_ID}
+        aria-expanded={isMenuOpen}
+        aria-haspopup="dialog"
+        onClick={toggleMenu}
+        onMouseEnter={() => setIsButtonHovered(true)}
+        onMouseLeave={() => setIsButtonHovered(false)}
+        onFocus={() => setIsButtonFocused(true)}
+        onBlur={() => setIsButtonFocused(false)}
+      >
+        <MagneticLayer
+          className="button-1 burger-trigger_shell"
           speed={0.3}
           scale={1.2}
           tolerance={0.9}
-          type="button"
-          aria-label={
-            isMenuOpen ? "Close navigation menu" : "Open navigation menu"
-          }
-          aria-controls={MENU_PANEL_ID}
-          aria-expanded={isMenuOpen}
-          aria-haspopup="dialog"
-          onClick={toggleMenu}
-          onMouseEnter={() => setIsButtonHovered(true)}
-          onMouseLeave={() => setIsButtonHovered(false)}
-          onFocus={() => setIsButtonFocused(true)}
-          onBlur={() => setIsButtonFocused(false)}
+          style={{
+            backgroundColor: burgerBackgroundColor,
+            color: burgerLineColor,
+          }}
+          aria-hidden="true"
         >
-          <MagneticLayer
-            className="button-1 burger-trigger_shell"
-            speed={0.3}
-            scale={1.2}
-            tolerance={0.9}
-            style={{
-              backgroundColor: burgerBackgroundColor,
-              color: burgerLineColor,
-            }}
-            aria-hidden="true"
-          >
-            <BurgerVisual isOpen={isMenuOpen} />
-          </MagneticLayer>
-        </MagneticButton>
-      )}
+          <BurgerVisual isOpen={isMenuOpen} />
+        </MagneticLayer>
+      </MagneticButton>
 
       <AnimatePresence
         onExitComplete={() => {
@@ -342,7 +298,7 @@ function MenuBurger({
                       onClick={(event) => {
                         event.preventDefault();
                         closeMenu({ restoreFocus: false });
-                        scrollToSection(link.id);
+                        navigateToSection(link.id);
                       }}
                     >
                       <span>{link.label}</span>
