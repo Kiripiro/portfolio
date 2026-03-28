@@ -9,7 +9,6 @@ const certifications = [
     summary:
       "EU-recognized level 7 certification (master equivalent) focused on data architecture, technical specification design, project coordination, process improvement, and production launch supervision.",
     link: "https://www.credly.com/badges/d1980401-c0b8-4610-8f63-be03bda9ecd9/public_url",
-    cta: "View Badge",
   },
   {
     title: "RNCP Level 6 - Computer Architecture",
@@ -18,7 +17,6 @@ const certifications = [
     summary:
       "EU-recognized level 6 certification (bachelor equivalent) covering web/mobile application development, requirement analysis, testing and code correction, deployment, and application maintenance.",
     link: "https://www.credly.com/badges/d811cf64-fb93-44dc-89f2-cf3595f25aa9/public_url",
-    cta: "View Badge",
   },
   {
     title: "IBM AI Engineering Specialization",
@@ -27,7 +25,6 @@ const certifications = [
     summary:
       "Covers machine learning and deep learning workflows: supervised/unsupervised models, Spark pipelines, and practical implementation with Scikit-learn, Keras, PyTorch, and TensorFlow.",
     link: "https://www.coursera.org/account/accomplishments/specialization/LCBSMW299C72",
-    cta: "View Certificate",
   },
 ];
 
@@ -44,24 +41,20 @@ function Certifications() {
 
         <div className="certifications_grid">
           {certifications.map((certification) => (
-            <article
+            <a
               className="cert_card certifications-active"
               key={certification.title}
+              href={certification.link}
+              target="_blank"
+              rel="noopener noreferrer"
               data-cursor-certification="true"
+              aria-label={`Open ${certification.title}`}
             >
               <p className="cert_issuer">{certification.issuer}</p>
               <h3>{certification.title}</h3>
               <p className="cert_detail">{certification.detail}</p>
               <p className="cert_summary">{certification.summary}</p>
-              <a
-                className="ui_button ui_button_secondary"
-                href={certification.link}
-                target="_blank"
-                rel="noreferrer"
-              >
-                {certification.cta}
-              </a>
-            </article>
+            </a>
           ))}
         </div>
       </div>

@@ -3,10 +3,9 @@ import MailSVG from "../../utils/svgs/mail";
 import Malt from "../../utils/svgs/malt";
 import Banner from "./banner";
 import SectionIntro from "../shared/sectionIntro";
+import { PROFILE } from "../../config/profile";
 
 function About() {
-  const maltProfileUrl = "https://www.malt.fr/profile/alexandretourret";
-
   return (
     <section id="about" className="about_section">
       <div className="about_content">
@@ -56,7 +55,7 @@ function About() {
 
             <div className="about_content_button">
               <a
-                href="mailto:contact@atourret.fr"
+                href={`mailto:${PROFILE.email}`}
                 className="about_content_button_link ui_button ui_button_secondary"
                 data-cursor-hero="yellow"
               >
@@ -66,7 +65,7 @@ function About() {
                 </span>
               </a>
               <a
-                href={maltProfileUrl}
+                href={PROFILE.maltUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="about_content_button_link ui_button ui_button_primary"

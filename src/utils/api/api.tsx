@@ -1,13 +1,5 @@
 import reposData from "../../data/repos.json";
-
-interface Repo {
-  id: number;
-  name: string;
-  description: string;
-  html_url: string;
-  created_at: string;
-  languages: Record<string, number>;
-}
+import type { Repo } from "../../types/repo";
 
 const curatedRepoNames = [
   "leaffliction",

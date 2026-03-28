@@ -1,5 +1,6 @@
 import type { AnchorHTMLAttributes, MouseEvent } from "react";
 import ReadCv from "../../utils/svgs/read";
+import { PROFILE } from "../../config/profile";
 
 type CvLinkVariant = "button" | "icon";
 
@@ -7,8 +8,6 @@ interface CvLinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
   variant?: CvLinkVariant;
   label?: string;
 }
-
-const CV_PUBLIC_PATH = "/CV_TOURRET_Alexandre_2026.pdf";
 
 function CvLink({
   variant = "button",
@@ -28,7 +27,7 @@ function CvLink({
 
   return (
     <a
-      href={CV_PUBLIC_PATH}
+      href={PROFILE.cvPublicPath}
       className={classes}
       target="_blank"
       rel="noopener noreferrer"

@@ -7,6 +7,7 @@ import Malt from "../../../utils/svgs/malt";
 import CvLink from "../../shared/cvLink";
 import MagneticButton, { MagneticLayer } from "./magneticButton";
 import { useSmoothScroll } from "../../../utils/scroll/useSmoothScroll";
+import { PROFILE, getCurrentYear } from "../../../config/profile";
 
 const SCROLL_SHOW_THRESHOLD = 220;
 const SCROLL_HIDE_THRESHOLD = 170;
@@ -121,7 +122,7 @@ function MenuBurger({
   const [isButtonHovered, setIsButtonHovered] = useState(false);
   const [isButtonFocused, setIsButtonFocused] = useState(false);
   const [hasScrolled, setHasScrolled] = useState(false);
-  const currentYear = new Date().getFullYear();
+  const currentYear = getCurrentYear();
 
   const { scrollToSection: navigateToSection } = useSmoothScroll();
   const triggerRef = useRef<HTMLButtonElement | null>(null);
@@ -309,7 +310,7 @@ function MenuBurger({
 
               <div className="menu-socials">
                 <a
-                  href="https://www.linkedin.com/in/atourret/"
+                  href={PROFILE.linkedinUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="icon menu_social_icon ui_icon_button"
@@ -320,7 +321,7 @@ function MenuBurger({
                   <Linkedin />
                 </a>
                 <a
-                  href="https://github.com/Kiripiro"
+                  href={PROFILE.githubUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="icon menu_social_icon ui_icon_button"
@@ -331,7 +332,7 @@ function MenuBurger({
                   <Github />
                 </a>
                 <a
-                  href="https://www.malt.fr/profile/alexandretourret"
+                  href={PROFILE.maltUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="icon menu_social_icon ui_icon_button"

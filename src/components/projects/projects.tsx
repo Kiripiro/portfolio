@@ -1,15 +1,8 @@
 import "../../styles/projects.scss";
 import "../../styles/style.scss";
 import SectionIntro from "../shared/sectionIntro";
-
-interface Repo {
-  id: number;
-  name: string;
-  description: string;
-  html_url: string;
-  created_at: string;
-  languages: Record<string, number>;
-}
+import { PROFILE } from "../../config/profile";
+import type { Repo } from "../../types/repo";
 
 /**
  * Renders a section containing a list of projects.
@@ -67,7 +60,7 @@ function Projects({
                 key={repo.id}
                 href={repo.html_url}
                 target="_blank"
-                rel="noreferrer"
+                rel="noopener noreferrer"
               >
                 <div className="projects_container_list_item_container">
                   <h3 className="projects_container_list_item_title">
@@ -97,9 +90,9 @@ function Projects({
                 Projects data is temporarily unavailable. You can still visit my{" "}
                 <a
                   className="ui_inline_link"
-                  href="https://github.com/Kiripiro"
+                  href={PROFILE.githubUrl}
                   target="_blank"
-                  rel="noreferrer"
+                  rel="noopener noreferrer"
                 >
                   GitHub
                 </a>
@@ -117,9 +110,9 @@ function Projects({
           </div>
           <a
             className="projects_cta_button ui_button ui_button_primary"
-            href="https://github.com/Kiripiro"
+            href={PROFILE.githubUrl}
             target="_blank"
-            rel="noreferrer"
+            rel="noopener noreferrer"
             data-cursor-hero="black"
           >
             Browse GitHub

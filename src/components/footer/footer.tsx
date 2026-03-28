@@ -5,35 +5,48 @@ import Github from "../../utils/svgs/github";
 import Malt from "../../utils/svgs/malt";
 import { enqueueSnackbar } from "notistack";
 import CvLink from "../shared/cvLink";
+import { PROFILE, getCurrentYear } from "../../config/profile";
 
 function Contact() {
-  const contactEmail = "contact@atourret.fr";
-  const maltProfileUrl = "https://www.malt.fr/profile/alexandretourret";
-  const currentYear = new Date().getFullYear();
+  const currentYear = getCurrentYear();
 
-  function openExternalUrl(url: string) {
-    window.open(url, "_blank", "noopener,noreferrer");
+  function copyTextFallback(value: string) {
+    const textarea = document.createElement("textarea");
+    textarea.value = value;
+    textarea.setAttribute("readonly", "");
+    textarea.style.position = "absolute";
+    textarea.style.left = "-9999px";
+    document.body.appendChild(textarea);
+    textarea.select();
+
+    const didCopy = document.execCommand("copy");
+    document.body.removeChild(textarea);
+
+    if (!didCopy) {
+      throw new Error("Clipboard fallback failed");
+    }
   }
 
-  function copyToClipboard() {
-    navigator.clipboard.writeText(contactEmail);
-    enqueueSnackbar("Email copied to clipboard.", {
-      variant: "success",
-      preventDuplicate: true,
-      autoHideDuration: 2000,
-    });
-  }
+  async function copyToClipboard() {
+    try {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(PROFILE.email);
+      } else {
+        copyTextFallback(PROFILE.email);
+      }
 
-  function handleLinkedinClick() {
-    openExternalUrl("https://www.linkedin.com/in/atourret/");
-  }
-
-  function handleGithubClick() {
-    openExternalUrl("https://github.com/Kiripiro");
-  }
-
-  function handleMaltClick() {
-    openExternalUrl(maltProfileUrl);
+      enqueueSnackbar("Email copied to clipboard.", {
+        variant: "success",
+        preventDuplicate: true,
+        autoHideDuration: 2000,
+      });
+    } catch {
+      enqueueSnackbar("Unable to copy email. Use contact@atourret.fr.", {
+        variant: "error",
+        preventDuplicate: true,
+        autoHideDuration: 2600,
+      });
+    }
   }
 
   return (
@@ -57,37 +70,40 @@ function Contact() {
                   className="contact_text_link ui_button ui_button_primary"
                   onClick={copyToClipboard}
                 >
-                  {contactEmail}
+                  {PROFILE.email}
                 </button>
                 <CvLink className="contact_cv_link" />
                 <div className="contact_content_socials">
-                  <button
-                    type="button"
+                  <a
+                    href={PROFILE.linkedinUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     data-cursor-default="true"
                     className="icon ui_icon_button"
-                    onClick={handleLinkedinClick}
                     aria-label="Open LinkedIn profile"
                   >
                     <Linkedin />
-                  </button>
-                  <button
-                    type="button"
+                  </a>
+                  <a
+                    href={PROFILE.githubUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     data-cursor-default="true"
                     className="icon ui_icon_button"
-                    onClick={handleGithubClick}
                     aria-label="Open GitHub profile"
                   >
                     <Github />
-                  </button>
-                  <button
-                    type="button"
+                  </a>
+                  <a
+                    href={PROFILE.maltUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     data-cursor-default="true"
                     className="icon ui_icon_button"
-                    onClick={handleMaltClick}
                     aria-label="Open Malt profile"
                   >
                     <Malt />
-                  </button>
+                  </a>
                 </div>
               </div>
 
@@ -103,7 +119,7 @@ function Contact() {
                   Usually replies within 24 hours
                 </p>
                 <a
-                  href={maltProfileUrl}
+                  href={PROFILE.maltUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="contact_malt_link ui_inline_link"

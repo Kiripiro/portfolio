@@ -1,5 +1,9 @@
 import { CSSProperties, useCallback, useEffect, useRef, useState } from "react";
 import "./cursor.scss";
+import {
+  getLastPointerPosition,
+  setLastPointerPosition,
+} from "../pointer/pointerPosition";
 
 type CursorMode =
   | "default"
@@ -11,27 +15,10 @@ type CursorMode =
   | "link-yellow";
 
 function Cursor({ isDataFetched }: { isDataFetched: boolean }) {
-  const PERSIST_INTERVAL_MS = 180;
-
-  const getInitialPosition = () => {
-    try {
-      const raw = localStorage.getItem("mousePosition");
-      if (!raw) return { x: 0, y: 0 };
-      const parsed = JSON.parse(raw);
-      if (typeof parsed?.x === "number" && typeof parsed?.y === "number") {
-        return parsed;
-      }
-    } catch {
-      // Ignore malformed localStorage payloads.
-    }
-    return { x: 0, y: 0 };
-  };
-
-  const initialPosition = getInitialPosition();
+  const initialPosition = getLastPointerPosition();
   const [cursorMode, setCursorMode] = useState<CursorMode>("default");
   const latestMousePosition = useRef(initialPosition);
   const renderedMousePosition = useRef(initialPosition);
-  const lastPersistTime = useRef(0);
   const cursorModeRef = useRef<CursorMode>("default");
   const cursorRef = useRef<HTMLDivElement | null>(null);
   const rafId = useRef<number | null>(null);
@@ -96,6 +83,7 @@ function Cursor({ isDataFetched }: { isDataFetched: boolean }) {
     const handleMouseMove = (e: MouseEvent) => {
       const nextPosition = { x: e.clientX, y: e.clientY };
       latestMousePosition.current = nextPosition;
+      setLastPointerPosition(nextPosition);
 
       const target = e.target as Element | null;
       const shouldForceDefaultCursor = !!target?.closest(
@@ -146,12 +134,6 @@ function Cursor({ isDataFetched }: { isDataFetched: boolean }) {
       if (rafId.current === null) {
         rafId.current = requestAnimationFrame(animateCursor);
       }
-
-      const now = performance.now();
-      if (now - lastPersistTime.current >= PERSIST_INTERVAL_MS) {
-        localStorage.setItem("mousePosition", JSON.stringify(nextPosition));
-        lastPersistTime.current = now;
-      }
     };
 
     window.addEventListener("mousemove", handleMouseMove, { passive: true });
@@ -162,10 +144,6 @@ function Cursor({ isDataFetched }: { isDataFetched: boolean }) {
         cancelAnimationFrame(rafId.current);
         rafId.current = null;
       }
-      localStorage.setItem(
-        "mousePosition",
-        JSON.stringify(latestMousePosition.current),
-      );
     };
   }, [animateCursor, isDataFetched]);
 

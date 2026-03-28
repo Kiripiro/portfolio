@@ -1,6 +1,10 @@
-import React, { ReactNode, useEffect, useState } from "react";
+import React, { ReactNode, useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import "./hoverImage.scss";
+import {
+  getLastPointerPosition,
+  setLastPointerPosition,
+} from "../../../utils/pointer/pointerPosition";
 
 const HoverImage = ({
   children,
@@ -14,11 +18,11 @@ const HoverImage = ({
   const VIEWPORT_PADDING = 24;
 
   const [isHovering, setIsHovering] = useState(false);
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const [mousePos, setMousePos] = useState(() => getLastPointerPosition());
   const [imagePos, setImagePos] = useState({ top: 0, left: 0 });
-  const [lastMousePos, setLastMousePos] = useState({ x: 0, y: 0 });
-  const [lastMoveTime, setLastMoveTime] = useState(Date.now());
   const [showHoverImage, setShowHoverImage] = useState(false);
+  const lastMousePosRef = useRef(getLastPointerPosition());
+  const lastMoveTimeRef = useRef(Date.now());
 
   function getClampedImagePosition(x: number, y: number) {
     const minLeft = VIEWPORT_PADDING;
@@ -39,11 +43,9 @@ const HoverImage = ({
   }
 
   useEffect(() => {
-    const savedMousePos = JSON.parse(
-      localStorage.getItem("mousePosition") || '{"x": 0, "y": 0}',
-    );
+    const savedMousePos = getLastPointerPosition();
     setMousePos(savedMousePos);
-    setLastMousePos(savedMousePos);
+    lastMousePosRef.current = savedMousePos;
 
     const timer = setTimeout(() => {
       setShowHoverImage(true);
@@ -57,19 +59,18 @@ const HoverImage = ({
 
     const handleMouseMove = (e: MouseEvent) => {
       const currentTime = Date.now();
-      const deltaTime = currentTime - lastMoveTime;
-      const deltaX = e.clientX - lastMousePos.x;
-      const deltaY = e.clientY - lastMousePos.y;
+      const deltaTime = Math.max(currentTime - lastMoveTimeRef.current, 1);
+      const deltaX = e.clientX - lastMousePosRef.current.x;
+      const deltaY = e.clientY - lastMousePosRef.current.y;
       const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
       const speed = distance / deltaTime;
 
       const newMousePos = { x: e.clientX, y: e.clientY };
       setMousePos(newMousePos);
       setImagePos(getClampedImagePosition(e.clientX, e.clientY));
-      setLastMousePos(newMousePos);
-      setLastMoveTime(currentTime);
-
-      localStorage.setItem("mousePosition", JSON.stringify(newMousePos));
+      lastMousePosRef.current = newMousePos;
+      lastMoveTimeRef.current = currentTime;
+      setLastPointerPosition(newMousePos);
 
       if (speed > 17) {
         setIsHovering(false);
@@ -81,12 +82,12 @@ const HoverImage = ({
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
     };
-  }, [isHovering, lastMousePos, lastMoveTime]);
+  }, [isHovering]);
 
   const handleMouseEnter = () => {
     setIsHovering(true);
-    setLastMousePos(mousePos);
-    setLastMoveTime(Date.now());
+    lastMousePosRef.current = mousePos;
+    lastMoveTimeRef.current = Date.now();
     setImagePos(getClampedImagePosition(mousePos.x, mousePos.y));
   };
 
