@@ -1,17 +1,5 @@
 [
   {
-    "id": 830888053,
-    "name": "avaj-launcher",
-    "description": "This project is the introduction to the Java world at 42.",
-    "html_url": "https://github.com/Kiripiro/avaj-launcher",
-    "created_at": "2024-07-19T07:57:33Z",
-    "languages": {
-      "Java": 23365,
-      "Makefile": 1029,
-      "Shell": 564
-    }
-  },
-  {
     "id": 695616751,
     "name": "portfolio",
     "description": "This is my current portfolio website, work in progress !",
@@ -22,6 +10,18 @@
       "SCSS": 55177,
       "JavaScript": 4049,
       "HTML": 491
+    }
+  },
+  {
+    "id": 830888053,
+    "name": "avaj-launcher",
+    "description": "This project is the introduction to the Java world at 42.",
+    "html_url": "https://github.com/Kiripiro/avaj-launcher",
+    "created_at": "2024-07-19T07:57:33Z",
+    "languages": {
+      "Java": 23365,
+      "Makefile": 1029,
+      "Shell": 564
     }
   },
   {
